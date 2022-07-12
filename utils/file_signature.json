@@ -1,0 +1,2592 @@
+[
+  {
+    "extension": "*",
+    "signature": "41435344",
+    "description": "AOL parameter|info files"
+  },
+  {
+    "extension": "*",
+    "signature": "62706C697374",
+    "description": "Binary property list (plist)"
+  },
+  {
+    "extension": "*",
+    "signature": "001400000102",
+    "description": "BIOS details in RAM"
+  },
+  {
+    "extension": "*",
+    "signature": "3037303730",
+    "description": "cpio archive"
+  },
+  {
+    "extension": "*",
+    "signature": "7F454C46",
+    "description": "ELF executable"
+  },
+  {
+    "extension": "*",
+    "signature": "A1B2CD34",
+    "description": "Extended tcpdump (libpcap) capture file"
+  },
+  {
+    "extension": "*",
+    "signature": "04000000",
+    "description": "INFO2 Windows recycle bin_1"
+  },
+  {
+    "extension": "*",
+    "signature": "05000000",
+    "description": "INFO2 Windows recycle bin_2"
+  },
+  {
+    "extension": "*",
+    "signature": "ACED",
+    "description": "Java serialization data"
+  },
+  {
+    "extension": "*",
+    "signature": "4B57414A88F027D1",
+    "description": "KWAJ (compressed) file"
+  },
+  {
+    "extension": "*",
+    "signature": "CD20AAAA02000000",
+    "description": "NAV quarantined virus file"
+  },
+  {
+    "extension": "*",
+    "signature": "535A2088F02733D1",
+    "description": "QBASIC SZDD file"
+  },
+  {
+    "extension": "*",
+    "signature": "6F3C",
+    "description": "SMS text (SIM)"
+  },
+  {
+    "extension": "*",
+    "signature": "535A444488F02733",
+    "description": "SZDD file format"
+  },
+  {
+    "extension": "*",
+    "signature": "A1B2C3D4",
+    "description": "tcpdump (libpcap) capture file"
+  },
+  {
+    "extension": "*",
+    "signature": "34CDB2A1",
+    "description": "Tcpdump capture file"
+  },
+  {
+    "extension": "*",
+    "signature": "EFBBBF",
+    "description": "UTF8 file"
+  },
+  {
+    "extension": "*",
+    "signature": "FEFF",
+    "description": "UTF-16|UCS-2 file"
+  },
+  {
+    "extension": "*",
+    "signature": "FFFE0000",
+    "description": "UTF-32|UCS-4 file"
+  },
+  {
+    "extension": "*",
+    "signature": "626567696E",
+    "description": "UUencoded file"
+  },
+  {
+    "extension": "*",
+    "signature": "D4C3B2A1",
+    "description": "WinDump (winpcap) capture file"
+  },
+  {
+    "extension": "*",
+    "signature": "37E45396C9DBD607",
+    "description": "zisofs compressed file"
+  },
+  {
+    "extension": "123",
+    "signature": "00001A00051004",
+    "description": "Lotus 1-2-3 (v9)"
+  },
+  {
+    "extension": "386",
+    "signature": "4D5A",
+    "description": "Windows virtual device drivers"
+  },
+  {
+    "extension": "3GP",
+    "signature": "0000001466747970",
+    "description": "3GPP multimedia files"
+  },
+  {
+    "extension": "3GP",
+    "signature": "0000002066747970",
+    "description": "3GPP2 multimedia files"
+  },
+  {
+    "extension": "3GP5",
+    "signature": "0000001866747970",
+    "description": "MPEG-4 video files"
+  },
+  {
+    "extension": "4XM",
+    "signature": "52494646",
+    "description": "4X Movie video"
+  },
+  {
+    "extension": "7Z",
+    "signature": "377ABCAF271C",
+    "description": "7-Zip compressed file"
+  },
+  {
+    "extension": "ABA",
+    "signature": "00014241",
+    "description": "Palm Address Book Archive"
+  },
+  {
+    "extension": "ABD",
+    "signature": "5157205665722E20",
+    "description": "ABD | QSD Quicken data file"
+  },
+  {
+    "extension": "ABI",
+    "signature": "414F4C494E444558",
+    "description": "AOL address book index"
+  },
+  {
+    "extension": "ABI",
+    "signature": "414F4C",
+    "description": "AOL config files"
+  },
+  {
+    "extension": "ABY",
+    "signature": "414F4C4442",
+    "description": "AOL address book"
+  },
+  {
+    "extension": "ABY",
+    "signature": "414F4C",
+    "description": "AOL config files"
+  },
+  {
+    "extension": "AC",
+    "signature": "72696666",
+    "description": "Sonic Foundry Acid Music File"
+  },
+  {
+    "extension": "ACCDB",
+    "signature": "000100005374616E6461726420414345204442",
+    "description": "Microsoft Access 2007"
+  },
+  {
+    "extension": "ACM",
+    "signature": "4D5A",
+    "description": "MS audio compression manager driver"
+  },
+  {
+    "extension": "ACS",
+    "signature": "C3ABCDAB",
+    "description": "MS Agent Character file"
+  },
+  {
+    "extension": "AC_",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "CaseWare Working Papers"
+  },
+  {
+    "extension": "AD",
+    "signature": "5245564E554D3A2C",
+    "description": "Antenna data file"
+  },
+  {
+    "extension": "ADF",
+    "signature": "444F53",
+    "description": "Amiga disk file"
+  },
+  {
+    "extension": "ADP",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Access project file"
+  },
+  {
+    "extension": "ADX",
+    "signature": "0300000041505052",
+    "description": "Approach index file"
+  },
+  {
+    "extension": "ADX",
+    "signature": "80000020031204",
+    "description": "Dreamcast audio"
+  },
+  {
+    "extension": "AIFF",
+    "signature": "464F524D00",
+    "description": "Audio Interchange File"
+  },
+  {
+    "extension": "AIN",
+    "signature": "2112",
+    "description": "AIN Compressed Archive"
+  },
+  {
+    "extension": "AMR",
+    "signature": "2321414D52",
+    "description": "Adaptive Multi-Rate ACELP Codec (GSM)"
+  },
+  {
+    "extension": "ANI",
+    "signature": "52494646",
+    "description": "Windows animated cursor"
+  },
+  {
+    "extension": "API",
+    "signature": "4D5A900003000000",
+    "description": "Acrobat plug-in"
+  },
+  {
+    "extension": "APR",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Lotus|IBM Approach 97 file"
+  },
+  {
+    "extension": "ARC",
+    "signature": "41724301",
+    "description": "FreeArc compressed file"
+  },
+  {
+    "extension": "ARC",
+    "signature": "1A02",
+    "description": "LH archive (old vers.|type 1)"
+  },
+  {
+    "extension": "ARC",
+    "signature": "1A03",
+    "description": "LH archive (old vers.|type 2)"
+  },
+  {
+    "extension": "ARC",
+    "signature": "1A04",
+    "description": "LH archive (old vers.|type 3)"
+  },
+  {
+    "extension": "ARC",
+    "signature": "1A08",
+    "description": "LH archive (old vers.|type 4)"
+  },
+  {
+    "extension": "ARC",
+    "signature": "1A09",
+    "description": "LH archive (old vers.|type 5)"
+  },
+  {
+    "extension": "ARJ",
+    "signature": "60EA",
+    "description": "ARJ Compressed archive file"
+  },
+  {
+    "extension": "ARL",
+    "signature": "D42A",
+    "description": "AOL history|typed URL files"
+  },
+  {
+    "extension": "ASF",
+    "signature": "3026B2758E66CF11",
+    "description": "Windows Media Audio|Video File"
+  },
+  {
+    "extension": "AST",
+    "signature": "5343486C",
+    "description": "Underground Audio"
+  },
+  {
+    "extension": "ASX",
+    "signature": "3C",
+    "description": "Advanced Stream Redirector"
+  },
+  {
+    "extension": "AU",
+    "signature": "646E732E",
+    "description": "Audacity audio file"
+  },
+  {
+    "extension": "AU",
+    "signature": "2E736E64",
+    "description": "NeXT|Sun Microsystems audio file"
+  },
+  {
+    "extension": "AUT",
+    "signature": "D42A",
+    "description": "AOL history|typed URL files"
+  },
+  {
+    "extension": "AVI",
+    "signature": "52494646",
+    "description": "Resource Interchange File Format"
+  },
+  {
+    "extension": "AW",
+    "signature": "8A0109000000E108",
+    "description": "MS Answer Wizard"
+  },
+  {
+    "extension": "AX",
+    "signature": "4D5A900003000000",
+    "description": "DirectShow filter"
+  },
+  {
+    "extension": "AX",
+    "signature": "4D5A",
+    "description": "Library cache file"
+  },
+  {
+    "extension": "BAG",
+    "signature": "414F4C2046656564",
+    "description": "AOL and AIM buddy list"
+  },
+  {
+    "extension": "BAG",
+    "signature": "414F4C",
+    "description": "AOL config files"
+  },
+  {
+    "extension": "BDR",
+    "signature": "5854",
+    "description": "MS Publisher"
+  },
+  {
+    "extension": "BIN",
+    "signature": "424C4932323351",
+    "description": "Speedtouch router firmware"
+  },
+  {
+    "extension": "BMP",
+    "signature": "424D",
+    "description": "Bitmap image"
+  },
+  {
+    "extension": "BZ2",
+    "signature": "425A68",
+    "description": "bzip2 compressed archive"
+  },
+  {
+    "extension": "CAB",
+    "signature": "49536328",
+    "description": "Install Shield compressed file"
+  },
+  {
+    "extension": "CAB",
+    "signature": "4D534346",
+    "description": "Microsoft cabinet file"
+  },
+  {
+    "extension": "CAL",
+    "signature": "737263646F636964",
+    "description": "CALS raster bitmap"
+  },
+  {
+    "extension": "CAL",
+    "signature": "537570657243616C",
+    "description": "SuperCalc worksheet"
+  },
+  {
+    "extension": "CAL",
+    "signature": "B5A2B0B3B3B0A5B5",
+    "description": "Windows calendar"
+  },
+  {
+    "extension": "CAP",
+    "signature": "58435000",
+    "description": "Packet sniffer files"
+  },
+  {
+    "extension": "CAP",
+    "signature": "52545353",
+    "description": "WinNT Netmon capture file"
+  },
+  {
+    "extension": "CAS",
+    "signature": "5F434153455F",
+    "description": "EnCase case file"
+  },
+  {
+    "extension": "CAT",
+    "signature": "30",
+    "description": "MS security catalog file"
+  },
+  {
+    "extension": "CBD",
+    "signature": "434246494C45",
+    "description": "WordPerfect dictionary"
+  },
+  {
+    "extension": "CBK",
+    "signature": "5F434153455F",
+    "description": "EnCase case file"
+  },
+  {
+    "extension": "CDA",
+    "signature": "52494646",
+    "description": "Resource Interchange File Format"
+  },
+  {
+    "extension": "CDR",
+    "signature": "52494646",
+    "description": "CorelDraw document"
+  },
+  {
+    "extension": "CDR",
+    "signature": "454C49544520436F",
+    "description": "Elite Plus Commander game file"
+  },
+  {
+    "extension": "CDR",
+    "signature": "4D535F564F494345",
+    "description": "Sony Compressed Voice File"
+  },
+  {
+    "extension": "CFG",
+    "signature": "5B666C7473696D2E",
+    "description": "Flight Simulator Aircraft Configuration"
+  },
+  {
+    "extension": "CHI",
+    "signature": "49545346",
+    "description": "MS Compiled HTML Help File"
+  },
+  {
+    "extension": "CHM",
+    "signature": "49545346",
+    "description": "MS Compiled HTML Help File"
+  },
+  {
+    "extension": "CLASS",
+    "signature": "CAFEBABE",
+    "description": "Java bytecode"
+  },
+  {
+    "extension": "CLB",
+    "signature": "434F4D2B",
+    "description": "COM+ Catalog"
+  },
+  {
+    "extension": "CLB",
+    "signature": "434D5831",
+    "description": "Corel Binary metafile"
+  },
+  {
+    "extension": "CMX",
+    "signature": "52494646",
+    "description": "Corel Presentation Exchange metadata"
+  },
+  {
+    "extension": "CNV",
+    "signature": "53514C4F434F4E56",
+    "description": "DB2 conversion file"
+  },
+  {
+    "extension": "COD",
+    "signature": "4E616D653A20",
+    "description": "Agent newsreader character map"
+  },
+  {
+    "extension": "COM",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "COM",
+    "signature": "E8",
+    "description": "Windows executable file_1"
+  },
+  {
+    "extension": "COM",
+    "signature": "E9",
+    "description": "Windows executable file_2"
+  },
+  {
+    "extension": "COM",
+    "signature": "EB",
+    "description": "Windows executable file_3"
+  },
+  {
+    "extension": "CPE",
+    "signature": "464158434F564552",
+    "description": "MS Fax Cover Sheet"
+  },
+  {
+    "extension": "CPI",
+    "signature": "53494554524F4E49",
+    "description": "Sietronics CPI XRD document"
+  },
+  {
+    "extension": "CPI",
+    "signature": "FF464F4E54",
+    "description": "Windows international code page"
+  },
+  {
+    "extension": "CPL",
+    "signature": "4D5A",
+    "description": "Control panel application"
+  },
+  {
+    "extension": "CPL",
+    "signature": "DCDC",
+    "description": "Corel color palette"
+  },
+  {
+    "extension": "CPT",
+    "signature": "4350543746494C45",
+    "description": "Corel Photopaint file_1"
+  },
+  {
+    "extension": "CPT",
+    "signature": "43505446494C45",
+    "description": "Corel Photopaint file_2"
+  },
+  {
+    "extension": "CPX",
+    "signature": "5B57696E646F7773",
+    "description": "Microsoft Code Page Translation file"
+  },
+  {
+    "extension": "CRU",
+    "signature": "43525553482076",
+    "description": "Crush compressed archive"
+  },
+  {
+    "extension": "CRW",
+    "signature": "49491A0000004845",
+    "description": "Canon RAW file"
+  },
+  {
+    "extension": "CSH",
+    "signature": "6375736800000002",
+    "description": "Photoshop Custom Shape"
+  },
+  {
+    "extension": "CTF",
+    "signature": "436174616C6F6720",
+    "description": "WhereIsIt Catalog"
+  },
+  {
+    "extension": "CTL",
+    "signature": "56455253494F4E20",
+    "description": "Visual Basic User-defined Control file"
+  },
+  {
+    "extension": "CUIX",
+    "signature": "504B0304",
+    "description": "Customization files"
+  },
+  {
+    "extension": "CUR",
+    "signature": "00000200",
+    "description": "Windows cursor"
+  },
+  {
+    "extension": "DAT",
+    "signature": "52494646",
+    "description": "Video CD MPEG movie"
+  },
+  {
+    "extension": "DAT",
+    "signature": "A90D000000000000",
+    "description": "Access Data FTK evidence"
+  },
+  {
+    "extension": "DAT",
+    "signature": "736C6821",
+    "description": "Allegro Generic Packfile (compressed)"
+  },
+  {
+    "extension": "DAT",
+    "signature": "736C682E",
+    "description": "Allegro Generic Packfile (uncompressed)"
+  },
+  {
+    "extension": "DAT",
+    "signature": "415647365F496E74",
+    "description": "AVG6 Integrity database"
+  },
+  {
+    "extension": "DAT",
+    "signature": "03",
+    "description": "MapInfo Native Data Format"
+  },
+  {
+    "extension": "DAT",
+    "signature": "4552465353415645",
+    "description": "EasyRecovery Saved State file"
+  },
+  {
+    "extension": "DAT",
+    "signature": "436C69656E742055",
+    "description": "IE History file"
+  },
+  {
+    "extension": "DAT",
+    "signature": "496E6E6F20536574",
+    "description": "Inno Setup Uninstall Log"
+  },
+  {
+    "extension": "DAT",
+    "signature": "504E4349554E444F",
+    "description": "Norton Disk Doctor undo file"
+  },
+  {
+    "extension": "DAT",
+    "signature": "50455354",
+    "description": "PestPatrol data|scan strings"
+  },
+  {
+    "extension": "DAT",
+    "signature": "1A52545320434F4D",
+    "description": "Runtime Software disk image"
+  },
+  {
+    "extension": "DAT",
+    "signature": "52415A4154444231",
+    "description": "Shareaza (P2P) thumbnail"
+  },
+  {
+    "extension": "DAT",
+    "signature": "4E41565452414646",
+    "description": "TomTom traffic data"
+  },
+  {
+    "extension": "DAT",
+    "signature": "55464F4F72626974",
+    "description": "UFO Capture map file"
+  },
+  {
+    "extension": "DAT",
+    "signature": "574D4D50",
+    "description": "Walkman MP3 file"
+  },
+  {
+    "extension": "DAT",
+    "signature": "43524547",
+    "description": "Win9x registry hive"
+  },
+  {
+    "extension": "DAT",
+    "signature": "72656766",
+    "description": "WinNT registry file"
+  },
+  {
+    "extension": "DB",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "MSWorks database file"
+  },
+  {
+    "extension": "DB",
+    "signature": "08",
+    "description": "dBASE IV or dBFast configuration file"
+  },
+  {
+    "extension": "DB",
+    "signature": "0006156100000002000004D200001000",
+    "description": "Netscape Navigator (v4) database"
+  },
+  {
+    "extension": "DB",
+    "signature": "44424648",
+    "description": "Palm Zire photo database"
+  },
+  {
+    "extension": "DB",
+    "signature": "53514C69746520666F726D6174203300",
+    "description": "SQLite database file"
+  },
+  {
+    "extension": "DB",
+    "signature": "FDFFFFFF",
+    "description": "Thumbs.db subheader"
+  },
+  {
+    "extension": "DB3",
+    "signature": "03",
+    "description": "dBASE III file"
+  },
+  {
+    "extension": "DB4",
+    "signature": "04",
+    "description": "dBASE IV file"
+  },
+  {
+    "extension": "DBA",
+    "signature": "00014244",
+    "description": "Palm DateBook Archive"
+  },
+  {
+    "extension": "DBB",
+    "signature": "6C33336C",
+    "description": "Skype user data file"
+  },
+  {
+    "extension": "DBF",
+    "signature": "4F504C4461746162",
+    "description": "Psion Series 3 Database"
+  },
+  {
+    "extension": "DBX",
+    "signature": "CFAD12FE",
+    "description": "Outlook Express e-mail folder"
+  },
+  {
+    "extension": "DCI",
+    "signature": "3C21646F63747970",
+    "description": "AOL HTML mail"
+  },
+  {
+    "extension": "DCX",
+    "signature": "B168DE3A",
+    "description": "PCX bitmap"
+  },
+  {
+    "extension": "dex",
+    "signature": "6465780A30303900",
+    "description": "Dalvik (Android) executable file"
+  },
+  {
+    "extension": "DIB",
+    "signature": "424D",
+    "description": "Bitmap image"
+  },
+  {
+    "extension": "DLL",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "DMG",
+    "signature": "78",
+    "description": "MacOS X image file"
+  },
+  {
+    "extension": "DMP",
+    "signature": "4D444D5093A7",
+    "description": "Windows dump file"
+  },
+  {
+    "extension": "DMP",
+    "signature": "504147454455",
+    "description": "Windows memory dump"
+  },
+  {
+    "extension": "DMS",
+    "signature": "444D5321",
+    "description": "Amiga DiskMasher compressed archive"
+  },
+  {
+    "extension": "DOC",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "DOC",
+    "signature": "0D444F43",
+    "description": "DeskMate Document"
+  },
+  {
+    "extension": "DOC",
+    "signature": "CF11E0A1B11AE100",
+    "description": "Perfect Office document"
+  },
+  {
+    "extension": "DOC",
+    "signature": "DBA52D00",
+    "description": "Word 2.0 file"
+  },
+  {
+    "extension": "DOC",
+    "signature": "ECA5C100",
+    "description": "Word document subheader"
+  },
+  {
+    "extension": "DOCX",
+    "signature": "504B0304",
+    "description": "MS Office Open XML Format Document"
+  },
+  {
+    "extension": "DOCX",
+    "signature": "504B030414000600",
+    "description": "MS Office 2007 documents"
+  },
+  {
+    "extension": "DOT",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "DRV",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "DRW",
+    "signature": "07",
+    "description": "Generic drawing programs"
+  },
+  {
+    "extension": "DRW",
+    "signature": "01FF02040302",
+    "description": "Micrografx vector graphic file"
+  },
+  {
+    "extension": "DS4",
+    "signature": "52494646",
+    "description": "Micrografx Designer graphic"
+  },
+  {
+    "extension": "DSN",
+    "signature": "4D56",
+    "description": "CD Stomper Pro label file"
+  },
+  {
+    "extension": "DSP",
+    "signature": "23204D6963726F73",
+    "description": "MS Developer Studio project file"
+  },
+  {
+    "extension": "DSS",
+    "signature": "02647373",
+    "description": "Digital Speech Standard file"
+  },
+  {
+    "extension": "DSW",
+    "signature": "64737766696C65",
+    "description": "MS Visual Studio workspace file"
+  },
+  {
+    "extension": "DTD",
+    "signature": "0764743264647464",
+    "description": "DesignTools 2D Design file"
+  },
+  {
+    "extension": "DUN",
+    "signature": "5B50686F6E655D",
+    "description": "Dial-up networking file"
+  },
+  {
+    "extension": "DVF",
+    "signature": "4D535F564F494345",
+    "description": "Sony Compressed Voice File"
+  },
+  {
+    "extension": "DVR",
+    "signature": "445644",
+    "description": "DVR-Studio stream file"
+  },
+  {
+    "extension": "DW4",
+    "signature": "4F7B",
+    "description": "Visio|DisplayWrite 4 text file"
+  },
+  {
+    "extension": "DWG",
+    "signature": "41433130",
+    "description": "Generic AutoCAD drawing"
+  },
+  {
+    "extension": "E01",
+    "signature": "455646090D0AFF00",
+    "description": "Expert Witness Compression Format"
+  },
+  {
+    "extension": "E01",
+    "signature": "4C5646090D0AFF00",
+    "description": "Logical File Evidence Format"
+  },
+  {
+    "extension": "ECF",
+    "signature": "5B47656E6572616C",
+    "description": "MS Exchange configuration file"
+  },
+  {
+    "extension": "EFX",
+    "signature": "DCFE",
+    "description": "eFax file"
+  },
+  {
+    "extension": "EML",
+    "signature": "582D",
+    "description": "Exchange e-mail"
+  },
+  {
+    "extension": "EML",
+    "signature": "52657475726E2D50",
+    "description": "Generic e-mail_1"
+  },
+  {
+    "extension": "EML",
+    "signature": "46726F6D",
+    "description": "Generic e-mail_2"
+  },
+  {
+    "extension": "ENL",
+    "signature": "40404020000040404040",
+    "description": "EndNote Library File"
+  },
+  {
+    "extension": "EPS",
+    "signature": "C5D0D3C6",
+    "description": "Adobe encapsulated PostScript"
+  },
+  {
+    "extension": "EPS",
+    "signature": "252150532D41646F",
+    "description": "Encapsulated PostScript file"
+  },
+  {
+    "extension": "ETH",
+    "signature": "1A350100",
+    "description": "WinPharoah capture file"
+  },
+  {
+    "extension": "EVT",
+    "signature": "300000004C664C65",
+    "description": "Windows Event Viewer file"
+  },
+  {
+    "extension": "EVTX",
+    "signature": "456C6646696C6500",
+    "description": "Windows Vista event log"
+  },
+  {
+    "extension": "EXE",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "FDF",
+    "signature": "25504446",
+    "description": "PDF file"
+  },
+  {
+    "extension": "FLAC",
+    "signature": "664C614300000022",
+    "description": "Free Lossless Audio Codec file"
+  },
+  {
+    "extension": "FLI",
+    "signature": "0011",
+    "description": "FLIC animation"
+  },
+  {
+    "extension": "FLT",
+    "signature": "4D5A900003000000",
+    "description": "Audition graphic filter"
+  },
+  {
+    "extension": "FLT",
+    "signature": "76323030332E3130",
+    "description": "Qimage filter"
+  },
+  {
+    "extension": "FLV",
+    "signature": "464C56",
+    "description": "Flash video file"
+  },
+  {
+    "extension": "FM",
+    "signature": "3C4D616B65724669",
+    "description": "Adobe FrameMaker"
+  },
+  {
+    "extension": "FON",
+    "signature": "4D5A",
+    "description": "Font file"
+  },
+  {
+    "extension": "FTR",
+    "signature": "D20A0000",
+    "description": "WinPharoah filter file"
+  },
+  {
+    "extension": "GHO",
+    "signature": "FEEF",
+    "description": "Symantex Ghost image file"
+  },
+  {
+    "extension": "GHS",
+    "signature": "FEEF",
+    "description": "Symantex Ghost image file"
+  },
+  {
+    "extension": "GID",
+    "signature": "3F5F0300",
+    "description": "Windows Help file_2"
+  },
+  {
+    "extension": "GID",
+    "signature": "4C4E0200",
+    "description": "Windows help file_3"
+  },
+  {
+    "extension": "GIF",
+    "signature": "47494638",
+    "description": "GIF file"
+  },
+  {
+    "extension": "GPG",
+    "signature": "99",
+    "description": "GPG public keyring"
+  },
+  {
+    "extension": "GRP",
+    "signature": "504D4343",
+    "description": "Windows Program Manager group file"
+  },
+  {
+    "extension": "GX2",
+    "signature": "475832",
+    "description": "Show Partner graphics file"
+  },
+  {
+    "extension": "GZ",
+    "signature": "1F8B08",
+    "description": "GZIP archive file"
+  },
+  {
+    "extension": "HAP",
+    "signature": "91334846",
+    "description": "Hamarsoft compressed archive"
+  },
+  {
+    "extension": "HDMP",
+    "signature": "4D444D5093A7",
+    "description": "Windows dump file"
+  },
+  {
+    "extension": "HDR",
+    "signature": "49536328",
+    "description": "Install Shield compressed file"
+  },
+  {
+    "extension": "HDR",
+    "signature": "233F52414449414E",
+    "description": "Radiance High Dynamic Range image file"
+  },
+  {
+    "extension": "hip",
+    "signature": "48695021",
+    "description": "Houdini image file. Three-dimensional modeling and animation"
+  },
+  {
+    "extension": "HLP",
+    "signature": "0000FFFFFFFF",
+    "description": "Windows Help file_1"
+  },
+  {
+    "extension": "HLP",
+    "signature": "3F5F0300",
+    "description": "Windows Help file_2"
+  },
+  {
+    "extension": "HLP",
+    "signature": "4C4E0200",
+    "description": "Windows help file_3"
+  },
+  {
+    "extension": "HQX",
+    "signature": "2854686973206669",
+    "description": "BinHex 4 Compressed Archive"
+  },
+  {
+    "extension": "ICO",
+    "signature": "00000100",
+    "description": "Windows icon|printer spool file"
+  },
+  {
+    "extension": "IDX",
+    "signature": "414F4C4442",
+    "description": "AOL user configuration"
+  },
+  {
+    "extension": "IDX",
+    "signature": "414F4C",
+    "description": "AOL config files"
+  },
+  {
+    "extension": "IDX",
+    "signature": "5000000020000000",
+    "description": "Quicken QuickFinder Information File"
+  },
+  {
+    "extension": "IFO",
+    "signature": "445644",
+    "description": "DVD info file"
+  },
+  {
+    "extension": "IMG",
+    "signature": "504943540008",
+    "description": "ChromaGraph Graphics Card Bitmap"
+  },
+  {
+    "extension": "IMG",
+    "signature": "EB3C902A",
+    "description": "GEM Raster file"
+  },
+  {
+    "extension": "IMG",
+    "signature": "53434D49",
+    "description": "Img Software Bitmap"
+  },
+  {
+    "extension": "IND",
+    "signature": "414F4C494458",
+    "description": "AOL client preferences|settings file"
+  },
+  {
+    "extension": "IND",
+    "signature": "414F4C",
+    "description": "AOL config files"
+  },
+  {
+    "extension": "INFO",
+    "signature": "E310000100000000",
+    "description": "Amiga icon"
+  },
+  {
+    "extension": "INFO",
+    "signature": "5468697320697320",
+    "description": "GNU Info Reader file"
+  },
+  {
+    "extension": "INFO",
+    "signature": "7A626578",
+    "description": "ZoomBrowser Image Index"
+  },
+  {
+    "extension": "ISO",
+    "signature": "4344303031",
+    "description": "ISO-9660 CD Disc Image"
+  },
+  {
+    "extension": "IVR",
+    "signature": "2E524543",
+    "description": "RealPlayer video file (V11+)"
+  },
+  {
+    "extension": "JAR",
+    "signature": "504B0304",
+    "description": "Java archive_1"
+  },
+  {
+    "extension": "JAR",
+    "signature": "5F27A889",
+    "description": "Jar archive"
+  },
+  {
+    "extension": "JAR",
+    "signature": "4A4152435300",
+    "description": "JARCS compressed archive"
+  },
+  {
+    "extension": "JAR",
+    "signature": "504B030414000800",
+    "description": "Java archive_2"
+  },
+  {
+    "extension": "JFIF",
+    "signature": "FFD8FFE0",
+    "description": "JPEG IMAGE"
+  },
+  {
+    "extension": "JFIF",
+    "signature": "FFD8FFE0",
+    "description": "JFIF IMAGE FILE - jpeg"
+  },
+  {
+    "extension": "JG",
+    "signature": "4A47030E",
+    "description": "AOL ART file_1"
+  },
+  {
+    "extension": "JG",
+    "signature": "4A47040E",
+    "description": "AOL ART file_2"
+  },
+  {
+    "extension": "JNT",
+    "signature": "4E422A00",
+    "description": "MS Windows journal"
+  },
+  {
+    "extension": "JP2",
+    "signature": "0000000C6A502020",
+    "description": "JPEG2000 image files"
+  },
+  {
+    "extension": "JPE",
+    "signature": "FFD8FFE0",
+    "description": "JPEG IMAGE"
+  },
+  {
+    "extension": "JPE",
+    "signature": "FFD8FFE0",
+    "description": "JPE IMAGE FILE - jpeg"
+  },
+  {
+    "extension": "JPEG",
+    "signature": "FFD8FFE0",
+    "description": "JPEG IMAGE"
+  },
+  {
+    "extension": "JPEG",
+    "signature": "FFD8FFE2",
+    "description": "CANNON EOS JPEG FILE"
+  },
+  {
+    "extension": "JPEG",
+    "signature": "FFD8FFE3",
+    "description": "SAMSUNG D500 JPEG FILE"
+  },
+  {
+    "extension": "JPG",
+    "signature": "FFD8FFE0",
+    "description": "JPEG IMAGE"
+  },
+  {
+    "extension": "JPG",
+    "signature": "FFD8FFE1",
+    "description": "Digital camera JPG using Exchangeable Image File Format (EXIF)"
+  },
+  {
+    "extension": "JPG",
+    "signature": "FFD8FFE8",
+    "description": "Still Picture Interchange File Format (SPIFF)"
+  },
+  {
+    "extension": "JTP",
+    "signature": "4E422A00",
+    "description": "MS Windows journal"
+  },
+  {
+    "extension": "KGB",
+    "signature": "4B47425F61726368",
+    "description": "KGB archive"
+  },
+  {
+    "extension": "KOZ",
+    "signature": "49443303000000",
+    "description": "Sprint Music Store audio"
+  },
+  {
+    "extension": "KWD",
+    "signature": "504B0304",
+    "description": "KWord document"
+  },
+  {
+    "extension": "LBK",
+    "signature": "C8007900",
+    "description": "Jeppesen FliteLog file"
+  },
+  {
+    "extension": "LGC",
+    "signature": "7B0D0A6F20",
+    "description": "Windows application log"
+  },
+  {
+    "extension": "LGD",
+    "signature": "7B0D0A6F20",
+    "description": "Windows application log"
+  },
+  {
+    "extension": "LHA",
+    "signature": "2D6C68",
+    "description": "Compressed archive"
+  },
+  {
+    "extension": "LIB",
+    "signature": "213C617263683E0A",
+    "description": "Unix archiver (ar)|MS Program Library Common Object File Format (COFF)"
+  },
+  {
+    "extension": "LIT",
+    "signature": "49544F4C49544C53",
+    "description": "MS Reader eBook"
+  },
+  {
+    "extension": "LNK",
+    "signature": "4C00000001140200",
+    "description": "Windows shortcut file"
+  },
+  {
+    "extension": "LOG",
+    "signature": "2A2A2A2020496E73",
+    "description": "Symantec Wise Installer log"
+  },
+  {
+    "extension": "LWP",
+    "signature": "576F726450726F",
+    "description": "Lotus WordPro file"
+  },
+  {
+    "extension": "LZH",
+    "signature": "2D6C68",
+    "description": "Compressed archive"
+  },
+  {
+    "extension": "M4A",
+    "signature": "00000020667479704D3441",
+    "description": "Apple audio and video files"
+  },
+  {
+    "extension": "MANIFEST",
+    "signature": "3C3F786D6C2076657273696F6E3D",
+    "description": "Windows Visual Stylesheet"
+  },
+  {
+    "extension": "MAR",
+    "signature": "4D41723000",
+    "description": "MAr compressed archive"
+  },
+  {
+    "extension": "MAR",
+    "signature": "4D415243",
+    "description": "Microsoft|MSN MARC archive"
+  },
+  {
+    "extension": "MAR",
+    "signature": "4D41523100",
+    "description": "Mozilla archive"
+  },
+  {
+    "extension": "MDB",
+    "signature": "000100005374616E64617264204A6574204442",
+    "description": "Microsoft Access"
+  },
+  {
+    "extension": "MDF",
+    "signature": "010F0000",
+    "description": "SQL Data Base"
+  },
+  {
+    "extension": "MDI",
+    "signature": "4550",
+    "description": "MS Document Imaging file"
+  },
+  {
+    "extension": "MID",
+    "signature": "4D546864",
+    "description": "MIDI sound file"
+  },
+  {
+    "extension": "MIDI",
+    "signature": "4D546864",
+    "description": "MIDI sound file"
+  },
+  {
+    "extension": "MIF",
+    "signature": "3C4D616B65724669",
+    "description": "Adobe FrameMaker"
+  },
+  {
+    "extension": "MIF",
+    "signature": "56657273696F6E20",
+    "description": "MapInfo Interchange Format file"
+  },
+  {
+    "extension": "MKV",
+    "signature": "1A45DFA393428288",
+    "description": "Matroska stream file"
+  },
+  {
+    "extension": "MLS",
+    "signature": "4D494C4553",
+    "description": "Milestones project management file"
+  },
+  {
+    "extension": "MLS",
+    "signature": "4D56323134",
+    "description": "Milestones project management file_1"
+  },
+  {
+    "extension": "MLS",
+    "signature": "4D563243",
+    "description": "Milestones project management file_2"
+  },
+  {
+    "extension": "MLS",
+    "signature": "4D4C5357",
+    "description": "Skype localization data file"
+  },
+  {
+    "extension": "MMF",
+    "signature": "4D4D4D440000",
+    "description": "Yamaha Synthetic music Mobile Application Format"
+  },
+  {
+    "extension": "MNY",
+    "signature": "000100004D534953414D204461746162617365",
+    "description": "Microsoft Money file"
+  },
+  {
+    "extension": "MOF",
+    "signature": "FFFE23006C006900",
+    "description": "MSinfo file"
+  },
+  {
+    "extension": "MOV",
+    "signature": "6D6F6F76",
+    "description": "QuickTime movie_1"
+  },
+  {
+    "extension": "MOV",
+    "signature": "66726565",
+    "description": "QuickTime movie_2"
+  },
+  {
+    "extension": "MOV",
+    "signature": "6D646174",
+    "description": "QuickTime movie_3"
+  },
+  {
+    "extension": "MOV",
+    "signature": "77696465",
+    "description": "QuickTime movie_4"
+  },
+  {
+    "extension": "MOV",
+    "signature": "706E6F74",
+    "description": "QuickTime movie_5"
+  },
+  {
+    "extension": "MOV",
+    "signature": "736B6970",
+    "description": "QuickTime movie_6"
+  },
+  {
+    "extension": "MP",
+    "signature": "0CED",
+    "description": "Monochrome Picture TIFF bitmap"
+  },
+  {
+    "extension": "MP3",
+    "signature": "494433",
+    "description": "MP3 audio file"
+  },
+  {
+    "extension": "MPG",
+    "signature": "000001BA",
+    "description": "DVD video file"
+  },
+  {
+    "extension": "MPG",
+    "signature": "000001B3",
+    "description": "MPEG video file"
+  },
+  {
+    "extension": "MSC",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Common Console Document"
+  },
+  {
+    "extension": "MSC",
+    "signature": "3C3F786D6C2076657273696F6E3D22312E30223F3E0D0A3C4D4D435F436F6E736F6C6546696C6520436F6E736F6C65566572",
+    "description": "MMC Snap-in Control file"
+  },
+  {
+    "extension": "MSI",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Installer package"
+  },
+  {
+    "extension": "MSI",
+    "signature": "2320",
+    "description": "Cerius2 file"
+  },
+  {
+    "extension": "MSV",
+    "signature": "4D535F564F494345",
+    "description": "Sony Compressed Voice File"
+  },
+  {
+    "extension": "MTW",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Minitab data file"
+  },
+  {
+    "extension": "NRI",
+    "signature": "0E4E65726F49534F",
+    "description": "Nero CD compilation"
+  },
+  {
+    "extension": "NSF",
+    "signature": "1A0000040000",
+    "description": "Lotus Notes database"
+  },
+  {
+    "extension": "NSF",
+    "signature": "4E45534D1A01",
+    "description": "NES Sound file"
+  },
+  {
+    "extension": "NTF",
+    "signature": "1A0000",
+    "description": "Lotus Notes database template"
+  },
+  {
+    "extension": "NTF",
+    "signature": "4E49544630",
+    "description": "National Imagery Transmission Format file"
+  },
+  {
+    "extension": "NTF",
+    "signature": "30314F52444E414E",
+    "description": "National Transfer Format Map"
+  },
+  {
+    "extension": "NVRAM",
+    "signature": "4D52564E",
+    "description": "VMware BIOS state file"
+  },
+  {
+    "extension": "OBJ",
+    "signature": "4C01",
+    "description": "MS COFF relocatable object code"
+  },
+  {
+    "extension": "OBJ",
+    "signature": "80",
+    "description": "Relocatable object code"
+  },
+  {
+    "extension": "OCX",
+    "signature": "4D5A",
+    "description": "ActiveX|OLE Custom Control"
+  },
+  {
+    "extension": "ODP",
+    "signature": "504B0304",
+    "description": "OpenDocument template"
+  },
+  {
+    "extension": "ODT",
+    "signature": "504B0304",
+    "description": "OpenDocument template"
+  },
+  {
+    "extension": "OGA",
+    "signature": "4F67675300020000",
+    "description": "Ogg Vorbis Codec compressed file"
+  },
+  {
+    "extension": "OGG",
+    "signature": "4F67675300020000",
+    "description": "Ogg Vorbis Codec compressed file"
+  },
+  {
+    "extension": "OGV",
+    "signature": "4F67675300020000",
+    "description": "Ogg Vorbis Codec compressed file"
+  },
+  {
+    "extension": "OGX",
+    "signature": "4F67675300020000",
+    "description": "Ogg Vorbis Codec compressed file"
+  },
+  {
+    "extension": "OLB",
+    "signature": "4D5A",
+    "description": "OLE object library"
+  },
+  {
+    "extension": "ONE",
+    "signature": "E4525C7B8CD8A74D",
+    "description": "MS OneNote note"
+  },
+  {
+    "extension": "OPT",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Developer Studio File Options file"
+  },
+  {
+    "extension": "OPT",
+    "signature": "FDFFFFFF20",
+    "description": "Developer Studio subheader"
+  },
+  {
+    "extension": "ORG",
+    "signature": "414F4C564D313030",
+    "description": "AOL personal file cabinet"
+  },
+  {
+    "extension": "OTT",
+    "signature": "504B0304",
+    "description": "OpenDocument template"
+  },
+  {
+    "extension": "P10",
+    "signature": "64000000",
+    "description": "Intel PROset|Wireless Profile"
+  },
+  {
+    "extension": "PAK",
+    "signature": "1A0B",
+    "description": "PAK Compressed archive file"
+  },
+  {
+    "extension": "PAK",
+    "signature": "5041434B",
+    "description": "Quake archive file"
+  },
+  {
+    "extension": "PAT",
+    "signature": "47504154",
+    "description": "GIMP pattern file"
+  },
+  {
+    "extension": "PAX",
+    "signature": "504158",
+    "description": "PAX password protected bitmap"
+  },
+  {
+    "extension": "PCH",
+    "signature": "564350434830",
+    "description": "Visual C PreCompiled header"
+  },
+  {
+    "extension": "PCX",
+    "signature": "0A050101",
+    "description": "ZSOFT Paintbrush file_3"
+  },
+  {
+    "extension": "PCX",
+    "signature": "0A030101",
+    "description": "ZSOFT Paintbrush file_2"
+  },
+  {
+    "extension": "PCX",
+    "signature": "0A020101",
+    "description": "ZSOFT Paintbrush file_1"
+  },
+  {
+    "extension": "PDB",
+    "signature": "4D6963726F736F667420432F432B2B20",
+    "description": "MS C++ debugging symbols file"
+  },
+  {
+    "extension": "PDB",
+    "signature": "4D2D5720506F636B",
+    "description": "Merriam-Webster Pocket Dictionary"
+  },
+  {
+    "extension": "PDB",
+    "signature": "ACED000573720012",
+    "description": "BGBlitz position database file"
+  },
+  {
+    "extension": "PDB",
+    "signature": "737A657A",
+    "description": "PowerBASIC Debugger Symbols"
+  },
+  {
+    "extension": "PDB",
+    "signature": "736D5F",
+    "description": "PalmOS SuperMemo"
+  },
+  {
+    "extension": "PDF",
+    "signature": "25504446",
+    "description": "PDF file"
+  },
+  {
+    "extension": "PF",
+    "signature": "1100000053434341",
+    "description": "Windows prefetch file"
+  },
+  {
+    "extension": "PFC",
+    "signature": "414F4C",
+    "description": "AOL config files"
+  },
+  {
+    "extension": "PFC",
+    "signature": "414F4C564D313030",
+    "description": "AOL personal file cabinet"
+  },
+  {
+    "extension": "PGD",
+    "signature": "504750644D41494E",
+    "description": "PGP disk image"
+  },
+  {
+    "extension": "PGM",
+    "signature": "50350A",
+    "description": "Portable Graymap Graphic"
+  },
+  {
+    "extension": "PIF",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "PKR",
+    "signature": "9901",
+    "description": "PGP public keyring"
+  },
+  {
+    "extension": "PNG",
+    "signature": "89504E470D0A1A0A",
+    "description": "PNG image"
+  },
+  {
+    "extension": "PPS",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "PPT",
+    "signature": "FDFFFFFF43000000",
+    "description": "PowerPoint presentation subheader_6"
+  },
+  {
+    "extension": "PPT",
+    "signature": "FDFFFFFF1C000000",
+    "description": "PowerPoint presentation subheader_5"
+  },
+  {
+    "extension": "PPT",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "PPT",
+    "signature": "FDFFFFFF0E000000",
+    "description": "PowerPoint presentation subheader_4"
+  },
+  {
+    "extension": "PPT",
+    "signature": "A0461DF0",
+    "description": "PowerPoint presentation subheader_3"
+  },
+  {
+    "extension": "PPT",
+    "signature": "0F00E803",
+    "description": "PowerPoint presentation subheader_2"
+  },
+  {
+    "extension": "PPT",
+    "signature": "006E1EF0",
+    "description": "PowerPoint presentation subheader_1"
+  },
+  {
+    "extension": "PPTX",
+    "signature": "504B0304",
+    "description": "MS Office Open XML Format Document"
+  },
+  {
+    "extension": "PPTX",
+    "signature": "504B030414000600",
+    "description": "MS Office 2007 documents"
+  },
+  {
+    "extension": "PPZ",
+    "signature": "4D534346",
+    "description": "Powerpoint Packaged Presentation"
+  },
+  {
+    "extension": "PRC",
+    "signature": "74424D504B6E5772",
+    "description": "PathWay Map file"
+  },
+  {
+    "extension": "PRC",
+    "signature": "424F4F4B4D4F4249",
+    "description": "Palmpilot resource file"
+  },
+  {
+    "extension": "PSD",
+    "signature": "38425053",
+    "description": "Photoshop image"
+  },
+  {
+    "extension": "PSP",
+    "signature": "7E424B00",
+    "description": "Corel Paint Shop Pro image"
+  },
+  {
+    "extension": "PUB",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "MS Publisher file"
+  },
+  {
+    "extension": "PWI",
+    "signature": "7B5C707769",
+    "description": "MS WinMobile personal note"
+  },
+  {
+    "extension": "PWL",
+    "signature": "E3828596",
+    "description": "Win98 password file"
+  },
+  {
+    "extension": "PWL",
+    "signature": "B04D4643",
+    "description": "Win95 password file"
+  },
+  {
+    "extension": "QBB",
+    "signature": "458600000600",
+    "description": "QuickBooks backup"
+  },
+  {
+    "extension": "QCP",
+    "signature": "52494646",
+    "description": "Resource Interchange File Format"
+  },
+  {
+    "extension": "QDF",
+    "signature": "AC9EBD8F0000",
+    "description": "QDF Quicken data"
+  },
+  {
+    "extension": "QEL",
+    "signature": "51454C20",
+    "description": "QDL Quicken data"
+  },
+  {
+    "extension": "QEMU",
+    "signature": "514649",
+    "description": "Qcow Disk Image"
+  },
+  {
+    "extension": "QPH",
+    "signature": "03000000",
+    "description": "Quicken price history"
+  },
+  {
+    "extension": "QSD",
+    "signature": "5157205665722E20",
+    "description": "ABD | QSD Quicken data file"
+  },
+  {
+    "extension": "QTS",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "QTX",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "QXD",
+    "signature": "00004D4D585052",
+    "description": "Quark Express (Motorola)"
+  },
+  {
+    "extension": "QXD",
+    "signature": "00004949585052",
+    "description": "Quark Express (Intel)"
+  },
+  {
+    "extension": "RA",
+    "signature": "2E7261FD00",
+    "description": "RealAudio streaming media"
+  },
+  {
+    "extension": "RA",
+    "signature": "2E524D4600000012",
+    "description": "RealAudio file"
+  },
+  {
+    "extension": "RAM",
+    "signature": "727473703A2F2F",
+    "description": "RealMedia metafile"
+  },
+  {
+    "extension": "RAR",
+    "signature": "526172211A0700",
+    "description": "WinRAR compressed archive"
+  },
+  {
+    "extension": "REG",
+    "signature": "52454745444954",
+    "description": "WinNT Registry|Registry Undo files"
+  },
+  {
+    "extension": "REG",
+    "signature": "FFFE",
+    "description": "Windows Registry file"
+  },
+  {
+    "extension": "RGB",
+    "signature": "01DA01010003",
+    "description": "Silicon Graphics RGB Bitmap"
+  },
+  {
+    "extension": "RM",
+    "signature": "2E524D46",
+    "description": "RealMedia streaming media"
+  },
+  {
+    "extension": "RMI",
+    "signature": "52494646",
+    "description": "Resource Interchange File Format"
+  },
+  {
+    "extension": "RMVB",
+    "signature": "2E524D46",
+    "description": "RealMedia streaming media"
+  },
+  {
+    "extension": "RPM",
+    "signature": "EDABEEDB",
+    "description": "RedHat Package Manager"
+  },
+  {
+    "extension": "RTD",
+    "signature": "43232B44A4434DA5",
+    "description": "RagTime document"
+  },
+  {
+    "extension": "RTF",
+    "signature": "7B5C72746631",
+    "description": "RTF file"
+  },
+  {
+    "extension": "RVT",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Revit Project file"
+  },
+  {
+    "extension": "SAM",
+    "signature": "5B7665725D",
+    "description": "Lotus AMI Pro document_2"
+  },
+  {
+    "extension": "SAM",
+    "signature": "5B5645525D",
+    "description": "Lotus AMI Pro document_1"
+  },
+  {
+    "extension": "SAV",
+    "signature": "24464C3240282329",
+    "description": "SPSS Data file"
+  },
+  {
+    "extension": "SCR",
+    "signature": "4D5A",
+    "description": "Screen saver"
+  },
+  {
+    "extension": "SDR",
+    "signature": "534D415254445257",
+    "description": "SmartDraw Drawing file"
+  },
+  {
+    "extension": "SH3",
+    "signature": "4848474231",
+    "description": "Harvard Graphics presentation file"
+  },
+  {
+    "extension": "SHD",
+    "signature": "67490000",
+    "description": "Win2000|XP printer spool file"
+  },
+  {
+    "extension": "SHD",
+    "signature": "4B490000",
+    "description": "Win9x printer spool file"
+  },
+  {
+    "extension": "SHD",
+    "signature": "66490000",
+    "description": "WinNT printer spool file"
+  },
+  {
+    "extension": "SHD",
+    "signature": "68490000",
+    "description": "Win Server 2003 printer spool file"
+  },
+  {
+    "extension": "SHW",
+    "signature": "53484F57",
+    "description": "Harvard Graphics presentation"
+  },
+  {
+    "extension": "SIT",
+    "signature": "5374756666497420",
+    "description": "StuffIt compressed archive"
+  },
+  {
+    "extension": "SIT",
+    "signature": "5349542100",
+    "description": "StuffIt archive"
+  },
+  {
+    "extension": "SKF",
+    "signature": "07534B46",
+    "description": "SkinCrafter skin"
+  },
+  {
+    "extension": "SKR",
+    "signature": "9501",
+    "description": "PGP secret keyring_2"
+  },
+  {
+    "extension": "SKR",
+    "signature": "9500",
+    "description": "PGP secret keyring_1"
+  },
+  {
+    "extension": "SLE",
+    "signature": "3A56455253494F4E",
+    "description": "Surfplan kite project file"
+  },
+  {
+    "extension": "SLE",
+    "signature": "414376",
+    "description": "Steganos virtual secure drive"
+  },
+  {
+    "extension": "SLN",
+    "signature": "4D6963726F736F66742056697375616C",
+    "description": "Visual Studio .NET file"
+  },
+  {
+    "extension": "SNM",
+    "signature": "001E849000000000",
+    "description": "Netscape Communicator (v4) mail folder"
+  },
+  {
+    "extension": "SNP",
+    "signature": "4D534346",
+    "description": "MS Access Snapshot Viewer file"
+  },
+  {
+    "extension": "SOU",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Visual Studio Solution User Options file"
+  },
+  {
+    "extension": "SPL",
+    "signature": "00000100",
+    "description": "Windows icon|printer spool file"
+  },
+  {
+    "extension": "SPO",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "SPSS output file"
+  },
+  {
+    "extension": "SUD",
+    "signature": "52454745444954",
+    "description": "WinNT Registry|Registry Undo files"
+  },
+  {
+    "extension": "SUO",
+    "signature": "FDFFFFFF04",
+    "description": "Visual Studio Solution subheader"
+  },
+  {
+    "extension": "SWF",
+    "signature": "465753",
+    "description": "Shockwave Flash player"
+  },
+  {
+    "extension": "SWF",
+    "signature": "435753",
+    "description": "Shockwave Flash file"
+  },
+  {
+    "extension": "SXC",
+    "signature": "504B0304",
+    "description": "StarOffice spreadsheet"
+  },
+  {
+    "extension": "SXD",
+    "signature": "504B0304",
+    "description": "OpenOffice documents"
+  },
+  {
+    "extension": "SXI",
+    "signature": "504B0304",
+    "description": "OpenOffice documents"
+  },
+  {
+    "extension": "SXW",
+    "signature": "504B0304",
+    "description": "OpenOffice documents"
+  },
+  {
+    "extension": "SYS",
+    "signature": "FF",
+    "description": "Windows executable"
+  },
+  {
+    "extension": "SYS",
+    "signature": "EB",
+    "description": "Windows executable file_3"
+  },
+  {
+    "extension": "SYS",
+    "signature": "E9",
+    "description": "Windows executable file_2"
+  },
+  {
+    "extension": "SYS",
+    "signature": "E8",
+    "description": "Windows executable file_1"
+  },
+  {
+    "extension": "SYS",
+    "signature": "FF4B455942202020",
+    "description": "Keyboard driver file"
+  },
+  {
+    "extension": "SYS",
+    "signature": "4D5A",
+    "description": "Windows|DOS executable file"
+  },
+  {
+    "extension": "SYS",
+    "signature": "FFFFFFFF",
+    "description": "DOS system driver"
+  },
+  {
+    "extension": "SYW",
+    "signature": "414D594F",
+    "description": "Harvard Graphics symbol graphic"
+  },
+  {
+    "extension": "TAR",
+    "signature": "7573746172",
+    "description": "Tape Archive"
+  },
+  {
+    "extension": "TAR.BZ2",
+    "signature": "425A68",
+    "description": "bzip2 compressed archive"
+  },
+  {
+    "extension": "TAR.Z",
+    "signature": "1FA0",
+    "description": "Compressed tape archive_2"
+  },
+  {
+    "extension": "TAR.Z",
+    "signature": "1F9D90",
+    "description": "Compressed tape archive_1"
+  },
+  {
+    "extension": "TB2",
+    "signature": "425A68",
+    "description": "bzip2 compressed archive"
+  },
+  {
+    "extension": "TBZ2",
+    "signature": "425A68",
+    "description": "bzip2 compressed archive"
+  },
+  {
+    "extension": "TIB",
+    "signature": "B46E6844",
+    "description": "Acronis True Image"
+  },
+  {
+    "extension": "TIF",
+    "signature": "4D4D002A",
+    "description": "TIFF file_3"
+  },
+  {
+    "extension": "TIF",
+    "signature": "49492A00",
+    "description": "TIFF file_2"
+  },
+  {
+    "extension": "TIF",
+    "signature": "492049",
+    "description": "TIFF file_1"
+  },
+  {
+    "extension": "TIF",
+    "signature": "4D4D002B",
+    "description": "TIFF file_4"
+  },
+  {
+    "extension": "TIFF",
+    "signature": "49492A00",
+    "description": "TIFF file_2"
+  },
+  {
+    "extension": "TIFF",
+    "signature": "492049",
+    "description": "TIFF file_1"
+  },
+  {
+    "extension": "TIFF",
+    "signature": "4D4D002B",
+    "description": "TIFF file_4"
+  },
+  {
+    "extension": "TIFF",
+    "signature": "4D4D002A",
+    "description": "TIFF file_3"
+  },
+  {
+    "extension": "TLB",
+    "signature": "4D53465402000100",
+    "description": "OLE|SPSS|Visual C++ library file"
+  },
+  {
+    "extension": "TR1",
+    "signature": "0110",
+    "description": "Novell LANalyzer capture file"
+  },
+  {
+    "extension": "UCE",
+    "signature": "55434558",
+    "description": "Unicode extensions"
+  },
+  {
+    "extension": "UFA",
+    "signature": "554641C6D2C1",
+    "description": "UFA compressed archive"
+  },
+  {
+    "extension": "VBX",
+    "signature": "4D5A",
+    "description": "VisualBASIC application"
+  },
+  {
+    "extension": "VCD",
+    "signature": "454E545259564344",
+    "description": "VideoVCD|VCDImager file"
+  },
+  {
+    "extension": "VCF",
+    "signature": "424547494E3A5643",
+    "description": "vCard"
+  },
+  {
+    "extension": "VCW",
+    "signature": "5B4D535643",
+    "description": "Visual C++ Workbench Info File"
+  },
+  {
+    "extension": "VHD",
+    "signature": "636F6E6563746978",
+    "description": "Virtual PC HD image"
+  },
+  {
+    "extension": "VMDK",
+    "signature": "4B444D",
+    "description": "VMware 4 Virtual Disk"
+  },
+  {
+    "extension": "VMDK",
+    "signature": "23204469736B2044",
+    "description": "VMware 4 Virtual Disk description"
+  },
+  {
+    "extension": "VMDK",
+    "signature": "434F5744",
+    "description": "VMware 3 Virtual Disk"
+  },
+  {
+    "extension": "VOB",
+    "signature": "000001BA",
+    "description": "DVD video file"
+  },
+  {
+    "extension": "VSD",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Visio file"
+  },
+  {
+    "extension": "VXD",
+    "signature": "4D5A",
+    "description": "Windows virtual device drivers"
+  },
+  {
+    "extension": "WAB",
+    "signature": "813284C18505D011",
+    "description": "Outlook Express address book (Win95)"
+  },
+  {
+    "extension": "WAB",
+    "signature": "9CCBCB8D1375D211",
+    "description": "Outlook address file"
+  },
+  {
+    "extension": "WAV",
+    "signature": "52494646",
+    "description": "Resource Interchange File Format"
+  },
+  {
+    "extension": "WB2",
+    "signature": "00000200",
+    "description": "QuattroPro spreadsheet"
+  },
+  {
+    "extension": "WB3",
+    "signature": "3E000300FEFF090006",
+    "description": "Quatro Pro for Windows 7.0"
+  },
+  {
+    "extension": "WIZ",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "WK1",
+    "signature": "0000020006040600",
+    "description": "Lotus 1-2-3 (v1)"
+  },
+  {
+    "extension": "WK3",
+    "signature": "00001A0000100400",
+    "description": "Lotus 1-2-3 (v3)"
+  },
+  {
+    "extension": "WK4",
+    "signature": "00001A0002100400",
+    "description": "Lotus 1-2-3 (v4|v5)"
+  },
+  {
+    "extension": "WK5",
+    "signature": "00001A0002100400",
+    "description": "Lotus 1-2-3 (v4|v5)"
+  },
+  {
+    "extension": "WKS",
+    "signature": "0E574B53",
+    "description": "DeskMate Worksheet"
+  },
+  {
+    "extension": "WKS",
+    "signature": "FF00020004040554",
+    "description": "Works for Windows spreadsheet"
+  },
+  {
+    "extension": "WMA",
+    "signature": "3026B2758E66CF11",
+    "description": "Windows Media Audio|Video File"
+  },
+  {
+    "extension": "WMF",
+    "signature": "D7CDC69A",
+    "description": "Windows graphics metafile"
+  },
+  {
+    "extension": "WMV",
+    "signature": "3026B2758E66CF11",
+    "description": "Windows Media Audio|Video File"
+  },
+  {
+    "extension": "WMZ",
+    "signature": "504B0304",
+    "description": "Windows Media compressed skin file"
+  },
+  {
+    "extension": "WP",
+    "signature": "FF575043",
+    "description": "WordPerfect text and graphics"
+  },
+  {
+    "extension": "WP5",
+    "signature": "FF575043",
+    "description": "WordPerfect text and graphics"
+  },
+  {
+    "extension": "WP6",
+    "signature": "FF575043",
+    "description": "WordPerfect text and graphics"
+  },
+  {
+    "extension": "WPD",
+    "signature": "FF575043",
+    "description": "WordPerfect text and graphics"
+  },
+  {
+    "extension": "WPF",
+    "signature": "81CDAB",
+    "description": "WordPerfect text"
+  },
+  {
+    "extension": "WPG",
+    "signature": "FF575043",
+    "description": "WordPerfect text and graphics"
+  },
+  {
+    "extension": "WPL",
+    "signature": "4D6963726F736F66742057696E646F7773204D6564696120506C61796572202D2D20",
+    "description": "Windows Media Player playlist"
+  },
+  {
+    "extension": "WPP",
+    "signature": "FF575043",
+    "description": "WordPerfect text and graphics"
+  },
+  {
+    "extension": "WPS",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "MSWorks text document"
+  },
+  {
+    "extension": "WRI",
+    "signature": "BE000000AB",
+    "description": "MS Write file_3"
+  },
+  {
+    "extension": "WRI",
+    "signature": "32BE",
+    "description": "MS Write file_2"
+  },
+  {
+    "extension": "WRI",
+    "signature": "31BE",
+    "description": "MS Write file_1"
+  },
+  {
+    "extension": "WS",
+    "signature": "1D7D",
+    "description": "WordStar Version 5.0|6.0 document"
+  },
+  {
+    "extension": "WS2",
+    "signature": "575332303030",
+    "description": "WordStar for Windows file"
+  },
+  {
+    "extension": "XDR",
+    "signature": "3C",
+    "description": "BizTalk XML-Data Reduced Schema"
+  },
+  {
+    "extension": "XLA",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "XLS",
+    "signature": "FDFFFFFF10",
+    "description": "Excel spreadsheet subheader_2"
+  },
+  {
+    "extension": "XLS",
+    "signature": "0908100000060500",
+    "description": "Excel spreadsheet subheader_1"
+  },
+  {
+    "extension": "XLS",
+    "signature": "FDFFFFFF29",
+    "description": "Excel spreadsheet subheader_7"
+  },
+  {
+    "extension": "XLS",
+    "signature": "FDFFFFFF28",
+    "description": "Excel spreadsheet subheader_6"
+  },
+  {
+    "extension": "XLS",
+    "signature": "FDFFFFFF23",
+    "description": "Excel spreadsheet subheader_5"
+  },
+  {
+    "extension": "XLS",
+    "signature": "D0CF11E0A1B11AE1",
+    "description": "Microsoft Office document"
+  },
+  {
+    "extension": "XLS",
+    "signature": "FDFFFFFF22",
+    "description": "Excel spreadsheet subheader_4"
+  },
+  {
+    "extension": "XLS",
+    "signature": "FDFFFFFF1F",
+    "description": "Excel spreadsheet subheader_3"
+  },
+  {
+    "extension": "XLSX",
+    "signature": "504B0304",
+    "description": "MS Office Open XML Format Document"
+  },
+  {
+    "extension": "XLSX",
+    "signature": "504B030414000600",
+    "description": "MS Office 2007 documents"
+  },
+  {
+    "extension": "XML",
+    "signature": "3C3F786D6C2076657273696F6E3D22312E30223F3E",
+    "description": "User Interface Language"
+  },
+  {
+    "extension": "XPI",
+    "signature": "504B0304",
+    "description": "Mozilla Browser Archive"
+  },
+  {
+    "extension": "XPS",
+    "signature": "504B0304",
+    "description": "XML paper specification file"
+  },
+  {
+    "extension": "XPT",
+    "signature": "504B0304",
+    "description": "eXact Packager Models"
+  },
+  {
+    "extension": "XPT",
+    "signature": "5850434F4D0A5479",
+    "description": "XPCOM libraries"
+  },
+  {
+    "extension": "ZAP",
+    "signature": "4D5A90000300000004000000FFFF",
+    "description": "ZoneAlam data file"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "504B030414000100",
+    "description": "ZLock Pro encrypted ZIP"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "504B0708",
+    "description": "PKZIP archive_3"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "504B0506",
+    "description": "PKZIP archive_2"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "504B0304",
+    "description": "PKZIP archive_1"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "504B537058",
+    "description": "PKSFX self-extracting archive"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "504B4C495445",
+    "description": "PKLITE archive"
+  },
+  {
+    "extension": "ZIP",
+    "signature": "57696E5A6970",
+    "description": "WinZip compressed archive"
+  },
+  {
+    "extension": "ZOO",
+    "signature": "5A4F4F20",
+    "description": "ZOO compressed archive"
+  }
+]

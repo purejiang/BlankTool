@@ -1,0 +1,26 @@
+QDialog{
+  background-color: #3D3D3D;
+}
+
+QLabel#progressbar_title_label {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    font-weight: bold;
+}
+QLabel#progressbar_message_label {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;
+}
+QProgressBar {   
+    border-radius: 10px;   
+    background-color: #7D7D7D;
+    text-align: center;
+    color: #FFFFFF;
+}
+QProgressBar::chunk {  
+    border-radius: 10px;  
+    background-color: #46A6FD;
+}

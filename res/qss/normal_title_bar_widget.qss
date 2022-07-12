@@ -1,0 +1,14 @@
+QLabel#normal_title_bar_label {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QPushButton#close_window_btn {
+    border-image: url(./res/img/close_window_bg);
+}
+
+QPushButton:hover#close_window_btn {
+    border-image: url(./res/img/close_window_bg_select);
+}

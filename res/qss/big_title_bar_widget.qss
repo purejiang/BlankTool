@@ -1,0 +1,31 @@
+QLabel#big_title_bar_label {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 20px;
+    font-weight: bold;
+}
+
+QPushButton#close_window_btn {
+    border-image: url(./res/img/close_window_bg);
+}
+
+QPushButton:hover#close_window_btn {
+    border-image: url(./res/img/close_window_bg_select);
+}
+
+QPushButton#min_window_btn {
+    border-image: url(./res/img/min_window_bg);
+}
+
+QPushButton:hover#min_window_btn {
+    border-image: url(./res/img/min_window_bg_select);
+}
+
+QPushButton#max_window_btn {
+    border-image: url(./res/img/max_window_bg);
+}
+
+QPushButton:hover#max_window_btn {
+    border-image: url(./res/img/max_window_bg_select);
+}
+
