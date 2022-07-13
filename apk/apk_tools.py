@@ -8,7 +8,7 @@ class ApkTools(object):
 
 
     @classmethod
-    def installApk(cls, apk_path, loguer = None):
+    def install_apk(cls, apk_path, loguer = None):
         """
         安装 apk
         :param apk_path: apk 路径

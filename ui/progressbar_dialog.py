@@ -52,26 +52,32 @@ class ProgressBarDialog(BaseDialog):
     def mouseMoveEvent(self, e):
         self.move(e.globalPos() - self.move_press)
 
-    def set_progress(self, value):
+    def progress_callback(self, progress=None, msg=None):
+        if progress:
+            self.__set_progress(progress)
+        if msg:
+            self.__set_msg(msg)
+
+    def __set_progress(self, value):
         self._ui.progress_bar.setValue(value)
     
-    def set_msg(self, msg):
+    def __set_msg(self, msg):
         self._ui.progressbar_message_label.setText(msg)
 
     def __start_loader(self):
         self.timer = QTimer()
         self.timer.timeout.connect(self.__load_progress_bar)
-        self.timer.start(600)
+        self.timer.start(500)
 
     def __load_progress_bar(self):
-        self._ui.progress_bar.setValue(self._ui.progress_bar.value() + 1)  
-        if self._ui.progress_bar.value()==5:
+        self._ui.progress_bar.setValue(self._ui.progress_bar.value() + 2)  
+        if self._ui.progress_bar.value()==10:
             self.__thread.start()
+            self.timer.stop()
 
     def __sig_out(self, state):
         if state==1:
             if self._ui.progress_bar.value() < 100:
-                self.set_progress(100)
-            self.timer.stop()
+                self.__set_progress(100)
             time.sleep(3)
             self.close()

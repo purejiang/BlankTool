@@ -24,8 +24,4 @@ class AabBarWidget(BaseWidget):
         self._loadQss(self.__QSS_FILE)
     
     def _setup_listener(self):
-        self._ui.install_aab_btn.clicked.connect(self.on_intall_aab)
-
-    def on_intall_aab(self):
-        self.install_dialog = InstallDialog(self)
-        self.install_dialog.show()
+        pass

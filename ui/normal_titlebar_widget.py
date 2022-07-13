@@ -32,12 +32,3 @@ class NormalTitilBar(BaseWidget):
     
     def __on_click_close(self):
         self._win.close()
-
-    def __on_click_max(self):
-        if self._win.isMaximized():
-            self._win.showNormal()
-        else:
-            self._win.showMaximized()
-
-    def __on_click_min(self):
-        self._win.showMinimized()

@@ -2,7 +2,7 @@
 
 import os
 from PySide2.QtCore import Qt
-from aab.bundltool_builder import BundleToolBuilder
+from aab.bundltool_tools import BundleTools
 from apk.apk_tools import ApkTools
 from common.constant import BUNDLE_TOOL_PATH, CACHE_PATH
 from ui.base_dialog import BaseDialog
@@ -65,21 +65,22 @@ class InstallDialog(BaseDialog):
 
     def __show_progress(self):
         self.progressbar_dialog = ProgressBarDialog(self, "安装应用", 0, 100, self.__install)
-        self.progressbar_dialog.set_msg("安装中...")
+        self.progressbar_dialog.progress_callback(msg="安装中...")
         self.progressbar_dialog.show()
     
     def __install(self):
         file_path = self._ui.install_path_edt.text()
         file_name = FileHelper.filename(file_path)
         if FileHelper.getSuffix(file_path)==".aab":
-            rebuilder = BundleToolBuilder(BUNDLE_TOOL_PATH, os.path.join(
-                CACHE_PATH, "installing-{0}.apks".format(file_name)), os.path.join(CACHE_PATH, "installing-{0}.log".format(file_name)), None)
-            rebuilder.install_aab(file_path)
+            apks_path = os.path.join(CACHE_PATH, "installing-{0}.apks".format(file_name))
+            BundleTools.install_aab(BUNDLE_TOOL_PATH, file_path, apks_path, None, self.progressbar_dialog.progress_callback)
         else:
-            ApkTools.installApk(file_path)
-        self.progressbar_dialog.set_msg("安装完成")
-        
-        
+            result = ApkTools.install_apk(file_path) 
+            if result:
+                 self.progressbar_dialog.progress_callback(100, "apk 安装成功")
+            else:
+                self.progressbar_dialog.progress_callback(100, "apk 安装失败")
+
 
     # 关闭对话框
     def close_dialog(self):
