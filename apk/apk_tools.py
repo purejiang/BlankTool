@@ -1,14 +1,14 @@
 # -*- coding:utf-8 -*-
 
 import os
-from common.constant import ADB_PATH, APK_TOOL_PATH
+from utils.file_helper import FileHelper
 from utils.other_util import cmdBySystem, write_print
 
 class ApkTools(object):
 
 
     @classmethod
-    def install_apk(cls, apk_path, loguer = None):
+    def install_apk(cls, adb_path, apk_path, loguer = None):
         """
         安装 apk
         :param apk_path: apk 路径
@@ -17,11 +17,11 @@ class ApkTools(object):
         write_print(loguer, "install {0} ...".format(apk_path))
         # apk_name = os.path.basename(re.sub(r"( |)\(.\)", "", apk_path)) # 过滤掉(XX)字符
         win_linux_cmd = "{0} install {1}".format(
-            ADB_PATH, apk_path)
+            adb_path, apk_path)
         return cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: install apk failed", loguer)
 
     @classmethod
-    def depackage(cls, apk_path, output_dir, is_pass_dex=False, is_only_res=False, loguer = None):
+    def depackage(cls, apktool_path, apk_path, output_dir, is_pass_dex=False, is_only_res=False, loguer = None):
         """
         反编 apk
         :param apktool_ver: apktool 版本
@@ -33,8 +33,8 @@ class ApkTools(object):
         """
         write_print(loguer, "depackage {0} ...".format(apk_path))
         if os.path.exists(output_dir):
-            write_print(loguer, "dir is exist: {0}".format(output_dir))
-            return False
+            write_print(loguer, "output_dir is exist: {0}".format(output_dir))
+            return True
         # apk_name = os.path.basename(re.sub(r"( |)\(.\)", "", apk_path)) # 过滤掉(XX)字符
         pass_dex = ""
         if is_pass_dex:
@@ -43,11 +43,11 @@ class ApkTools(object):
         if is_only_res:
             s = " -s"
         win_linux_cmd = "java -jar {0}{1} d{2} {3} -o {4}".format(
-            APK_TOOL_PATH, s, pass_dex, apk_path, output_dir)
+            apktool_path, s, pass_dex, apk_path, output_dir)
         return cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: depackage failed", loguer)
 
     @classmethod
-    def repackage(cls, dir_path, output_apk_path, is_support_aapt2=False, loguer=None):
+    def repackage(cls, apktool_path, dir_path, output_apk_path, is_support_aapt2=False, loguer=None):
         """
         重编译目录
 
@@ -68,5 +68,72 @@ class ApkTools(object):
         if is_support_aapt2:
             aapt2 = " --use-aapt2"
         win_linux_cmd = "java -jar {0} b{1} {2} -f -o {3}".format(
-            APK_TOOL_PATH, aapt2, dir_path, output_apk_path)
+            apktool_path, aapt2, dir_path, output_apk_path)
         return cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: repackage failed", loguer)
+    
+    @classmethod
+    def aapt_apk_info(cls, aapt_path, apk_path, info_file_path, loguer=None):
+        """
+        获取本地的 apk 信息
+
+        :param aapt_path: aapt 路径
+        :param apk_path: apk 路径
+        :param info_file_path: 输出信息的文件
+        :param loguer: 日志工具
+
+        """
+        write_print(loguer, "aapt get {0} 's info ...".format(apk_path))
+        if not FileHelper.fileExist(info_file_path):
+            FileHelper.createDir(FileHelper.parentDir(info_file_path))
+        win_linux_cmd = "{0} dump badging {1} >> {2}".format(aapt_path, apk_path, info_file_path)
+        result = cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: aapt get info failed", loguer)
+        return result
+
+    @classmethod
+    def pull_apks(cls, adb_path, info_file_path, loguer=None):
+        """
+        获取手机上的 apk 列表
+
+        :param adb_path: adb 路径
+        :param info_file_path: 输出信息的文件
+        :param loguer: 日志工具
+
+        """
+        write_print(loguer, "pull packages ...")
+        if not FileHelper.fileExist(info_file_path):
+            FileHelper.createDir(FileHelper.parentDir(info_file_path))
+        win_linux_cmd = "{0} shell pm list packages >> {1}".format(adb_path, info_file_path)
+        result = cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: pull failed", loguer)
+        return result
+
+    @classmethod
+    def get_inphone_path(cls, adb_path, info_file_path, package_name, loguer=None):
+        """
+        获取 apk 在手机上的安装目录
+
+        :param adb_path: adb 路径
+        :param info_file_path: 输出信息的文件
+        :param package_name: 包名
+        :param loguer: 日志工具
+
+        """
+        write_print(loguer, "get path ...")
+        if not FileHelper.fileExist(info_file_path):
+            FileHelper.createDir(FileHelper.parentDir(info_file_path))
+        win_linux_cmd = "{0} shell pm path {1} >> {2}".format(adb_path, package_name, info_file_path)
+        result = cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: get path failed", loguer)
+        return result
+
+    @classmethod
+    def get_apk(cls, adb_path, in_phone_path, target_path, loguer=None):
+        """
+        通过 adb 命令将指定路径下的 apk 拉到 pc
+
+        :param adb_path: adb 路径
+        :param package_name: 包名
+        :param loguer: 日志工具
+        """
+        write_print(loguer, "get path ...")
+
+        win_linux_cmd = "{0} pull {1} {2}".format(adb_path, in_phone_path, target_path)
+        return cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: get apk failed", loguer)

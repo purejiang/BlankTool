@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QDesktopWidget
 from ui.aab_bar_widget import AabBarWidget
 from ui.apk_bar_widget import ApkBarWidget
 from ui.base_route import BaseRoute
@@ -27,7 +28,7 @@ class MainRoute(BaseRoute):
     def _on_pre_show(self, data):
         self._loadUi(self.__UI_FILE)
         self.__title_bar = BigTitilBar(self)
-        self.__title_bar.set_title("Blank Tool")
+        self.__title_bar.set_title("Blank Tool v4.0")
         self._ui.main_title_bar.addWidget(self.__title_bar)
         self.__aab_bar = AabBarWidget(self)
         self._ui.aab_bar_layout.addWidget(self.__aab_bar)
@@ -35,9 +36,17 @@ class MainRoute(BaseRoute):
         self._ui.apk_bar_layout.addWidget(self.__apk_bar)
         self.__other_bar = OtherBarWidget(self)
         self._ui.other_bar_layout.addWidget(self.__other_bar)
+        # 获得窗口
+        qr = self.frameGeometry()
+        # 获得屏幕中心点
+        cp = QDesktopWidget().availableGeometry().center()
+        # 显示到屏幕中心
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def _setup_qss(self):
         self.setWindowIcon(QIcon("./res/img/app_icon_small"))
+        self.setWindowTitle("Blank Tool")
         # 设置 window 背景透明，如果设置 window 的颜色，在最小化和恢复的时候，左上角会有明显的系统 ui 闪现
         self.setAttribute(Qt.WA_TranslucentBackground)
         # 去标题栏，状态栏

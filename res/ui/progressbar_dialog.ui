@@ -38,7 +38,7 @@
     <item>
      <widget class="QLabel" name="progressbar_title_label">
       <property name="text">
-       <string>TextLabel</string>
+       <string>Title</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -48,7 +48,7 @@
     <item>
      <widget class="QLabel" name="progressbar_message_label">
       <property name="text">
-       <string>TextLabel</string>
+       <string>Message</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

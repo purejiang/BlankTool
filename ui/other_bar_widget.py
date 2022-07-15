@@ -9,6 +9,14 @@ from ui.progressbar_dialog import ProgressBarDialog
 from utils.file_helper import FileHelper
 
 class OtherBarWidget(BaseWidget):
+    """
+
+    @author: purejiang
+    @created: 2022/7/13
+
+    其他工具
+
+    """
 
     __UI_FILE = "./res/ui/other_bar_widget.ui"
     __QSS_FILE = "./res/qss/other_bar_widget.qss"
@@ -41,7 +49,8 @@ class OtherBarWidget(BaseWidget):
     
     def __clean_cache(self):
         try:
-            FileHelper.delFile(CACHE_PATH)
+            FileHelper.delLongPathDir(CACHE_PATH)
             self.progressbar_dialog.progress_callback(100, msg="清理完成")
         except Exception as e:
+            print(str(e))
             self.progressbar_dialog.progress_callback(100, msg="清理失败")

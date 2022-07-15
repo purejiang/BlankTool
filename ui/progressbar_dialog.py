@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import time
-from PySide2.QtCore import Qt
+from PySide2.QtCore import Qt, Signal
 from PySide2.QtCore import QTimer
+from ui.apk_info_dialog import ApkInfoDialog
 from ui.base_dialog import BaseDialog
 from utils.work_thread import WorkThread
 
@@ -11,13 +12,15 @@ class ProgressBarDialog(BaseDialog):
 
     __UI_FILE = "./res/ui/progressbar_dialog.ui"
     __QSS_FILE = "./res/qss/progressbar_dialog.qss"
+    
+    _signal = Signal(str)
 
-    def __init__(self, main_window, title, min_value, max_value, func):
+    def __init__(self, main_window, title, min_value, max_value, run_func):
         self.__title = title
-        self.__func = func
+        self.__run_func = run_func
         self.__min_value = min_value
         self.__max_value = max_value
-        self.__thread = WorkThread(self.__func)
+        self.__thread = WorkThread(self.__run_func)
         self.__thread._state.connect(self.__sig_out)
         super(ProgressBarDialog, self).__init__(main_window)
         self.init()
@@ -80,4 +83,6 @@ class ProgressBarDialog(BaseDialog):
             if self._ui.progress_bar.value() < 100:
                 self.__set_progress(100)
             time.sleep(3)
+            self.__thread.terminate()
             self.close()
+            self._signal.emit("end")

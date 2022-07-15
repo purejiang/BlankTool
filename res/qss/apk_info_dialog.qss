@@ -1,0 +1,36 @@
+QDialog{
+    background: url(./res/img/dialog_bg);
+}
+QLabel {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;  
+}
+QLineEdit {
+    background:#3D3D3D;
+    selection-background-color: #4197FF;
+    border: 1px solid #8D8D91;
+    border-radius:2px;
+    font-family: "Microsoft YaHei";
+    font-size:12px;
+    color: #FFFFFF
+}
+
+QLabel#app_icon {
+     border-image: url(./res/img/ic_head_holder);
+}
+
+
+QPushButton#depackage_statue {
+     border-radius: 5px;
+     background-color: #4197FF;
+     border: 1px solid #FFFFFF;
+     color: #FFFFFF;
+     font-family: "Microsoft YaHei";
+     font-size: 11px;
+     text-decoration: underline;
+}
+QPushButton#depackage_statue:disabled{
+     background-color: #C3C3C3;
+}

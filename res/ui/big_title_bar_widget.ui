@@ -57,7 +57,7 @@
     <item>
      <widget class="QLabel" name="big_title_bar_label">
       <property name="text">
-       <string/>
+       <string>Title</string>
       </property>
      </widget>
     </item>

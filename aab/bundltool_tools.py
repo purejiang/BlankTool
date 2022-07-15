@@ -1,7 +1,6 @@
 # -*-coding:utf-8 -*-
 
 import os
-from common.constant import CACHE_PATH
 from utils.file_helper import FileHelper
 from utils.loguer import Loguer
 from utils.other_util import cmdBySystem, currentTime, currentTimeMillis, write_print
@@ -23,13 +22,11 @@ class BundleTools(object):
         return aab2apks_cmd(bundle_tool_path, aab_path, apks_path, keystore_config, loguer)
 
     @classmethod
-    def install_apks(cls, bundle_tool_path, apks_path, loguer=None):
-        return install_apks_cmd(bundle_tool_path, apks_path, loguer)
+    def install_apks(cls, bundle_tool_path, adb_path, apks_path, loguer=None):
+        return install_apks_cmd(bundle_tool_path, adb_path, apks_path, loguer)
 
     @classmethod
-    def install_aab(cls, bundle_tool_path, aab_path, apks_path, keystore_config, install_callback, loguer=None):
-        if loguer is None:
-            loguer = Loguer(os.path.join(CACHE_PATH, "bundletool_{0}.log".format(currentTimeMillis())))  
+    def install_aab(cls, bundle_tool_path, adb_path, aab_path, apks_path, keystore_config, loguer, install_callback):
         loguer.log_start(0, "开始安装 aab，时间："+ currentTime())
         try:
             loguer.log_start(1, "开始 清理输出目录")
@@ -47,7 +44,7 @@ class BundleTools(object):
                 return
             install_callback(70, "安装 apks ...")
             loguer.log_start(3, "安装 apks")
-            if cls.install_apks(bundle_tool_path, apks_path, loguer):
+            if cls.install_apks(bundle_tool_path, adb_path, apks_path, loguer):
                 loguer.log_end(3, "安装 apks 完成")
                 install_callback(100, "安装 apks 完成")
             else:
@@ -79,11 +76,11 @@ def aab2apks_cmd(bundletool_path, aab_path, output_apks_path, keystore_config=No
     if keystore_config:
         keystore_str = " --ks={0} --ks-pass=pass:{1} --ks-key-alias={2} --key-pass=pass:{3}".format(
             keystore_config["store_file"], keystore_config["store_password"], keystore_config["key_alias"], keystore_config["key_password"])
-    win_linux_cmd = "java -jar {0} build-apks --bundle {1} --output {2}{3}".format(
+    win_linux_cmd = "java -jar {0} build-apks --bundle {1} --output {3}{2}".format(
         bundletool_path, aab_path, output_apks_path, keystore_str)
     return cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: aab2apks failed", loguer)
 
-def install_apks_cmd(bundletool_path, apks_path, loguer=None):
+def install_apks_cmd(bundletool_path, adb_path, apks_path, loguer=None):
     """
     安装 .apks
     :param bundletool_path: bundletool 文件路径
@@ -91,8 +88,8 @@ def install_apks_cmd(bundletool_path, apks_path, loguer=None):
     java -jar [ bundletool 文件] install-apks --apks [ apks 文件] --adb [adb 文件]
     """
     write_print(loguer, "install apks...")
-    win_linux_cmd = "java -jar {0} install-apks --apks {1}".format(
-        bundletool_path, apks_path)
+    win_linux_cmd = "java -jar {0} install-apks --apks {1} --adb {2}".format(
+        bundletool_path, apks_path, adb_path)
     return cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: install apks failed", loguer)
 
 
