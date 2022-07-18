@@ -1,9 +1,8 @@
 # -*- coding:utf-8 -*-
 from abc import abstractmethod
 
-from PySide2.QtGui import Qt
+from PySide2.QtGui import Qt,QIcon
 from PySide2.QtWidgets import QMainWindow
-
 from ui.base_ui import BaseUi
 
 class BaseRoute(QMainWindow, BaseUi):
@@ -12,6 +11,7 @@ class BaseRoute(QMainWindow, BaseUi):
         super(BaseRoute, self).__init__()
         self.application = application
         self.application.addWindow(self)
+        self.setWindowIcon(QIcon("./res/img/app_icon_small"))
 
     def _onMin(self):
         """

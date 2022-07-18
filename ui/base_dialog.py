@@ -3,7 +3,7 @@
 
 from abc import abstractmethod
 from PySide2.QtCore import Signal
-from PySide2.QtGui import QMouseEvent
+from PySide2.QtGui import QMouseEvent,QIcon
 from PySide2.QtWidgets import QDialog
 
 from ui.base_ui import BaseUi
@@ -16,6 +16,7 @@ class BaseDialog(QDialog, BaseUi):
     def __init__(self, main_window):
         super(BaseDialog, self).__init__()
         self.win = main_window
+        self.setWindowIcon(QIcon("./res/img/app_icon_small"))
         self._on_pre_show()
         self._setup_qss()
         self._setup_listener()

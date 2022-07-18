@@ -5,7 +5,6 @@ from PySide2.QtWidgets import QDesktopWidget
 from ui.aab_bar_widget import AabBarWidget
 from ui.apk_bar_widget import ApkBarWidget
 from ui.base_route import BaseRoute
-from PySide2.QtGui import QIcon
 from ui.big_titlebar_widget import BigTitilBar
 from ui.other_bar_widget import OtherBarWidget
 
@@ -45,7 +44,6 @@ class MainRoute(BaseRoute):
         self.move(qr.topLeft())
 
     def _setup_qss(self):
-        self.setWindowIcon(QIcon("./res/img/app_icon_small"))
         self.setWindowTitle("Blank Tool")
         # 设置 window 背景透明，如果设置 window 的颜色，在最小化和恢复的时候，左上角会有明显的系统 ui 闪现
         self.setAttribute(Qt.WA_TranslucentBackground)
