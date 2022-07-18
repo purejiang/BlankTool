@@ -15,7 +15,7 @@ import shutil
 import struct
 import hashlib
 import zipfile
-
+from pathlib import Path
 
 class FileType(object):
     """
@@ -102,7 +102,7 @@ class FileHelper(object):
 
         :param file_path: 文件的路径
         """
-        return os.path.exists(os.path.abspath(file_path))
+        return Path(file_path).exists()
 
     @classmethod
     def file(cls, file_path):

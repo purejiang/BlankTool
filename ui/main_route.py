@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-
+import sys
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QDesktopWidget
 from ui.aab_bar_widget import AabBarWidget
@@ -64,6 +64,8 @@ class MainRoute(BaseRoute):
         if e.key() == Qt.Key_Escape:
             # self.close()
             pass
+    def closeevent(self,event):
+        sys.exit(app.exec_())
 
     def mousePressEvent(self, event):
         # 鼠标点击事件

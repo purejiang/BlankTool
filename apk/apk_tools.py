@@ -85,6 +85,8 @@ class ApkTools(object):
         write_print(loguer, "aapt get {0} 's info ...".format(apk_path))
         if not FileHelper.fileExist(info_file_path):
             FileHelper.createDir(FileHelper.parentDir(info_file_path))
+        else:
+            FileHelper.delFile(info_file_path)
         win_linux_cmd = "{0} dump badging {1} >> {2}".format(aapt_path, apk_path, info_file_path)
         result = cmdBySystem(win_linux_cmd, win_linux_cmd, "Error: aapt get info failed", loguer)
         return result

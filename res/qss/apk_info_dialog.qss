@@ -8,7 +8,7 @@ QLabel {
     font-weight: bold;  
 }
 QLineEdit {
-    background:#3D3D3D;
+    background:#00000000;
     selection-background-color: #4197FF;
     border: 1px solid #8D8D91;
     border-radius:2px;
@@ -25,7 +25,6 @@ QLabel#app_icon {
 QPushButton#depackage_statue {
      border-radius: 5px;
      background-color: #4197FF;
-     border: 1px solid #FFFFFF;
      color: #FFFFFF;
      font-family: "Microsoft YaHei";
      font-size: 11px;
@@ -33,4 +32,12 @@ QPushButton#depackage_statue {
 }
 QPushButton#depackage_statue:disabled{
      background-color: #C3C3C3;
+}
+
+QPushButton#more_info_btn {
+     background-color: #00000000;
+     color: #FFFFFF;
+     font-family: "Microsoft YaHei";
+     font-size: 11px;
+     text-decoration: underline;
 }

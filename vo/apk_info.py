@@ -1,5 +1,8 @@
 # -*- coding:utf-8 -*-
 
+import os
+
+
 class ApkInfo:
     """
     @author: purejiang
@@ -8,25 +11,28 @@ class ApkInfo:
     apk 相关信息的数据对象
 
     """
-    def __init__(self, apk_path, aap_name, icon, package_name, version_code,
+    def __init__(self, apk_path, app_name, icon, package_name, version_code,
                  version_name, target_version, min_version, abis, langs, output_path=None):
         """
         :param apk_path: apk 路径
-        :param aap_name: app 
-        :param icon: 反编后目录
-        :param package_name: 是否忽略错误的 dex, 默认不忽略
-        :param version_code: 是否只反编译资源文件, 默认编译所有
-        :param version_name: 是否只反编译资源文件, 默认编译所有
-        :param target_version: 是否只反编译资源文件, 默认编译所有
-        :param min_version: 是否只反编译资源文件, 默认编译所有
-        :param abis: 是否只反编译资源文件, 默认编译所有
-        :param langs: 是否只反编译资源文件, 默认编译所有
+        :param app_name: app 名称
+        :param icon: icon 的路径
+        :param package_name: 包名
+        :param version_code: 版本号
+        :param version_name: 版本名
+        :param target_version: 目标版本
+        :param min_version: 最小版本
+        :param abis: 支持的架构
+        :param langs: 支持的语言
         :param output_path: 反编后的路径，可为空
         """
         self.apk_path = apk_path
-        self.aap_name = aap_name
+        self.app_name = app_name
         self.output_path = output_path
-        self.icon = icon
+        if output_path!= None:
+            self.icon = os.path.join(output_path, icon)
+        else:
+            self.icon = icon
         self.package_name = package_name
         self.version_code = version_code
         self.version_name = version_name

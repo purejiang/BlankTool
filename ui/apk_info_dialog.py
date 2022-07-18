@@ -1,16 +1,15 @@
 # -*- coding:utf-8 -*-
 
 import os
-from PySide2.QtGui import QMovie
+from PySide2.QtGui import QMovie, QPixmap
 from PySide2.QtCore import Qt
 from apk.apk_tools import ApkTools
-from common.constant import AAPT_PATH, APK_TOOL_PATH, CACHE_PATH, PARSE_CACHE_PATH
+from common.constant import  APK_TOOL_PATH, PARSE_CACHE_PATH
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from utils.file_helper import FileHelper
 from utils.work_thread import WorkThread
 from vo.apk_info import ApkInfo
-from PySide2.QtWidgets import QGraphicsOpacityEffect
 class ApkInfoDialog(BaseDialog):
     """
 
@@ -74,7 +73,7 @@ class ApkInfoDialog(BaseDialog):
         target_version = self.__get_value(content, "targetSdkVersion:")
         abis = self.__get_list(content, "native-code:", "\n")
         langs = self.__get_list(content, "locales:", "\n")
-        self.__apk_info = ApkInfo(self.__apk_path, apk_name, apk_icon, package_name, version_code, version_name, target_version, min_version, abis, langs)
+        self.__apk_info = ApkInfo(self.__apk_path, apk_name, apk_icon, package_name, version_code, version_name, target_version, min_version, abis, langs, self.__depackage_path)
         self.__show_info()
         self.__init_depackage(self.__is_depackage)
 
@@ -101,7 +100,11 @@ class ApkInfoDialog(BaseDialog):
             self.__thread.terminate()
             self.__loading_movie.stop()
             if self.__result:            
-                self._ui.depackage_statue.setText("反编译路径")
+                self._ui.depackage_statue.setText("打开反编译路径")
+                # 设置图片并自适应
+                self._ui.app_icon.setPixmap(QPixmap(self.__apk_info.icon))
+                print("icon"+self.__apk_info.icon)
+                self._ui.app_icon.setScaledContents(True)
             else:
                 self._ui.depackage_statue.setText("重新反编译")
             self._ui.depackage_statue.setEnabled(True)
@@ -109,12 +112,13 @@ class ApkInfoDialog(BaseDialog):
 
     def __depackage_click(self):
         if self.__result:
+            # 跳转到目录
             os.startfile(self.__depackage_path)
         else:
            self.__init_depackage(True)
 
     def __show_info(self):
-        self._ui.app_name.setText(self.__apk_info.aap_name)
+        self._ui.app_name.setText(self.__apk_info.app_name)
         self._ui.package_name.setText(self.__apk_info.package_name)
         self._ui.apk_path.setText(self.__apk_info.apk_path)
         self._ui.version_name.setText(self.__apk_info.version_name)

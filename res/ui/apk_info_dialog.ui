@@ -24,14 +24,14 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout" stretch="4,18,1">
     <item>
-     <layout class="QHBoxLayout" name="apk_info_title_bar" stretch="">
+     <layout class="QHBoxLayout" name="apk_info_title_bar">
       <property name="topMargin">
        <number>0</number>
       </property>
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0">
+     <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1">
       <property name="leftMargin">
        <number>20</number>
       </property>
@@ -61,7 +61,7 @@
            <enum>QFrame::NoFrame</enum>
           </property>
           <property name="text">
-           <string>app_icon</string>
+           <string/>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -157,9 +157,15 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
+         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,4">
           <item>
            <widget class="QPushButton" name="depackage_statue">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="font">
              <font>
               <underline>false</underline>
@@ -171,19 +177,23 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="depackage_loading_view">
-            <property name="font">
-             <font>
-              <underline>false</underline>
-             </font>
-            </property>
-            <property name="text">
-             <string>loading</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <widget class="QLabel" name="depackage_loading_view">
+              <property name="font">
+               <font>
+                <underline>false</underline>
+               </font>
+              </property>
+              <property name="text">
+               <string>loading</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
@@ -398,7 +408,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>详细信息</string>
+         <string>&gt; 详细信息 &lt;</string>
         </property>
        </widget>
       </item>
