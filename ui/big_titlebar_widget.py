@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-from PySide2.QtCore import Qt
 
 from ui.base_widget import BaseWidget
 
@@ -10,7 +9,7 @@ class BigTitilBar(BaseWidget):
     @author: purejiang
     @created: 2022/7/3
 
-    标题栏
+    widnow 上的标题栏
 
     """
     __UI_FILE = "./res/ui/big_title_bar_widget.ui"
@@ -23,7 +22,6 @@ class BigTitilBar(BaseWidget):
         self._loadUi(self.__UI_FILE)
     
     def _setup_qss(self):
-        # 去标题栏，状态栏
         self._loadQss(self.__QSS_FILE)
     
     def _setup_listener(self):

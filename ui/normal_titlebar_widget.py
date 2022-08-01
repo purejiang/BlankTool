@@ -8,7 +8,7 @@ class NormalTitilBar(BaseWidget):
     @author: purejiang
     @created: 2022/7/12
 
-    中等标题栏
+    中等标题栏/ dialog 上的标题栏
 
     """
     __UI_FILE = "./res/ui/normal_title_bar_widget.ui"
@@ -21,7 +21,6 @@ class NormalTitilBar(BaseWidget):
         self._loadUi(self.__UI_FILE)
     
     def _setup_qss(self):
-        # 去标题栏，状态栏
         self._loadQss(self.__QSS_FILE)
     
     def _setup_listener(self):

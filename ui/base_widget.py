@@ -9,7 +9,14 @@ from ui.base_ui import BaseUi
 
 
 class BaseWidget(QWidget, BaseUi):
+    """
 
+    @author: purejiang
+    @created: 2022/7/7
+
+    基础的控件
+
+    """
     pressed = Signal([QWidget, QMouseEvent])
 
     def __init__(self, main_window):

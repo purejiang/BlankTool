@@ -22,7 +22,7 @@
      <height>401</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="4,18,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="4,18,0">
     <item>
      <layout class="QHBoxLayout" name="apk_info_title_bar">
       <property name="topMargin">
@@ -36,7 +36,7 @@
        <number>20</number>
       </property>
       <property name="topMargin">
-       <number>20</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
        <number>20</number>
@@ -45,7 +45,7 @@
        <number>10</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,4,1">
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3,1">
         <property name="leftMargin">
          <number>10</number>
         </property>
@@ -71,10 +71,10 @@
         <item>
          <layout class="QGridLayout" name="gridLayout_2">
           <property name="leftMargin">
-           <number>20</number>
+           <number>10</number>
           </property>
           <property name="rightMargin">
-           <number>20</number>
+           <number>10</number>
           </property>
           <item row="2" column="0">
            <widget class="QLabel" name="label_2">
@@ -129,7 +129,7 @@
            </widget>
           </item>
           <item row="2" column="1">
-           <widget class="QLineEdit" name="apk_path">
+           <widget class="QLineEdit" name="apk_file_path">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
@@ -157,9 +157,23 @@
          </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,4">
+         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,1,4">
           <item>
-           <widget class="QPushButton" name="depackage_statue">
+           <widget class="QCheckBox" name="pass_err_dex_check">
+            <property name="text">
+             <string>忽略错误的 dex</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="only_res_check">
+            <property name="text">
+             <string>只反编资源文件</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="depackage_statue_btn">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>

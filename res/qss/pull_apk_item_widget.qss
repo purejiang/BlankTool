@@ -1,0 +1,46 @@
+QLabel#pull_package_name_label {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;  
+}
+
+QPushButton {
+     border-radius: 5px;
+     background-color: #46A6FD;
+     color: #FFFFFF;
+     font-family: "Microsoft YaHei";
+     font-size: 12px;
+     min-height: 20px;
+     min-width: 60px;
+     padding-right: 5px;
+     padding-left: 5px;
+}
+QPushButton:default {
+     background-color: #46A6FD;
+}
+QPushButton:hover {
+     background-color: #64C8FE;
+}
+
+QPushButton#pull_apk_staute_btn {
+     background-color: transparent;
+     color: #FFFFFF;
+     font-family: "Microsoft YaHei";
+     font-size: 12px;
+}
+
+QPushButton#open_firebase_btn {
+     border: 1px solid #8D8D91;
+     border-radius: 5px;
+     background-color: transparent;
+     color: #FFFFFF;
+     font-family: "Microsoft YaHei";
+     font-size: 12px;
+}
+QPushButton#open_firebase_btn:default {
+     background-color:  transparent;
+}
+QPushButton#open_firebase_btn:hover {
+     background-color: #64C8FE;
+}

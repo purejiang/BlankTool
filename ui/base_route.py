@@ -6,7 +6,14 @@ from PySide2.QtWidgets import QMainWindow
 from ui.base_ui import BaseUi
 
 class BaseRoute(QMainWindow, BaseUi):
+    """
 
+    @author: purejiang
+    @created: 2022/7/7
+
+    基础的窗口
+
+    """
     def __init__(self, application):
         super(BaseRoute, self).__init__()
         self.application = application

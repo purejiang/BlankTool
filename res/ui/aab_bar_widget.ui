@@ -26,7 +26,7 @@
     <item>
      <widget class="QLabel" name="aab_label">
       <property name="sizePolicy">
-       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
         <verstretch>0</verstretch>
        </sizepolicy>
@@ -46,14 +46,8 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>30</height>
-         </size>
-        </property>
         <property name="text">
-         <string>aab解析</string>
+         <string>aab 解析</string>
         </property>
        </widget>
       </item>
@@ -65,14 +59,8 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>80</width>
-          <height>30</height>
-         </size>
-        </property>
         <property name="text">
-         <string>其他</string>
+         <string>apk 转 aab</string>
         </property>
        </widget>
       </item>

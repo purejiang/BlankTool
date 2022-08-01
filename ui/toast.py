@@ -5,7 +5,7 @@ from PySide2 import QtWidgets, QtGui, QtCore
 
 class Toast(QtWidgets.QWidget):
     """
-    仿 Android Toast
+    仿 Android 的 Toast
     直接Copy https://blog.csdn.net/weixin_44295684/article/details/105412596 代码进行修改。
     """
     background_color_dark = QtGui.QColor("#1D1D1D")  # 设置背景色

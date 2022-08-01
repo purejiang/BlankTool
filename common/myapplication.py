@@ -3,7 +3,12 @@ from PySide2.QtWidgets import QApplication
 
 
 class MyApplication(QApplication):
+    """
 
+    @author: purejiang
+    @created: 2022/7/7
+
+    """
     def __init__(self, sysargs):
         super(MyApplication, self).__init__(sysargs)
         self.window_list = []

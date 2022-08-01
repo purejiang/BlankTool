@@ -21,23 +21,27 @@ QLabel#app_icon {
      border-image: url(./res/img/ic_head_holder);
 }
 
-
-QPushButton#depackage_statue {
-     border-radius: 5px;
-     background-color: #4197FF;
-     color: #FFFFFF;
-     font-family: "Microsoft YaHei";
-     font-size: 11px;
-     text-decoration: underline;
+QCheckBox {
+    color:#A4A4A4;
+    font-family: "Microsoft YaHei";
 }
-QPushButton#depackage_statue:disabled{
+
+QPushButton#depackage_statue_btn {
+    border-radius: 5px;
+    background-color: #4197FF;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 11px;
+    text-decoration: underline;
+}
+QPushButton#depackage_statue_btn:disabled{
      background-color: #C3C3C3;
 }
 
 QPushButton#more_info_btn {
-     background-color: #00000000;
-     color: #FFFFFF;
-     font-family: "Microsoft YaHei";
-     font-size: 11px;
-     text-decoration: underline;
+    background-color: #00000000;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 11px;
+    text-decoration: underline;
 }

@@ -3,8 +3,9 @@
 
 from PySide2.QtCore import QThread, Signal
 
-
+SUCCESS = 1001
 class WorkThread(QThread):
+    
     _state = Signal(int)
     """
     执行耗时方法的线程
@@ -14,7 +15,7 @@ class WorkThread(QThread):
         QThread.__init__(self)
         self.__func = func
 
-    # 线程运行时获取apk信息并通过pub与主线程交互
+    # 线程运行时
     def run(self):
         self.__func()
-        self._state.emit(1)
+        self._state.emit(SUCCESS)

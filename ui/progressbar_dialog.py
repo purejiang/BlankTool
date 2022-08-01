@@ -1,88 +1,108 @@
-# -*- coding:utf-8 -*-
-
-import time
-from PySide2.QtCore import Qt, Signal
-from PySide2.QtCore import QTimer
-from ui.apk_info_dialog import ApkInfoDialog
-from ui.base_dialog import BaseDialog
-from utils.work_thread import WorkThread
+# # -*- coding:utf-8 -*-
 
 
-class ProgressBarDialog(BaseDialog):
+# from time import sleep
+# import time
+# from PySide2.QtCore import Qt
+# from ui.base_dialog import BaseDialog
+# from utils.work_thread import SUCCESS, WorkThread
 
-    __UI_FILE = "./res/ui/progressbar_dialog.ui"
-    __QSS_FILE = "./res/qss/progressbar_dialog.qss"
+
+# class ProgressBarDialog(BaseDialog):
+#     """
+
+#     @author: purejiang
+#     @created: 2022/7/12
+
+#     通用的进度条弹出框
+
+#     """
+#     __UI_FILE = "./res/ui/progressbar_dialog.ui"
+#     __QSS_FILE = "./res/qss/progressbar_dialog.qss"
     
-    _signal = Signal(str)
+#     # _signal = Signal(str)
 
-    def __init__(self, main_window, title, min_value, max_value, run_func):
-        self.__title = title
-        self.__run_func = run_func
-        self.__min_value = min_value
-        self.__max_value = max_value
-        self.__thread = WorkThread(self.__run_func)
-        self.__thread._state.connect(self.__sig_out)
-        super(ProgressBarDialog, self).__init__(main_window)
-        self.init()
+#     def __init__(self, main_window, title, run_func, end_func, close_func, is_auto_close=False, min_value=0, max_value=100):
+#         self.__title = title
+#         self.__run_func = run_func
+#         self.__end_func = end_func
+#         self.__close_func = close_func
+#         self.__min_value = min_value
+#         self.__max_value = max_value
+#         self.__is_auto_close = is_auto_close
+#         self.__thread = WorkThread(self.__run_func)
+#         self.__thread._state.connect(self.__sig_out)
+#         super(ProgressBarDialog, self).__init__(main_window)
+#         self.init()
 
-    def init(self):
-        self.__start_loader()
+#     def init(self):
+#         self.__start_loader()
 
-    def _on_pre_show(self):
-        self._loadUi(self.__UI_FILE)
-        self._ui.progressbar_title_label.setText(self.__title)
-        self._ui.progress_bar.setMinimum(self.__min_value)
-        self._ui.progress_bar.setMaximum(self.__max_value)
+#     def _on_pre_show(self):
+#         self._loadUi(self.__UI_FILE)
+#         self._ui.progressbar_title_label.setText(self.__title)
+#         self._ui.progress_bar.setMinimum(self.__min_value)
+#         self._ui.progress_bar.setMaximum(self.__max_value)
+#         self._ui.progress_bar.setVisible(True)
+#         self._ui.progress_confirm_btn.setVisible(False)
+        
 
-    def _setup_qss(self):
-        # 禁止其他界面响应
-        self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
-        self._loadQss(self.__QSS_FILE)
+#     def _setup_qss(self):
+#         # 禁止其他界面响应
+#         self.setWindowModality(Qt.ApplicationModal)
+#         self.setWindowFlags(Qt.FramelessWindowHint)
+#         self._loadQss(self.__QSS_FILE)
 
-    def _setup_listener(self):
-        pass
+#     def _setup_listener(self):
+#         self._ui.progress_confirm_btn.clicked.connect(self.__close)
 
-    def keyPressEvent(self, e):
-        # 键盘事件
-        # if e.key() == Qt.Key_Escape:
-        #     self.close()
-        pass
+#     def keyPressEvent(self, e):
+#         # 键盘事件
+#         # if e.key() == Qt.Key_Escape:
+#         #     self.close()
+#         pass
 
-    def mousePressEvent(self, e):
-        self.move_press = e.globalPos() - self.frameGeometry().topLeft()
+#     def __close(self):
+#         print("close")
+#         self.close()
+#         if self.__close_func:
+#             time.sleep(3)
+#             self.__close_func()
 
-    def mouseMoveEvent(self, e):
-        self.move(e.globalPos() - self.move_press)
+#     def progress_callback(self, progress=None, msg=None):
+#         if progress:
+#             self.__set_progress(progress)
+#         if msg:
+#             self.__set_msg(msg)
 
-    def progress_callback(self, progress=None, msg=None):
-        if progress:
-            self.__set_progress(progress)
-        if msg:
-            self.__set_msg(msg)
-
-    def __set_progress(self, value):
-        self._ui.progress_bar.setValue(value)
+#     def __set_progress(self, value):
+#         print("progress_bar.setvalue:"+str(value))
+#         self._ui.progress_bar.setValue(value)
     
-    def __set_msg(self, msg):
-        self._ui.progressbar_message_label.setText(msg)
+#     def __set_msg(self, msg):
+#         print("progress_bar.setText:"+str(msg))
+#         self._ui.progressbar_message_label.setText(msg)
 
-    def __start_loader(self):
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.__load_progress_bar)
-        self.timer.start(500)
+#     def __start_loader(self):
+#         self.__thread.start()
 
-    def __load_progress_bar(self):
-        self._ui.progress_bar.setValue(self._ui.progress_bar.value() + 2)  
-        if self._ui.progress_bar.value()==10:
-            self.__thread.start()
-            self.timer.stop()
+#     def __sig_out(self, state):
+#         if state==SUCCESS:
+#             if self._ui.progress_bar.value() < 100:
+#                 self.__set_progress(100)
+#             self.__end_func()
+#             print("SUCCESS")
+#             if self.__is_auto_close:   
+#                 print("__close")
+#                 time.sleep(3)  
+#                 self.__close()
+#             else:
+#                 print("setVisible")
+#                 self._ui.progress_bar.setVisible(False)
+#                 self._ui.progress_confirm_btn.setVisible(True)
+#             print("terminate")
+#             self.__thread.terminate()
+            
 
-    def __sig_out(self, state):
-        if state==1:
-            if self._ui.progress_bar.value() < 100:
-                self.__set_progress(100)
-            time.sleep(3)
-            self.__thread.terminate()
-            self.close()
-            self._signal.emit("end")
+            
+            

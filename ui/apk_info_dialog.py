@@ -3,20 +3,22 @@
 import os
 from PySide2.QtGui import QMovie, QPixmap
 from PySide2.QtCore import Qt
-from apk.apk_tools import ApkTools
+
 from common.constant import  APK_TOOL_PATH, PARSE_CACHE_PATH
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from utils.file_helper import FileHelper
-from utils.work_thread import WorkThread
-from vo.apk_info import ApkInfo
+
+from viewmodel.apk_viewmodel import ApkViewModel
+
+
 class ApkInfoDialog(BaseDialog):
     """
 
     @author: purejiang
-    @created: 2022/7/14
+    @created: 2022/7/15
 
-    其他工具
+    apk 信息展示的弹出框
 
     """
 
@@ -26,116 +28,124 @@ class ApkInfoDialog(BaseDialog):
 
     def __init__(self, main_window, apk_path, info_file_path, is_depackage=False) -> None:
         super(ApkInfoDialog, self).__init__(main_window)
-        self.__apk_path = apk_path
-        self.__info_file_path = info_file_path
-        self.__is_depackage = is_depackage
-        self.__depackage_path = os.path.join(PARSE_CACHE_PATH, FileHelper.md5(self.__apk_path))
-        self.__result = None
-        self.__parse_info()
+        self.apk_path = apk_path
+        self.is_depackage = is_depackage
+        self.info_file_path = info_file_path
+        # 是否只反编资源
+        self.is_only_res = False
+        # 是否忽略错误的 dex
+        self.is_pass_error_dex = False
+        self.apk_info = None
+        self.depack_success = False
+        self.depackage_path = os.path.join(PARSE_CACHE_PATH, FileHelper.md5(self.apk_path))
+        self.__init()
+
+    def __init(self):
+        self.apk_viewmodel.parse(self.info_file_path, self.apk_path, self.depackage_path)
+        if self.is_depackage:
+            self.__show_start_depack()
+            self.__depackage()
+        else:
+            self.__reset_depackage_ui("开始反编译", True)
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.title_bar = NormalTitilBar(self)
         self.title_bar.set_title("apk 信息")
         self._ui.apk_info_title_bar.addWidget(self.title_bar)
-        self.__loading_movie = QMovie(self.__LOADING_FILE)
-        self._ui.depackage_statue.clicked.connect(self.__depackage_click)
+        self.loading_movie = QMovie(self.__LOADING_FILE)
+        self._ui.depackage_statue_btn.clicked.connect(self.__depackage_click)
         self._ui.depackage_loading_view.setVisible(False)
+        self.apk_viewmodel = ApkViewModel(self)
        
     def _setup_qss(self):
+        self.setWindowTitle("Apk Info")
         # 禁止其他界面响应
         self.setWindowModality(Qt.ApplicationModal)
         self.setWindowFlags(Qt.FramelessWindowHint)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):
+        self.apk_viewmodel.parse_info_success.connect(self.__get_info_success)
+        self.apk_viewmodel.parse_info_failure.connect(self.__get_info_failure)
+        self.apk_viewmodel.depack_apk_success.connect(self.__depack_success)
+        self.apk_viewmodel.depack_apk_failure.connect(self.__depack_failure)
+
         self._ui.more_info_btn.clicked.connect(self.__show_more_info)
 
     def __show_more_info(self):
         self.__open_more_info = not self.__open_more_info
 
-    def mousePressEvent(self, e):
-        self.move_press = e.globalPos() - self.frameGeometry().topLeft()
-
-    def mouseMoveEvent(self, e):
-        self.move(e.globalPos() - self.move_press)
-    
-    def __parse_info(self):
-        content =""
-        with open(self.__info_file_path, "r+", encoding="utf-8") as f:
-            content = str(f.read())
-        apk_name = self.__get_value(content, "application: label=")
-        apk_icon = self.__get_value(content, "icon=")
-        package_name = self.__get_value(content, "package: name=")
-        version_code = self.__get_value(content, "versionCode=")
-        version_name = self.__get_value(content, "versionName=")
-        min_version = self.__get_value(content, "sdkVersion:")
-        target_version = self.__get_value(content, "targetSdkVersion:")
-        abis = self.__get_list(content, "native-code:", "\n")
-        langs = self.__get_list(content, "locales:", "\n")
-        self.__apk_info = ApkInfo(self.__apk_path, apk_name, apk_icon, package_name, version_code, version_name, target_version, min_version, abis, langs, self.__depackage_path)
-        self.__show_info()
-        self.__init_depackage(self.__is_depackage)
-
-    def __init_depackage(self, is_depackage):
-        if is_depackage:
-            self._ui.depackage_loading_view.setVisible(True)
-            # 设置加载动态
-            self._ui.depackage_loading_view.setMovie(self.__loading_movie)
-            self.__thread = WorkThread(self.__depackage)
-            self.__thread._state.connect(self.__sig_out)
-            self._ui.depackage_statue.setText("反编译中...")
-            self._ui.depackage_statue.setEnabled(False)
-            self.__loading_movie.start()
-            self.__thread.start()
-        else:
-            self._ui.depackage_statue.setText("开始反编译")
-            self._ui.depackage_statue.setEnabled(True)
-
     def __depackage(self):
-        self.__result = ApkTools.depackage(APK_TOOL_PATH, self.__apk_path, self.__depackage_path)
+        self.is_pass_error_dex = self._ui.pass_err_dex_check.isChecked()
+        self.is_only_res = self._ui.only_res_check.isChecked()
+        self.apk_viewmodel.depack(APK_TOOL_PATH, self.apk_path, self.depackage_path, self.is_pass_error_dex, self.is_only_res)
     
-    def __sig_out(self, state):
-        if state==1:
-            self.__thread.terminate()
-            self.__loading_movie.stop()
-            if self.__result:            
-                self._ui.depackage_statue.setText("打开反编译路径")
-                # 设置图片并自适应
-                self._ui.app_icon.setPixmap(QPixmap(self.__apk_info.icon))
-                print("icon"+self.__apk_info.icon)
-                self._ui.app_icon.setScaledContents(True)
-            else:
-                self._ui.depackage_statue.setText("重新反编译")
-            self._ui.depackage_statue.setEnabled(True)
-            self._ui.depackage_loading_view.setVisible(False)
-
-    def __depackage_click(self):
-        if self.__result:
-            # 跳转到目录
-            os.startfile(self.__depackage_path)
+    def __reset_depackage_ui(self, depackage_status, show_check):
+        self._ui.depackage_statue_btn.setText(depackage_status)
+        self._ui.depackage_statue_btn.setEnabled(True)
+        if show_check:
+            self._ui.pass_err_dex_check.setVisible(True)
+            self._ui.only_res_check.setVisible(True)
         else:
-           self.__init_depackage(True)
+            self._ui.pass_err_dex_check.setVisible(False)
+            self._ui.only_res_check.setVisible(False)
+        self._ui.depackage_loading_view.setVisible(False)
+        self.loading_movie.stop()
 
-    def __show_info(self):
-        self._ui.app_name.setText(self.__apk_info.app_name)
-        self._ui.package_name.setText(self.__apk_info.package_name)
-        self._ui.apk_path.setText(self.__apk_info.apk_path)
-        self._ui.version_name.setText(self.__apk_info.version_name)
-        self._ui.version_code.setText(self.__apk_info.version_code)
-        self._ui.target_version.setText(self.__apk_info.target_version)
-        self._ui.min_version.setText(self.__apk_info.min_version)
-        self._ui.abis.setText(self.__apk_info.abis)
-        self._ui.langs.setText(self.__apk_info.langs)
-
-    def __get_value(self, info_content, target_property):
-        return info_content.split(target_property)[1:][0].split("'")[1:2][0]
+    def __depack_success(self):
+        self.__reset_depackage_ui("打开反编译路径", False)
+        # 设置图片并自适应
+        self._ui.app_icon.setPixmap(QPixmap(self.apk_info.icon))
+        self._ui.app_icon.setScaledContents(True)
+        self.depack_success = True
     
-    def __get_list(self, info_content, target_property, last_tag):
-        content = info_content.split(target_property)[1:][0]
-        if last_tag !="":
-            content = content.split(last_tag)[:1][0]
-        return content.replace("'","").strip().replace(" ", ", ")
+    def __depack_failure(self):
+        self.__reset_depackage_ui("重新反编译", True)
+        self.depack_success = False
+
+    def __get_info_success(self, apk_info):
+        self.__show_info(apk_info) 
+
+    def __show_info(self, apk_info):
+        self.apk_info = apk_info
+        print(apk_info.apk_path)
+        self._ui.app_name.setText(apk_info.app_name)
+        self._ui.package_name.setText(apk_info.package_name)
+        self._ui.apk_file_path.setText(apk_info.apk_path)
+        self._ui.version_name.setText(apk_info.version_name)
+        self._ui.version_code.setText(apk_info.version_code)
+        self._ui.target_version.setText(apk_info.target_version)
+        self._ui.min_version.setText(apk_info.min_version)
+        self._ui.abis.setText(apk_info.abis)
+        self._ui.langs.setText(apk_info.langs)
+
+    def __get_info_failure(self, msg):
+        pass
+
+    def __show_start_depack(self):
+        self._ui.depackage_statue_btn.setText("反编译中...")
+        self._ui.depackage_statue_btn.setEnabled(False)
+        self._ui.pass_err_dex_check.setVisible(False)
+        self._ui.only_res_check.setVisible(False)
+        self._ui.depackage_loading_view.setMovie(self.loading_movie)
+        self._ui.depackage_loading_view.setVisible(True)
+        self.loading_movie.start()
+
+    def __jump_to_depack_path(self):
+        # 跳转到目录
+        os.startfile(self.depackage_path)
+        
+    def __depackage_click(self):
+        if self.depack_success:
+            # 跳转到目录
+            self.__jump_to_depack_path()
+        else:
+            self.__show_start_depack()
+            self.__depackage()
+
+
+    
         
         
         

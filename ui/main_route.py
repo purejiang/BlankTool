@@ -2,6 +2,7 @@
 import sys
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QDesktopWidget
+from manager.blank_manager import BlankManager
 from ui.aab_bar_widget import AabBarWidget
 from ui.apk_bar_widget import ApkBarWidget
 from ui.base_route import BaseRoute
@@ -23,6 +24,8 @@ class MainRoute(BaseRoute):
 
     def __init__(self, application) -> None:
         super(MainRoute, self).__init__(application)
+        # 工具的初始化
+        BlankManager.init()
 
     def _on_pre_show(self, data):
         self._loadUi(self.__UI_FILE)
@@ -62,8 +65,6 @@ class MainRoute(BaseRoute):
         if e.key() == Qt.Key_Escape:
             # self.close()
             pass
-    def closeevent(self,event):
-        sys.exit(app.exec_())
 
     def mousePressEvent(self, event):
         # 鼠标点击事件

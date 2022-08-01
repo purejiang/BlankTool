@@ -10,7 +10,14 @@ from ui.base_ui import BaseUi
 
 
 class BaseDialog(QDialog, BaseUi):
+    """
 
+    @author: purejiang
+    @created: 2022/7/7
+
+    基础的弹出框
+
+    """
     pressed = Signal([QDialog, QMouseEvent])
 
     def __init__(self, main_window):
@@ -23,9 +30,13 @@ class BaseDialog(QDialog, BaseUi):
         
     def _loadQss(self, qss_file):
         self.setStyleSheet(super()._loadQss(qss_file))
-
-    def _mousePressEvent(self, event):
-        self.pressed.emit(self, event)
+        
+    # 实现可拖动
+    def mousePressEvent(self, e):
+        self.move_press = e.globalPos() - self.frameGeometry().topLeft()
+    # 实现可拖动
+    def mouseMoveEvent(self, e):
+        self.move(e.globalPos() - self.move_press)
     
     @abstractmethod
     def _on_pre_show(self):

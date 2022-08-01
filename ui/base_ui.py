@@ -4,11 +4,21 @@ from PySide2.QtCore import QFile, QIODevice, QMetaObject
 from PySide2.QtUiTools import QUiLoader
 
 class BaseUi():
+    """
 
+    @author: purejiang
+    @created: 2022/7/7
+
+    基础的 UI，实现解析 .qss 文件和动态加载 .ui 文件
+
+    """
     def __init__(self):
         self._ui = None
 
     def _loadQss(self, qss_file):
+        """
+        解析 qss 文件
+        """
         qfile = QFile(qss_file)
         if qfile.open(QIODevice.ReadOnly):
             byteArrayStyleSheet = qfile.readAll()
@@ -25,6 +35,9 @@ class BaseUi():
 
 class MyUiLoad(QUiLoader):
     __baseInstance =None
+    """
+    将 .ui 转换 widget 的链接到原有的widget 上，使得在原有的 widget 里可以通过 self.xxx 去实现功能
+    """
 
     def createWidget(self, classname, parent=None, name=""):
         if parent is None and self.__baseInstance is not None:

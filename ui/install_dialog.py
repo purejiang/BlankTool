@@ -2,17 +2,17 @@
 
 import os
 from PySide2.QtCore import Qt
-from aab.bundltool_tools import BundleTools
-from apk.apk_tools import ApkTools
-from common.constant import ADB_PATH, BUNDLE_TOOL_PATH, CACHE_PATH, INSTALL_CACHE_PATH
+from manager.bundle_manager import BundleManager
+from common.constant import INSTALL_CACHE_PATH
+from ui.progress_dialog import ProgressDialog
 from ui.toast import Toast
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
-from ui.progressbar_dialog import ProgressBarDialog
 from utils.file_helper import FileHelper
 from utils.loguer import Loguer
-from utils.other_util import currentTimeMillis
 from utils.ui_utils import chooseFile
+from viewmodel.aab_viewmodel import AabViewModel
+from viewmodel.apk_viewmodel import ApkViewModel
 
 
 class InstallDialog(BaseDialog):
@@ -37,17 +37,32 @@ class InstallDialog(BaseDialog):
         self.title_bar = NormalTitilBar(self)
         self.title_bar.set_title("安装 aab/apk")
         self._ui.install_dialog_title_bar.addWidget(self.title_bar)
+        self.progressbar_dialog = ProgressDialog(self, "安装应用", None)
+        self.progressbar_dialog.progress_callback(msg="安装中...")
+        # apk相关
+        self.apk_viewmodel = ApkViewModel(self)
+        # aab相关
+        self.aab_viewmodel = AabViewModel(self)
 
     def _setup_qss(self):
+        self.setWindowTitle("Install")
         # 禁止其他界面响应
         self.setWindowModality(Qt.ApplicationModal)
         self.setWindowFlags(Qt.FramelessWindowHint)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):
+        # 事件
+        self.apk_viewmodel.install_apk_success.connect(self.__install_success)
+        self.apk_viewmodel.install_apk_failure.connect(self.__insatll_failure)
+
+        self.aab_viewmodel.install_aab_success.connect(self.__install_success)
+        self.aab_viewmodel.install_aab_progress.connect(self.__install_progress)
+        self.aab_viewmodel.install_aab_failure.connect(self.__insatll_failure)
+        # view
         self._ui.install_path_btn.clicked.connect(self.__choose_file)
         self._ui.install_path_edt.textChanged.connect(self.__sync_file_path)
-        self._ui.install_btn.clicked.connect(self.__show_progress)
+        self._ui.install_btn.clicked.connect(self.__install)
         self._ui.install_btn.setEnabled(False)
 
     def keyPressEvent(self, e):
@@ -56,6 +71,17 @@ class InstallDialog(BaseDialog):
             # self.close()
             pass
 
+    def __install_success(self):
+        self.progressbar_dialog.progress_callback(100, "安装成功")
+        self.progressbar_dialog.showEnd("确认")
+
+    def __insatll_failure(self):
+        self.progressbar_dialog.progress_callback(100, "安装失败")
+        self.progressbar_dialog.showEnd("确认")
+
+    def __install_progress(self, progress, msg):
+        self.progressbar_dialog.progress_callback(progress, msg)
+        
     def __sync_file_path(self):
         file_path = self._ui.install_path_edt.text().strip()
         # 输入内容为空则不可点击
@@ -68,33 +94,19 @@ class InstallDialog(BaseDialog):
         file_path = chooseFile(self, "选取aab", "安卓应用文件 (*.aab *.apk)")
         self._ui.install_path_edt.setText(file_path)
 
-    def __show_progress(self):
+    def __install(self):
         file_path = self._ui.install_path_edt.text()
-        print(file_path)
         if not FileHelper.fileExist(file_path):
             toast = Toast(self)
             toast.make_text("请输入正确的路径", self.left, self.top, times=3)
             return
-        self.progressbar_dialog = ProgressBarDialog(self, "安装应用", 0, 100, self.__install)
-        self.progressbar_dialog.progress_callback(msg="安装中...")
+
         self.progressbar_dialog.show()
-    
-    def __install(self):
-        file_path = self._ui.install_path_edt.text()
-        file_name = FileHelper.filename(file_path)
-        if FileHelper.getSuffix(file_path)==".aab":
-            apks_path = os.path.join(INSTALL_CACHE_PATH, "installing-{0}.apks".format(file_name))
-            loguer = Loguer(os.path.join(INSTALL_CACHE_PATH, "bundletool_{0}.log".format(currentTimeMillis())))  
-            BundleTools.install_aab(BUNDLE_TOOL_PATH, ADB_PATH, file_path, apks_path, None, loguer, self.progressbar_dialog.progress_callback)
+
+        if FileHelper.getSuffix(file_path) == ".aab":
+            md5 = FileHelper.md5(file_path)
+            apks_path = os.path.join(INSTALL_CACHE_PATH, "{0}.apks".format(md5))
+            loguer = Loguer(os.path.join(INSTALL_CACHE_PATH, "{0}.log".format(md5)))
+            self.aab_viewmodel.install(file_path, apks_path, None, loguer)
         else:
-            result = ApkTools.install_apk(ADB_PATH, file_path) 
-            if result:
-                 self.progressbar_dialog.progress_callback(100, "apk 安装成功")
-            else:
-                self.progressbar_dialog.progress_callback(100, "apk 安装失败")
-
-    def mousePressEvent(self, e):
-        self.move_press = e.globalPos() - self.frameGeometry().topLeft()
-
-    def mouseMoveEvent(self, e):
-        self.move(e.globalPos() - self.move_press)
+            self.apk_viewmodel.install(file_path)

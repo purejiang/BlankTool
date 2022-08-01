@@ -3,10 +3,16 @@
 from PySide2.QtCore import Qt
 
 from ui.base_widget import BaseWidget
-from ui.install_dialog import InstallDialog
+
 
 class AabBarWidget(BaseWidget):
+    """
+    @author: purejiang
+    @created: 2022/7/7
 
+    .aab 相关的功能控件
+
+    """
     __UI_FILE = "./res/ui/aab_bar_widget.ui"
     __QSS_FILE = "./res/qss/aab_bar_widget.qss"
 
