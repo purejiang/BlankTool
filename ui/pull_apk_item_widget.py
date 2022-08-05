@@ -18,13 +18,14 @@ class PullApkItemWidget(BaseWidget):
     __UI_FILE = "./res/ui/pull_apk_item_widget.ui"
     __QSS_FILE = "./res/qss/pull_apk_item_widget.qss"
 
-    def __init__(self, main_window, package_name) -> None:
-        self.__package_name = package_name
+    def __init__(self, main_window, package_name, path) -> None:
+        self.package_name = package_name
+        self.path = path
         super(PullApkItemWidget, self).__init__(main_window)
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
-        self._ui.pull_package_name_label.setText(self.__package_name)
+        self._ui.pull_package_name_label.setText(self.package_name)
     
     def _setup_qss(self):
         self._loadQss(self.__QSS_FILE)
@@ -38,8 +39,9 @@ class PullApkItemWidget(BaseWidget):
         self.__inphone_thread.start()
 
     def __get_inphone_path(self):
-        self.__info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_inphone_path.txt").format(self.__package_name)
-        self.__path_result = ApkManager.get_inphone_path(self.__package_name, self.__info_file)
+        self.__info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_inphone_path.txt").format(self.package_name)
+        self.__path_result = ApkManager.get_inphone_path(self.package_name, self.__info_file)
+        pass
     
     def __sig_out(self, state):
         if state==SUCCESS:
@@ -56,9 +58,9 @@ class PullApkItemWidget(BaseWidget):
         self.__new_dir = os.path.join(ADB_INFO_CACHE_PATH, "pull_apks")
         if not FileHelper.fileExist(self.__new_dir):
             FileHelper.createDir(self.__new_dir)
-        self.__new_apk= os.path.join(self.__new_dir, "{0}.apk".format(self.__package_name))
-        inphone_path = FileHelper.fileContent(self.__info_file).replace("package:", "").strip()
-        self.__pull_result = ApkManager.pull_apk(inphone_path, self.__new_apk)
+        self.__new_apk= os.path.join(self.__new_dir, "{0}.apk".format(self.package_name))
+        # inphone_path = FileHelper.fileContent(self.__info_file).replace("package:", "").strip()
+        self.__pull_result = ApkManager.pull_apk(self.path, self.__new_apk)
 
     def __sig_out2(self, state):
         if state==SUCCESS:

@@ -21,6 +21,7 @@ class MainRoute(BaseRoute):
     """
     __UI_FILE = "./res/ui/main_route.ui"
     __QSS_FILE = "./res/qss/main_route.qss"
+    __TITLE = "BlankTool"
 
     def __init__(self, application) -> None:
         super(MainRoute, self).__init__(application)
@@ -47,11 +48,7 @@ class MainRoute(BaseRoute):
         self.move(qr.topLeft())
 
     def _setup_qss(self):
-        self.setWindowTitle("Blank Tool")
-        # 设置 window 背景透明，如果设置 window 的颜色，在最小化和恢复的时候，左上角会有明显的系统 ui 闪现
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        # 去标题栏，状态栏
-        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setWindowTitle(self.__TITLE)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):

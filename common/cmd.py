@@ -207,7 +207,7 @@ class CMD(object):
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
     
     @classmethod
-    def apkInPhone(cls, info_file_path, is_install, is_path, is_sys):
+    def inPhoneApkList(cls, info_file_path, is_install, is_path, is_sys):
         """
         adb 获取手机上的包名列表
 
@@ -217,15 +217,22 @@ class CMD(object):
         """
         if os.path.exists(info_file_path):
             return True, "info file is exist: {0}".format(info_file_path)
-        win_cmd = "adb shell pm list packages >> {0}".format(info_file_path)
+        val_cmd = ""
+        if is_install:
+            val_cmd+=" -i"
+        if is_path:
+            val_cmd+=" -f"
+        if is_sys:
+            val_cmd+=" -s"
+        win_cmd = "adb shell pm list packages{0} >> {1}".format(val_cmd, info_file_path)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
     
     @classmethod
-    def apkInfoInPhone(cls, info_file_path):
+    def inPhonePackInfo(cls, info_file_path):
         """
-        adb 获取手机上的信息
+        adb 获取手机上的包体信息
 
         :param info_file_path: 存储信息的文件路径
 
@@ -239,7 +246,7 @@ class CMD(object):
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
     @classmethod
-    def apkInPhone(cls, package_name, info_file_path):
+    def inPhonePath(cls, package_name, info_file_path):
         """
         获取 apk 在手机上的安装目录
 

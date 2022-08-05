@@ -25,6 +25,7 @@ class ApkInfoDialog(BaseDialog):
     __UI_FILE = "./res/ui/apk_info_dialog.ui"
     __QSS_FILE = "./res/qss/apk_info_dialog.qss"
     __LOADING_FILE ="./res/img/loading.gif"
+    __TITLE ="Apk Info"
 
     def __init__(self, main_window, apk_path, info_file_path, is_depackage=False) -> None:
         super(ApkInfoDialog, self).__init__(main_window)
@@ -51,7 +52,7 @@ class ApkInfoDialog(BaseDialog):
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.title_bar = NormalTitilBar(self)
-        self.title_bar.set_title("apk 信息")
+        self.title_bar.set_title(self.__TITLE)
         self._ui.apk_info_title_bar.addWidget(self.title_bar)
         self.loading_movie = QMovie(self.__LOADING_FILE)
         self._ui.depackage_statue_btn.clicked.connect(self.__depackage_click)
@@ -59,7 +60,7 @@ class ApkInfoDialog(BaseDialog):
         self.apk_viewmodel = ApkViewModel(self)
        
     def _setup_qss(self):
-        self.setWindowTitle("Apk Info")
+        self.setWindowTitle(self.__TITLE)
         # 禁止其他界面响应
         self.setWindowModality(Qt.ApplicationModal)
         self.setWindowFlags(Qt.FramelessWindowHint)

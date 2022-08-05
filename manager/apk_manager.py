@@ -2,6 +2,7 @@
 
 import traceback
 from common.cmd import CMD
+from utils.file_helper import FileHelper
 from utils.other_util import write_print
 from vo.apk_info import ApkInfo
 
@@ -81,16 +82,17 @@ class ApkManager(object):
         return cmd_result[0]
 
     @classmethod
-    def get_apks(cls, info_file_path, loguer=None):
+    def get_apk_list_info(cls, info_file_path, is_sys, loguer=None):
         """
         获取手机上的 apk 列表
 
         :param info_file_path: 输出信息的文件
+        :param is_sys: 是否只输出系统的应用
         :param loguer: 日志工具
 
         """
         write_print(loguer, "get all apks in phone...")
-        cmd_result = CMD.phoneAllApks(info_file_path)
+        cmd_result = CMD.inPhoneApkList(info_file_path, False, True, is_sys)
         write_print(loguer, cmd_result[1])
         return cmd_result[0]
 
@@ -105,7 +107,7 @@ class ApkManager(object):
 
         """
         write_print(loguer, "get {0}'s path ...".format(package_name))
-        cmd_result = CMD.apkInPhone(package_name, info_file_path)
+        cmd_result = CMD.inPhonePath(package_name, info_file_path)
         write_print(loguer, cmd_result[1])
         return cmd_result[0]
 
@@ -133,9 +135,7 @@ class ApkManager(object):
             if last_tag !="":
                 content = content.split(last_tag)[:1][0]
             return content.replace("'","").strip().replace(" ", ", ")
-        content =""
-        with open(info_file, "r+", encoding="utf-8") as f:
-            content = str(f.read())
+        content = FileHelper.fileContent(info_file)
         try:    
             apk_name = get_value(content, "application: label=")
             apk_icon = get_value(content, "icon=")
@@ -150,4 +150,12 @@ class ApkManager(object):
         except Exception as e:
             return False, "exce:\n{0}".format(traceback.format_exc())
     
+    @classmethod
+    def parseApkListInfo(cls, info_file):
+        content = FileHelper.fileContent(info_file)
+        apk_list = []
+        pack_infos = content.strip("package:").replace("\n", "").split("package:")
+        for pack_info in pack_infos:
+            apk_list.append((pack_info.split(".apk=")[1], pack_info.split(".apk=")[0]+".apk"))
+        return apk_list
     

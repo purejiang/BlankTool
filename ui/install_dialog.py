@@ -26,6 +26,7 @@ class InstallDialog(BaseDialog):
     """
     __UI_FILE = "./res/ui/install_dialog.ui"
     __QSS_FILE = "./res/qss/install_dialog.qss"
+    __TITLE = "Install"
 
     def __init__(self, main_window):
         super(InstallDialog, self).__init__(main_window)
@@ -35,7 +36,7 @@ class InstallDialog(BaseDialog):
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.title_bar = NormalTitilBar(self)
-        self.title_bar.set_title("安装 aab/apk")
+        self.title_bar.set_title(self.__TITLE)
         self._ui.install_dialog_title_bar.addWidget(self.title_bar)
         self.progressbar_dialog = ProgressDialog(self, "安装应用", None)
         self.progressbar_dialog.progress_callback(msg="安装中...")
@@ -45,10 +46,7 @@ class InstallDialog(BaseDialog):
         self.aab_viewmodel = AabViewModel(self)
 
     def _setup_qss(self):
-        self.setWindowTitle("Install")
-        # 禁止其他界面响应
-        self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowTitle(self.__TITLE)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):

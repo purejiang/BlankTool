@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from manager.apk_manager import ApkManager
+from utils.file_helper import FileHelper
 from viewmodel.viewmodel_signal import ViewModelSignal
 
 from PySide2.QtCore import QThread, Signal
@@ -51,8 +52,8 @@ class ApkViewModel(object):
         parse_thread.failure.connect(self.parse_info_failure.to_method())
         parse_thread.start()
     
-    def generate_apk_list(self, info_file):
-        generate_list_thread = GenerateApksList(self.parent, info_file)
+    def generate_apk_list(self, info_file, is_sys):
+        generate_list_thread = GenerateApksList(self.parent, info_file, is_sys)
         generate_list_thread.success.connect(self.generate_list_success.to_method())
         generate_list_thread.failure.connect(self.generate_list_failure.to_method())
         generate_list_thread.start()
@@ -143,13 +144,14 @@ class GenerateApksList(QThread):
     success = Signal(list)
     failure = Signal(int, str)
 
-    def __init__(self, parent, info_file):
+    def __init__(self, parent, info_file, is_sys):
         QThread.__init__(self, parent)
         self.info_file = info_file
+        self.is_sys = is_sys
 
     def run(self):
-        result = ApkManager.get_apks(self.info_file)
+        result = ApkManager.get_apk_list_info(self.info_file, self.is_sys)
         if result:
-            self.success.emit()
+            self.success.emit(ApkManager.parseApkListInfo(self.info_file))
         else:
             self.failure.emit(0, "生成 apk list 信息文件失败")

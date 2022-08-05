@@ -25,6 +25,7 @@ class ParseApkDialog(BaseDialog):
     """
     __UI_FILE = "./res/ui/parse_apk_dialog.ui"
     __QSS_FILE = "./res/qss/parse_apk_dialog.qss"
+    __TITLE= "Pull Apk"
 
     def __init__(self, main_window):
         super(ParseApkDialog, self).__init__(main_window)
@@ -35,14 +36,14 @@ class ParseApkDialog(BaseDialog):
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.title_bar = NormalTitilBar(self)
-        self.title_bar.set_title("解析 apk")
+        self.title_bar.set_title(self.__TITLE)
         self._ui.parse_apk_dialog_title_bar.addWidget(self.title_bar)
         self.apk_viewmodel = ApkViewModel(self)
         self.progress_dialog = ProgressDialog(self, "解析 apk", self.__jump_to_apk_info)
         self.progress_dialog.progress_callback(msg="解析中...")
 
     def _setup_qss(self):
-        self.setWindowTitle("Parse Apk")
+        self.setWindowTitle(self.__TITLE)
         # 禁止其他界面响应
         self.setWindowModality(Qt.ApplicationModal)
         self.setWindowFlags(Qt.FramelessWindowHint)

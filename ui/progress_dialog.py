@@ -18,6 +18,7 @@ class ProgressDialog(BaseDialog):
     """
     __UI_FILE = "./res/ui/progressbar_dialog.ui"
     __QSS_FILE = "./res/qss/progressbar_dialog.qss"
+    
     def __init__(self, main_window, title, close_func, min_value=0, max_value=100):
         self.__title = title
         self.__min_value = min_value
@@ -35,9 +36,6 @@ class ProgressDialog(BaseDialog):
         
 
     def _setup_qss(self):
-        # 禁止其他界面响应
-        self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):

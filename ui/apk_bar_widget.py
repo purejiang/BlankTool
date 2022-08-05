@@ -2,7 +2,6 @@
 
 import os
 
-from PySide2.QtCore import Qt
 from common.constant import ADB_INFO_CACHE_PATH
 
 from ui.base_widget import BaseWidget
@@ -31,9 +30,6 @@ class ApkBarWidget(BaseWidget):
         self.apk_viewmodel = ApkViewModel(self)
 
     def _setup_qss(self):
-        # 禁止其他界面响应
-        self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):
@@ -52,9 +48,9 @@ class ApkBarWidget(BaseWidget):
         self.progressbar_dialog.progress_callback(msg="获取中...")
         self.progressbar_dialog.show()
         self.__info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
-        self.apk_viewmodel.generate_apk_list(self.__info_file)
+        self.apk_viewmodel.generate_apk_list(self.__info_file, False)
 
-    def __get_apks_success(self):
+    def __get_apks_success(self, list):
         self.progressbar_dialog.progress_callback(100, "获取 apk 列表成功")
         self.progressbar_dialog.close()
         self.pull_dialog = PullApkDialog(self, self.__info_file)

@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from PySide2.QtCore import Qt
 from abc import abstractmethod
 from PySide2.QtCore import Signal
 from PySide2.QtGui import QMouseEvent
@@ -27,6 +28,10 @@ class BaseWidget(QWidget, BaseUi):
         self._setup_listener()
         
     def _loadQss(self, qss_file):
+        # 设置 window 背景透明，如果设置 window 的颜色，在最小化和恢复的时候，左上角会有明显的系统 ui 闪现
+        self.setAttribute(Qt.WA_TranslucentBackground)
+        # 去标题栏，状态栏
+        self.setWindowFlag(Qt.FramelessWindowHint)
         self.setStyleSheet(super()._loadQss(qss_file))
 
     def _mousePressEvent(self, event):
