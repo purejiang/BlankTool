@@ -126,7 +126,7 @@ class ApkManager(object):
         return cmd_result[0]
     
     @classmethod
-    def parseApkInfo(cls, info_file, apk_path, depackage_path):
+    def parseApkInfo(cls, info_file, apk_path, depackage_path, loguer=None):
         def get_value(info_content, target_property):
             return info_content.split(target_property)[1:][0].split("'")[1:2][0]
     
@@ -135,8 +135,8 @@ class ApkManager(object):
             if last_tag !="":
                 content = content.split(last_tag)[:1][0]
             return content.replace("'","").strip().replace(" ", ", ")
-        content = FileHelper.fileContent(info_file)
-        try:    
+        try:
+            content = FileHelper.fileContent(info_file)    
             apk_name = get_value(content, "application: label=")
             apk_icon = get_value(content, "icon=")
             package_name = get_value(content, "package: name=")
@@ -148,7 +148,8 @@ class ApkManager(object):
             langs = get_list(content, "locales:", "\n")
             return True, ApkInfo(apk_path, apk_name, apk_icon, package_name, version_code, version_name, target_version, min_version, abis, langs, depackage_path)
         except Exception as e:
-            return False, "exce:\n{0}".format(traceback.format_exc())
+            write_print(loguer, "exce:\n{0}".format(traceback.format_exc()))
+            return False, None
     
     @classmethod
     def parseApkListInfo(cls, info_file):

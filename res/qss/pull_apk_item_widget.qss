@@ -1,8 +1,11 @@
-QLabel#pull_package_name_label {
-    color: #FFFFFF;
+QLabel#pull_package_name_edt {
+    background:#00000000;
+    selection-background-color: #4197FF;
+    border: 1px solid #8D8D91;
+    border-radius:2px;
     font-family: "Microsoft YaHei";
-    font-size: 12px;
-    font-weight: bold;  
+    font-size:12px;
+    color: #FFFFFF
 }
 
 QPushButton {
@@ -30,17 +33,3 @@ QPushButton#pull_apk_staute_btn {
      font-size: 12px;
 }
 
-QPushButton#open_firebase_btn {
-     border: 1px solid #8D8D91;
-     border-radius: 5px;
-     background-color: transparent;
-     color: #FFFFFF;
-     font-family: "Microsoft YaHei";
-     font-size: 12px;
-}
-QPushButton#open_firebase_btn:default {
-     background-color:  transparent;
-}
-QPushButton#open_firebase_btn:hover {
-     background-color: #64C8FE;
-}

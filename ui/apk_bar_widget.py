@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
+from unittest.mock import NonCallableMock
 
 from common.constant import ADB_INFO_CACHE_PATH
 
@@ -28,6 +29,8 @@ class ApkBarWidget(BaseWidget):
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.apk_viewmodel = ApkViewModel(self)
+        self.progressbar_dialog = ProgressDialog(self, "获取 apk 列表", None)
+        self.progressbar_dialog.progress_callback(msg="获取中...")
 
     def _setup_qss(self):
         self._loadQss(self.__QSS_FILE)
@@ -37,30 +40,23 @@ class ApkBarWidget(BaseWidget):
         self.apk_viewmodel.generate_list_failure.connect(self.__get_apks_failure)
 
         self._ui.apk_info_btn.clicked.connect(self.__on_parse_apk)
-        self._ui.pull_apk_btn.clicked.connect(self.__get_apks)
+        self._ui.pull_apk_btn.clicked.connect(self.__get_apk_list)
     
     def __on_parse_apk(self):
         self.parse_apk_dialog = ParseApkDialog(self)
         self.parse_apk_dialog.show()
     
-    def __get_apks(self):
-        self.progressbar_dialog = ProgressDialog(self, "获取 apk 列表", self.__jump_to_pull_apk)
-        self.progressbar_dialog.progress_callback(msg="获取中...")
-        self.progressbar_dialog.show()
-        self.__info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
-        self.apk_viewmodel.generate_apk_list(self.__info_file, False)
+    def __get_apk_list(self):
+        self.progressbar_dialog.show() 
+        self.apk_viewmodel.generate_apk_list(False)
 
-    def __get_apks_success(self, list):
+    def __get_apks_success(self, info_file):
         self.progressbar_dialog.progress_callback(100, "获取 apk 列表成功")
         self.progressbar_dialog.close()
-        self.pull_dialog = PullApkDialog(self, self.__info_file)
+        self.pull_dialog = PullApkDialog(self, info_file)
         self.pull_dialog.show()
 
     def __get_apks_failure(self):
         self.progressbar_dialog.progress_callback(100, "获取 apk 列表失败")
         self.progressbar_dialog.showEnd("确认")
-
-    def __jump_to_pull_apk(self):
-        self.pull_dialog = PullApkDialog(self, self.__info_file)
-        self.pull_dialog.show()
 

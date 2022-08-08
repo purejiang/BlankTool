@@ -26,6 +26,8 @@ APK_CACHE_PATH = os.path.join(CACHE_PATH, "apk")
 PARSE_CACHE_PATH = os.path.join(APK_CACHE_PATH, "parse_apk")
 # adb 信息文件的缓存
 ADB_INFO_CACHE_PATH = os.path.join(APK_CACHE_PATH, "adb_info")
+# 手机内导出的 apk 文件的缓存
+PULL_APK_CACHE_PATH = os.path.join(APK_CACHE_PATH, "pull_apk")
 # aapt 信息文件的缓存
 AAPT_INFO_CACHE_PATH = os.path.join(APK_CACHE_PATH, "aapt_info")
 ###### aab 功能的缓存 ######
@@ -34,5 +36,5 @@ AAB_CACHE_PATH = os.path.join(CACHE_PATH, "aab")
 BLANK_CACHE_PATH = os.path.join(CACHE_PATH, "blank")
 
 BASE_CACHE_LIST = [APK_CACHE_PATH, AAB_CACHE_PATH, BLANK_CACHE_PATH, INSTALL_CACHE_PATH]
-APK_CACHE_LIST = [AAPT_INFO_CACHE_PATH, PARSE_CACHE_PATH, ADB_INFO_CACHE_PATH]
+APK_CACHE_LIST = [AAPT_INFO_CACHE_PATH, PARSE_CACHE_PATH, ADB_INFO_CACHE_PATH, PULL_APK_CACHE_PATH]
 

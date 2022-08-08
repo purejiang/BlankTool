@@ -16,13 +16,13 @@ QLabel#progressbar_message_label {
     font-weight: bold;
 }
 QProgressBar {   
-    border-radius: 10px;   
+    border-radius: 15px;   
     background-color: #7D7D7D;
     text-align: center;
     color: #FFFFFF;
 }
 QProgressBar::chunk {  
-    border-radius: 10px;  
+    border-radius: 15px;  
     background-color: #46A6FD;
 }
 QPushButton#progress_confirm_btn {

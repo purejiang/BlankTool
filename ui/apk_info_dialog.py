@@ -38,16 +38,10 @@ class ApkInfoDialog(BaseDialog):
         self.is_pass_error_dex = False
         self.apk_info = None
         self.depack_success = False
-        self.depackage_path = os.path.join(PARSE_CACHE_PATH, FileHelper.md5(self.apk_path))
         self.__init()
 
     def __init(self):
-        self.apk_viewmodel.parse(self.info_file_path, self.apk_path, self.depackage_path)
-        if self.is_depackage:
-            self.__show_start_depack()
-            self.__depackage()
-        else:
-            self.__reset_depackage_ui("开始反编译", True)
+        self.apk_viewmodel.parse(self.info_file_path, self.apk_path)
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
@@ -77,10 +71,10 @@ class ApkInfoDialog(BaseDialog):
     def __show_more_info(self):
         self.__open_more_info = not self.__open_more_info
 
-    def __depackage(self):
+    def __depackage(self, depack_path):
         self.is_pass_error_dex = self._ui.pass_err_dex_check.isChecked()
         self.is_only_res = self._ui.only_res_check.isChecked()
-        self.apk_viewmodel.depack(APK_TOOL_PATH, self.apk_path, self.depackage_path, self.is_pass_error_dex, self.is_only_res)
+        self.apk_viewmodel.depack(APK_TOOL_PATH, self.apk_path, depack_path, self.is_pass_error_dex, self.is_only_res)
     
     def __reset_depackage_ui(self, depackage_status, show_check):
         self._ui.depackage_statue_btn.setText(depackage_status)
@@ -106,11 +100,15 @@ class ApkInfoDialog(BaseDialog):
         self.depack_success = False
 
     def __get_info_success(self, apk_info):
+        self.apk_info = apk_info
         self.__show_info(apk_info) 
+        if self.is_depackage:
+            self.__show_start_depack()
+            self.__depackage(apk_info.depack_path)
+        else:
+            self.__reset_depackage_ui("开始反编译", True)
 
     def __show_info(self, apk_info):
-        self.apk_info = apk_info
-        print(apk_info.apk_path)
         self._ui.app_name.setText(apk_info.app_name)
         self._ui.package_name.setText(apk_info.package_name)
         self._ui.apk_file_path.setText(apk_info.apk_path)
@@ -133,17 +131,13 @@ class ApkInfoDialog(BaseDialog):
         self._ui.depackage_loading_view.setVisible(True)
         self.loading_movie.start()
 
-    def __jump_to_depack_path(self):
-        # 跳转到目录
-        os.startfile(self.depackage_path)
-        
     def __depackage_click(self):
         if self.depack_success:
             # 跳转到目录
-            self.__jump_to_depack_path()
+            os.startfile(self.apk_info.depcak_path)
         else:
             self.__show_start_depack()
-            self.__depackage()
+            self.__depackage(self.apk_info.depcak_path)
 
 
     

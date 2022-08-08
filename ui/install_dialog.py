@@ -102,9 +102,6 @@ class InstallDialog(BaseDialog):
         self.progressbar_dialog.show()
 
         if FileHelper.getSuffix(file_path) == ".aab":
-            md5 = FileHelper.md5(file_path)
-            apks_path = os.path.join(INSTALL_CACHE_PATH, "{0}.apks".format(md5))
-            loguer = Loguer(os.path.join(INSTALL_CACHE_PATH, "{0}.log".format(md5)))
-            self.aab_viewmodel.install(file_path, apks_path, None, loguer)
+            self.aab_viewmodel.install(file_path, None)
         else:
             self.apk_viewmodel.install(file_path)

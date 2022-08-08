@@ -73,9 +73,9 @@ class ParseApkDialog(BaseDialog):
             self.is_depackage = False
 
     def __sync_file_path(self):
-        content = self._ui.parse_apk_path_edt.text().strip()
+        self.apk_path = self._ui.parse_apk_path_edt.text().strip()
         # 输入内容为空则不可点击
-        if content is None or len(content) == 0:
+        if self.apk_path is None or len(self.apk_path) == 0:
             self._ui.parse_apk_btn.setEnabled(False)
         else:
             self._ui.parse_apk_btn.setEnabled(True)
@@ -86,16 +86,15 @@ class ParseApkDialog(BaseDialog):
 
     def __parse(self):
         self.progress_dialog.show()
-        self.apk_path = self._ui.parse_apk_path_edt.text()
         if not FileHelper.fileExist(self.apk_path):
             toast = Toast(self)
             toast.make_text("请输入正确的路径", self.left, self.top, times=3)
             return
-        
-        self.info_file_path = os.path.join(AAPT_INFO_CACHE_PATH, "{0}_info.txt").format(FileHelper.md5(self.apk_path))
-        self.apk_viewmodel.generate_apk_info(self.apk_path, self.info_file_path)
+        # 在此处去掉耗时操作，比如获取 apk 文件的 md5
+        self.apk_viewmodel.generate_apk_info(self.apk_path)
 
-    def __parse_success(self):
+    def __parse_success(self, info_file_path):
+        self.info_file_path = info_file_path
         self.progress_dialog.progress_callback(100, "apk 解析成功")
         self.progress_dialog.dismiss()
     
@@ -104,6 +103,5 @@ class ParseApkDialog(BaseDialog):
         self.progress_dialog.showEnd("确认")
         
     def __jump_to_apk_info(self):
-            self.apk_info_dialog = ApkInfoDialog(
-                self, self.apk_path, self.info_file_path, self.is_depackage)
+            self.apk_info_dialog = ApkInfoDialog(self, self.apk_path, self.info_file_path, self.is_depackage)
             self.apk_info_dialog.show()

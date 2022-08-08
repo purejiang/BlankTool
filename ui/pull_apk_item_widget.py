@@ -5,6 +5,7 @@ from manager.apk_manager import ApkManager
 from ui.base_widget import BaseWidget
 from utils.file_helper import FileHelper
 from utils.work_thread import SUCCESS, WorkThread
+from viewmodel.apk_viewmodel import ApkViewModel
 
 
 class PullApkItemWidget(BaseWidget):
@@ -21,52 +22,40 @@ class PullApkItemWidget(BaseWidget):
     def __init__(self, main_window, package_name, path) -> None:
         self.package_name = package_name
         self.path = path
+        self.is_output = False
         super(PullApkItemWidget, self).__init__(main_window)
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
-        self._ui.pull_package_name_label.setText(self.package_name)
+        self._ui.pull_package_name_edt.setText(self.package_name)
+        self._ui.pull_apk_staute_btn.setText("未导出")
+        self.apk_viewmodel = ApkViewModel(self)
     
     def _setup_qss(self):
         self._loadQss(self.__QSS_FILE)
     
     def _setup_listener(self):
-        self._ui.pull_apk_btn.clicked.connect(self.__start_pull)
+        # 事件
+        self.apk_viewmodel.pull_apk_success.connect(self.__pull_success)
+        self.apk_viewmodel.pull_apk_failure.connect(self.__pull_failure)
 
-    def __start_pull(self):
-        self.__inphone_thread = WorkThread(self.__get_inphone_path)
-        self.__inphone_thread._state.connect(self.__sig_out)
-        self.__inphone_thread.start()
+        # view
+        self._ui.pull_apk_btn.clicked.connect(self.__pull_apk)
 
-    def __get_inphone_path(self):
-        self.__info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_inphone_path.txt").format(self.package_name)
-        self.__path_result = ApkManager.get_inphone_path(self.package_name, self.__info_file)
-        pass
-    
-    def __sig_out(self, state):
-        if state==SUCCESS:
-            # 获取路径完成
-            self.__inphone_thread.terminate()
-            if self.__path_result:            
-                self.__pull_thread = WorkThread(self.__pull_apk)
-                self.__pull_thread._state.connect(self.__sig_out2)
-                self.__pull_thread.start()  
-            else:
-                self._ui.pull_apk_btn.setText("获取手机内路径失败")
-    
+
     def __pull_apk(self):
-        self.__new_dir = os.path.join(ADB_INFO_CACHE_PATH, "pull_apks")
-        if not FileHelper.fileExist(self.__new_dir):
-            FileHelper.createDir(self.__new_dir)
-        self.__new_apk= os.path.join(self.__new_dir, "{0}.apk".format(self.package_name))
-        # inphone_path = FileHelper.fileContent(self.__info_file).replace("package:", "").strip()
-        self.__pull_result = ApkManager.pull_apk(self.path, self.__new_apk)
+        if self.is_output:
+            os.startfile(FileHelper.parentDir(self.output_file))
+        else:
+            self._ui.pull_apk_staute_btn.setText("导出中...")
+            self.apk_viewmodel.pull_apk(self.package_name, self.path)
+    
+    def __pull_success(self, output_file):
+        self._ui.pull_apk_staute_btn.setText("已导出")
+        self.output_file = output_file
+        self.is_output =True
+        self._ui.pull_apk_btn.setText("打开")
 
-    def __sig_out2(self, state):
-        if state==SUCCESS:
-        # 获取路径完成
-            self.__pull_thread.terminate()
-            if self.__pull_result:            
-                self._ui.pull_apk_btn.setText("导出成功") 
-            else:
-                self._ui.pull_apk_btn.setText("导出失败")
+    def __pull_failure(self):
+        self._ui.pull_apk_staute_btn.setText("导出失败") 
+        self.is_output =False

@@ -1,7 +1,10 @@
 # -*- coding:utf-8 -*-
 
+import os
+from common.constant import AAPT_INFO_CACHE_PATH, ADB_INFO_CACHE_PATH, PARSE_CACHE_PATH, PULL_APK_CACHE_PATH
 from manager.apk_manager import ApkManager
 from utils.file_helper import FileHelper
+from utils.other_util import currentTimeMillis
 from viewmodel.viewmodel_signal import ViewModelSignal
 
 from PySide2.QtCore import QThread, Signal
@@ -27,15 +30,17 @@ class ApkViewModel(object):
         self.parse_info_failure = ViewModelSignal()         # 解析 apk 信息文件失败
         self.generate_list_success = ViewModelSignal()      # 获取手机内 apk 列表成功
         self.generate_list_failure = ViewModelSignal()      # 获取手机内 apk 列表失败
-
+        self.pull_apk_success = ViewModelSignal()           # 导出手机内 apk 成功
+        self.pull_apk_failure = ViewModelSignal()           # 导出手机内 apk 失败
+        
     def install(self, apk_path):
-        install_thread = Install(self.parent,apk_path)
+        install_thread = Install(self.parent, apk_path)
         install_thread.success.connect(self.install_apk_success.to_method())
         install_thread.failure.connect(self.install_apk_failure.to_method())
         install_thread.start()
 
-    def generate_apk_info(self, apk_path, info_file):
-        generate_apk_thread = GenerateApkInfo(self.parent, apk_path, info_file)
+    def generate_apk_info(self, apk_path):
+        generate_apk_thread = GenerateApkInfo(self.parent, apk_path)
         generate_apk_thread.success.connect(self.generate_info_success.to_method())
         generate_apk_thread.failure.connect(self.generate_info_failure.to_method())
         generate_apk_thread.start()
@@ -46,17 +51,23 @@ class ApkViewModel(object):
         depack_thread.failure.connect(self.depack_apk_failure.to_method())
         depack_thread.start()
 
-    def parse(self, info_file, apk_path, depack_path):
-        parse_thread = Parse(self.parent, info_file, apk_path, depack_path)
+    def parse(self, info_file, apk_path):
+        parse_thread = Parse(self.parent, info_file, apk_path)
         parse_thread.success.connect(self.parse_info_success.to_method())
         parse_thread.failure.connect(self.parse_info_failure.to_method())
         parse_thread.start()
     
-    def generate_apk_list(self, info_file, is_sys):
-        generate_list_thread = GenerateApksList(self.parent, info_file, is_sys)
+    def generate_apk_list(self, is_sys):
+        generate_list_thread = GenerateApksList(self.parent, is_sys)
         generate_list_thread.success.connect(self.generate_list_success.to_method())
         generate_list_thread.failure.connect(self.generate_list_failure.to_method())
         generate_list_thread.start()
+    
+    def pull_apk(self, pakcage_name, in_phone_path):
+        pull_apk_thread = PullApk(self.parent, pakcage_name, in_phone_path)
+        pull_apk_thread.success.connect(self.pull_apk_success.to_method())
+        pull_apk_thread.failure.connect(self.pull_apk_failure.to_method())
+        pull_apk_thread.start()
 
 class Install(QThread):
     """
@@ -80,18 +91,18 @@ class GenerateApkInfo(QThread):
     """
     生成解析 apk 信息文件
     """
-    success = Signal()
+    success = Signal(str)
     failure = Signal(int, str)
 
-    def __init__(self, parent, apk_path, info_file):
+    def __init__(self, parent, apk_path):
         QThread.__init__(self, parent)
-        self._apk_path = apk_path
-        self._info_file = info_file
+        self.apk_path = apk_path
 
     def run(self):
-        result = ApkManager.aapt_apk_info(self._apk_path, self._info_file)
+        info_file = os.path.join(AAPT_INFO_CACHE_PATH, "{0}_info.txt").format(FileHelper.md5(self.apk_path))
+        result = ApkManager.aapt_apk_info(self.apk_path, info_file)
         if result:
-            self.success.emit()
+            self.success.emit(info_file)
         else:
             self.failure.emit(0, "解析失败")
 
@@ -124,16 +135,16 @@ class Parse(QThread):
     success = Signal(object)
     failure = Signal(int, str)
 
-    def __init__(self, parent, info_file, apk_path, depack_path):
+    def __init__(self, parent, info_file, apk_path):
         QThread.__init__(self, parent)
-        self._info_file = info_file
-        self._apk_path = apk_path
-        self._depack_path = depack_path
+        self.info_file = info_file
+        self.apk_path = apk_path
 
     def run(self):
-        result, info = ApkManager.parseApkInfo(self._info_file, self._apk_path, self._depack_path)
+        depack_path = os.path.join(PARSE_CACHE_PATH, FileHelper.md5(self.apk_path))
+        result, apk_info = ApkManager.parseApkInfo(self.info_file, self.apk_path, depack_path)
         if result:
-            self.success.emit(info)
+            self.success.emit(apk_info)
         else:
             self.failure.emit(0, "反编译失败")
 
@@ -141,17 +152,36 @@ class GenerateApksList(QThread):
     """
     生成手机内 apk 列表信息文件
     """
-    success = Signal(list)
+    success = Signal(str)
     failure = Signal(int, str)
 
-    def __init__(self, parent, info_file, is_sys):
+    def __init__(self, parent, is_sys):
         QThread.__init__(self, parent)
-        self.info_file = info_file
         self.is_sys = is_sys
 
     def run(self):
-        result = ApkManager.get_apk_list_info(self.info_file, self.is_sys)
+        info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
+        result = ApkManager.get_apk_list_info(info_file, self.is_sys)
         if result:
-            self.success.emit(ApkManager.parseApkListInfo(self.info_file))
+            self.success.emit(info_file)
         else:
             self.failure.emit(0, "生成 apk list 信息文件失败")
+class PullApk(QThread):
+    """
+    导出手机内 apk
+    """
+    success = Signal(str)
+    failure = Signal(int, str)
+
+    def __init__(self, parent, package_name, in_phone_path):
+        QThread.__init__(self, parent)
+        self.in_phone_path = in_phone_path
+        self.package_name = package_name
+
+    def run(self):
+        target_file = os.path.join(PULL_APK_CACHE_PATH, "{0}.apk".format(self.package_name))
+        result = ApkManager.pull_apk(self.in_phone_path, target_file)
+        if result:
+            self.success.emit(target_file)
+        else:
+            self.failure.emit(0, "导出 apk 失败")

@@ -1,6 +1,10 @@
 # -*- coding:utf-8 -*-
 
+import os
+from common.constant import INSTALL_CACHE_PATH
 from manager.bundle_manager import BundleManager
+from utils.file_helper import FileHelper
+from utils.loguer import Loguer
 from viewmodel.viewmodel_signal import ViewModelSignal
 
 from PySide2.QtCore import QThread, Signal
@@ -20,10 +24,8 @@ class AabViewModel(object):
         self.install_aab_progress = ViewModelSignal()       # 安装 aab 进度
         self.install_aab_failure = ViewModelSignal()        # 安装 aab 失败
 
-
-
-    def install(self, aab_path, apks_path, keystore_config, loguer):
-        install_aab_thread = InstallAAB(self.parent, aab_path, apks_path, keystore_config, loguer)
+    def install(self, aab_path, keystore_config):
+        install_aab_thread = InstallAAB(self.parent, aab_path, keystore_config)
         install_aab_thread.success.connect(self.install_aab_success.to_method())
         install_aab_thread.install_progress.connect(self.install_aab_progress.to_method())
         install_aab_thread.failure.connect(self.install_aab_failure.to_method())
@@ -38,15 +40,16 @@ class InstallAAB(QThread):
     install_progress = Signal(int, str)
     failure = Signal(int, str)
 
-    def __init__(self, parent, aab_path, apks_path, keystore_config, loguer):
+    def __init__(self, parent, aab_path, keystore_config):
         super().__init__(parent)
         self.aab_path = aab_path
-        self.apks_path = apks_path
         self.keystore_config = keystore_config
-        self.loguer = loguer
 
     def run(self):
-        result = BundleManager.install_aab(self.aab_path, self.apks_path, self.keystore_config, self.loguer, self.progress_callback)
+        md5 = FileHelper.md5(self.aab_path)
+        apks_path = os.path.join(INSTALL_CACHE_PATH, "{0}.apks".format(md5))
+        loguer = Loguer(os.path.join(INSTALL_CACHE_PATH, "{0}.log".format(md5)))
+        result = BundleManager.install_aab(self.aab_path, apks_path, self.keystore_config, loguer, self.progress_callback)
         if result:
             self.success.emit()
         else:
