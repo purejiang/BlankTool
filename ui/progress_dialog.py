@@ -51,7 +51,6 @@ class ProgressDialog(BaseDialog):
         time.sleep(3)
         self.close()
         if self.__close_func:
-            print("close_func()")
             self.__close_func()
 
     def progress_callback(self, progress=None, msg=None):

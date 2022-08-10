@@ -9,6 +9,8 @@ from viewmodel.viewmodel_signal import ViewModelSignal
 
 from PySide2.QtCore import QThread, Signal
 
+from vo.apk_info import ApkInfo
+
 class ApkViewModel(object):
     """
     apk 相关操作
@@ -110,7 +112,7 @@ class Depack(QThread):
     """
     反编译 apk
     """
-    success = Signal()
+    success = Signal(str)
     failure = Signal(int, str)
 
     def __init__(self, parent, apktool_path, apk_path, out_put_path, is_pass_error_dex, is_only_res):
@@ -124,7 +126,7 @@ class Depack(QThread):
     def run(self):
         result = ApkManager.depackage(self.apktool_path, self.apk_path, self.out_put_path, self.is_pass_error_dex, self.is_only_res)
         if result:
-            self.success.emit()
+            self.success.emit(ApkManager.parseIcon(self.out_put_path))
         else:
             self.failure.emit(0, "反编译失败")
 
@@ -132,7 +134,7 @@ class Parse(QThread):
     """
     展示 apk 信息文件
     """
-    success = Signal(object)
+    success = Signal(ApkInfo)
     failure = Signal(int, str)
 
     def __init__(self, parent, info_file, apk_path):

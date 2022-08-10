@@ -50,6 +50,7 @@ class InstallAAB(QThread):
         apks_path = os.path.join(INSTALL_CACHE_PATH, "{0}.apks".format(md5))
         loguer = Loguer(os.path.join(INSTALL_CACHE_PATH, "{0}.log".format(md5)))
         result = BundleManager.install_aab(self.aab_path, apks_path, self.keystore_config, loguer, self.progress_callback)
+        print("result:"+str(result))
         if result:
             self.success.emit()
         else:

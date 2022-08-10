@@ -35,7 +35,7 @@ class BlankManager(object):
             for index in range(file_count):
                 file = file_list[index]
                 FileHelper.delFile(file)
-                write_print(loguer, "删除："+file)
+                write_print(loguer, "index*progress_factor:"+index*progress_factor)
                 progress_callback(index*progress_factor, "删除："+file)
             cls.check_cache_dir(loguer)
             return True

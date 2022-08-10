@@ -39,8 +39,6 @@ class ParseApkDialog(BaseDialog):
         self.title_bar.set_title(self.__TITLE)
         self._ui.parse_apk_dialog_title_bar.addWidget(self.title_bar)
         self.apk_viewmodel = ApkViewModel(self)
-        self.progress_dialog = ProgressDialog(self, "解析 apk", self.__jump_to_apk_info)
-        self.progress_dialog.progress_callback(msg="解析中...")
 
     def _setup_qss(self):
         self.setWindowTitle(self.__TITLE)
@@ -85,11 +83,14 @@ class ParseApkDialog(BaseDialog):
             chooseFile(self, "选取 apk", "Apks (*.apk)"))
 
     def __parse(self):
-        self.progress_dialog.show()
         if not FileHelper.fileExist(self.apk_path):
             toast = Toast(self)
             toast.make_text("请输入正确的路径", self.left, self.top, times=3)
             return
+            
+        self.progress_dialog = ProgressDialog(self, "解析 apk", self.__jump_to_apk_info)
+        self.progress_dialog.progress_callback(msg="解析中...")
+        self.progress_dialog.show()
         # 在此处去掉耗时操作，比如获取 apk 文件的 md5
         self.apk_viewmodel.generate_apk_info(self.apk_path)
 
@@ -98,8 +99,8 @@ class ParseApkDialog(BaseDialog):
         self.progress_dialog.progress_callback(100, "apk 解析成功")
         self.progress_dialog.dismiss()
     
-    def __parse_failure(self):
-        self.progress_dialog.progress_callback(100, "apk 解析失败")
+    def __parse_failure(self, code, msg):
+        self.progress_dialog.progress_callback(100, "{0}:{1}".format(code, msg))
         self.progress_dialog.showEnd("确认")
         
     def __jump_to_apk_info(self):

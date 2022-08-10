@@ -9,7 +9,6 @@ from ui.toast import Toast
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from utils.file_helper import FileHelper
-from utils.loguer import Loguer
 from utils.ui_utils import chooseFile
 from viewmodel.aab_viewmodel import AabViewModel
 from viewmodel.apk_viewmodel import ApkViewModel
@@ -38,8 +37,6 @@ class InstallDialog(BaseDialog):
         self.title_bar = NormalTitilBar(self)
         self.title_bar.set_title(self.__TITLE)
         self._ui.install_dialog_title_bar.addWidget(self.title_bar)
-        self.progressbar_dialog = ProgressDialog(self, "安装应用", None)
-        self.progressbar_dialog.progress_callback(msg="安装中...")
         # apk相关
         self.apk_viewmodel = ApkViewModel(self)
         # aab相关
@@ -52,11 +49,11 @@ class InstallDialog(BaseDialog):
     def _setup_listener(self):
         # 事件
         self.apk_viewmodel.install_apk_success.connect(self.__install_success)
-        self.apk_viewmodel.install_apk_failure.connect(self.__insatll_failure)
+        self.apk_viewmodel.install_apk_failure.connect(self.__install_failure)
 
         self.aab_viewmodel.install_aab_success.connect(self.__install_success)
-        self.aab_viewmodel.install_aab_progress.connect(self.__install_progress)
-        self.aab_viewmodel.install_aab_failure.connect(self.__insatll_failure)
+        self.aab_viewmodel.install_aab_progress.connect(self.__install_aab_progress)
+        self.aab_viewmodel.install_aab_failure.connect(self.__install_failure)
         # view
         self._ui.install_path_btn.clicked.connect(self.__choose_file)
         self._ui.install_path_edt.textChanged.connect(self.__sync_file_path)
@@ -70,14 +67,15 @@ class InstallDialog(BaseDialog):
             pass
 
     def __install_success(self):
-        self.progressbar_dialog.progress_callback(100, "安装成功")
+        self.progressbar_dialog.progress_callback(100, "安装 aab 成功")
         self.progressbar_dialog.showEnd("确认")
 
-    def __insatll_failure(self):
-        self.progressbar_dialog.progress_callback(100, "安装失败")
+    def __install_failure(self, code, msg):
+        self.progressbar_dialog.progress_callback(100, "{0}:{1}".format(code, msg))
         self.progressbar_dialog.showEnd("确认")
 
-    def __install_progress(self, progress, msg):
+
+    def __install_aab_progress(self, progress, msg):
         self.progressbar_dialog.progress_callback(progress, msg)
         
     def __sync_file_path(self):
@@ -98,7 +96,8 @@ class InstallDialog(BaseDialog):
             toast = Toast(self)
             toast.make_text("请输入正确的路径", self.left, self.top, times=3)
             return
-
+        self.progressbar_dialog = ProgressDialog(self, "安装应用", None)
+        self.progressbar_dialog.progress_callback(msg="安装中...")
         self.progressbar_dialog.show()
 
         if FileHelper.getSuffix(file_path) == ".aab":

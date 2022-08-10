@@ -5,6 +5,7 @@ from PySide2.QtGui import QMovie, QPixmap
 from PySide2.QtCore import Qt
 
 from common.constant import  APK_TOOL_PATH, PARSE_CACHE_PATH
+from manager.apk_manager import ApkManager
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from utils.file_helper import FileHelper
@@ -91,11 +92,15 @@ class ApkInfoDialog(BaseDialog):
     def __depack_success(self):
         self.__reset_depackage_ui("打开反编译路径", False)
         # 设置图片并自适应
-        self._ui.app_icon.setPixmap(QPixmap(self.apk_info.icon))
+        if FileHelper.fileExist(self.apk_info.icon):
+            app_icon = self.apk_info.icon
+        else:
+            app_icon = ApkManager.parseIcon(self.apk_info.output_path)
+        self._ui.app_icon.setPixmap(QPixmap(app_icon))
         self._ui.app_icon.setScaledContents(True)
         self.depack_success = True
     
-    def __depack_failure(self):
+    def __depack_failure(self, code, msg):
         self.__reset_depackage_ui("重新反编译", True)
         self.depack_success = False
 
@@ -104,7 +109,7 @@ class ApkInfoDialog(BaseDialog):
         self.__show_info(apk_info) 
         if self.is_depackage:
             self.__show_start_depack()
-            self.__depackage(apk_info.depack_path)
+            self.__depackage(apk_info.output_path)
         else:
             self.__reset_depackage_ui("开始反编译", True)
 
@@ -119,7 +124,7 @@ class ApkInfoDialog(BaseDialog):
         self._ui.abis.setText(apk_info.abis)
         self._ui.langs.setText(apk_info.langs)
 
-    def __get_info_failure(self, msg):
+    def __get_info_failure(self, code, msg):
         pass
 
     def __show_start_depack(self):
@@ -134,10 +139,10 @@ class ApkInfoDialog(BaseDialog):
     def __depackage_click(self):
         if self.depack_success:
             # 跳转到目录
-            os.startfile(self.apk_info.depcak_path)
+            os.startfile(self.apk_info.output_path)
         else:
             self.__show_start_depack()
-            self.__depackage(self.apk_info.depcak_path)
+            self.__depackage(self.apk_info.output_path)
 
 
     

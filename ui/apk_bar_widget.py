@@ -29,8 +29,6 @@ class ApkBarWidget(BaseWidget):
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.apk_viewmodel = ApkViewModel(self)
-        self.progressbar_dialog = ProgressDialog(self, "获取 apk 列表", None)
-        self.progressbar_dialog.progress_callback(msg="获取中...")
 
     def _setup_qss(self):
         self._loadQss(self.__QSS_FILE)
@@ -47,6 +45,9 @@ class ApkBarWidget(BaseWidget):
         self.parse_apk_dialog.show()
     
     def __get_apk_list(self):
+        self.progressbar_dialog = ProgressDialog(self, "获取 apk 列表", None)
+        self.progressbar_dialog.progress_callback(msg="获取中...")
+
         self.progressbar_dialog.show() 
         self.apk_viewmodel.generate_apk_list(False)
 
@@ -56,7 +57,7 @@ class ApkBarWidget(BaseWidget):
         self.pull_dialog = PullApkDialog(self, info_file)
         self.pull_dialog.show()
 
-    def __get_apks_failure(self):
-        self.progressbar_dialog.progress_callback(100, "获取 apk 列表失败")
+    def __get_apks_failure(self, code, msg):
+        self.progressbar_dialog.progress_callback(100, "{0}:{1}".format(code, msg))
         self.progressbar_dialog.showEnd("确认")
 

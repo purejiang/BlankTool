@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 
+import os
+import re
 import traceback
 from common.cmd import CMD
 from utils.file_helper import FileHelper
@@ -160,3 +162,10 @@ class ApkManager(object):
             apk_list.append((pack_info.split(".apk=")[1], pack_info.split(".apk=")[0]+".apk"))
         return apk_list
     
+    @classmethod
+    def parseIcon(cls, depack_path):
+        content = FileHelper.fileContent(os.path.join(depack_path, "AndroidManifest.xml"))
+        # 非贪婪模式，取第一个
+        icon_name_list = re.findall("android:icon=\"(.*?)\"", content)
+        if len(icon_name_list)>0:
+            icon_name_list[0].split("/")[1]
