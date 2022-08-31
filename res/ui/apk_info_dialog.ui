@@ -23,6 +23,9 @@
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout" stretch="4,18,0">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="apk_info_title_bar">
       <property name="topMargin">
@@ -32,6 +35,9 @@
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>20</number>
       </property>
@@ -46,6 +52,9 @@
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,3,1">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="leftMargin">
          <number>10</number>
         </property>
@@ -215,6 +224,9 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="topMargin">
          <number>10</number>
         </property>

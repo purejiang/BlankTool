@@ -4,12 +4,9 @@ import os
 from PySide2.QtGui import QMovie, QPixmap
 from PySide2.QtCore import Qt
 
-from common.constant import  APK_TOOL_PATH, PARSE_CACHE_PATH
-from manager.apk_manager import ApkManager
+from common.constant import  APK_TOOL_PATH
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
-from utils.file_helper import FileHelper
-
 from viewmodel.apk_viewmodel import ApkViewModel
 
 
@@ -89,14 +86,10 @@ class ApkInfoDialog(BaseDialog):
         self._ui.depackage_loading_view.setVisible(False)
         self.loading_movie.stop()
 
-    def __depack_success(self):
+    def __depack_success(self, icon):
         self.__reset_depackage_ui("打开反编译路径", False)
         # 设置图片并自适应
-        if FileHelper.fileExist(self.apk_info.icon):
-            app_icon = self.apk_info.icon
-        else:
-            app_icon = ApkManager.parseIcon(self.apk_info.output_path)
-        self._ui.app_icon.setPixmap(QPixmap(app_icon))
+        self._ui.app_icon.setPixmap(QPixmap(icon))
         self._ui.app_icon.setScaledContents(True)
         self.depack_success = True
     

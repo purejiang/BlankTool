@@ -57,5 +57,5 @@ class PullApkItemWidget(BaseWidget):
         self._ui.pull_apk_btn.setText("打开")
 
     def __pull_failure(self, code, msg):
-        self._ui.pull_apk_staute_btn.setText("{0}:{1}".format(code, msg)) 
+        self._ui.pull_apk_staute_btn.setText("{0} : {1}".format(code, msg)) 
         self.is_output =False

@@ -71,7 +71,7 @@ class InstallDialog(BaseDialog):
         self.progressbar_dialog.showEnd("确认")
 
     def __install_failure(self, code, msg):
-        self.progressbar_dialog.progress_callback(100, "{0}:{1}".format(code, msg))
+        self.progressbar_dialog.progress_callback(100, "{0} : {1}".format(code, msg))
         self.progressbar_dialog.showEnd("确认")
 
 

@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
 
 
-from time import sleep
 import time
-from PySide2.QtCore import Qt
 from ui.base_dialog import BaseDialog
 
 

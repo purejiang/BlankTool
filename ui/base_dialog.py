@@ -26,6 +26,7 @@ class BaseDialog(QDialog, BaseUi):
         self._on_pre_show()
         self._setup_qss()
         self._setup_listener()
+        self.move_press=0
         
     def _loadQss(self, qss_file):
         # 禁止其他界面响应
@@ -36,6 +37,7 @@ class BaseDialog(QDialog, BaseUi):
     # 实现可拖动
     def mousePressEvent(self, e):
         self.move_press = e.globalPos() - self.frameGeometry().topLeft()
+
     # 实现可拖动
     def mouseMoveEvent(self, e):
         self.move(e.globalPos() - self.move_press)

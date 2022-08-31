@@ -1,15 +1,11 @@
 # -*- coding:utf-8 -*-
 
-import os
-from unittest.mock import NonCallableMock
-
-from common.constant import ADB_INFO_CACHE_PATH
 
 from ui.base_widget import BaseWidget
 from ui.parse_apk_dialog import ParseApkDialog
 from ui.progress_dialog import ProgressDialog
 from ui.pull_apk_dialog import PullApkDialog
-from utils.other_util import currentTimeMillis
+from ui.repack_resign_dialog import RePackReSignDialog
 from viewmodel.apk_viewmodel import ApkViewModel
 
 class ApkBarWidget(BaseWidget):
@@ -39,11 +35,16 @@ class ApkBarWidget(BaseWidget):
 
         self._ui.apk_info_btn.clicked.connect(self.__on_parse_apk)
         self._ui.pull_apk_btn.clicked.connect(self.__get_apk_list)
+        self._ui.repack_resign_btn.clicked.connect(self.__repack_resign)
     
     def __on_parse_apk(self):
         self.parse_apk_dialog = ParseApkDialog(self)
         self.parse_apk_dialog.show()
-    
+
+    def __repack_resign(self):
+        self.repack_resign_dialog = RePackReSignDialog(self)
+        self.repack_resign_dialog.show()
+
     def __get_apk_list(self):
         self.progressbar_dialog = ProgressDialog(self, "获取 apk 列表", None)
         self.progressbar_dialog.progress_callback(msg="获取中...")
@@ -58,6 +59,6 @@ class ApkBarWidget(BaseWidget):
         self.pull_dialog.show()
 
     def __get_apks_failure(self, code, msg):
-        self.progressbar_dialog.progress_callback(100, "{0}:{1}".format(code, msg))
+        self.progressbar_dialog.progress_callback(100, "{0} : {1}".format(code, msg))
         self.progressbar_dialog.showEnd("确认")
 

@@ -56,5 +56,5 @@ class OtherBarWidget(BaseWidget):
         self.progressbar_dialog.showEnd("确认")
             
     def __clean_cache_failue(self, code, msg):
-        self.progressbar_dialog.progress_callback(100, "{0}:{1}".format(code, msg))
+        self.progressbar_dialog.progress_callback(100, "{0} : {1}".format(code, msg))
         self.progressbar_dialog.showEnd("确认")

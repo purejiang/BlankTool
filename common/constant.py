@@ -9,7 +9,7 @@ import os
 
 """
 ###### 使用的工具所在的路径 ######
-BUNDLE_TOOL_PATH = os.path.abspath("./re/bundletool/bundletool-all-1.8.2.jar")
+BUNDLE_TOOL_PATH = os.path.abspath("./re/bundletool/bundletool-all-1.11.0.jar")
 APK_TOOL_PATH = os.path.abspath("./re/apktool/apktool_2.6.1.jar")
 ADB_PATH = os.path.abspath("./re/adb")
 AAPT2_PATH = os.path.abspath("./re/aapt")

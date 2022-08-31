@@ -102,6 +102,8 @@ class GenerateApkInfo(QThread):
 
     def run(self):
         info_file = os.path.join(AAPT_INFO_CACHE_PATH, "{0}_info.txt").format(FileHelper.md5(self.apk_path))
+        if FileHelper.fileExist(info_file):
+            FileHelper.delFile(info_file)
         result = ApkManager.aapt_apk_info(self.apk_path, info_file)
         if result:
             self.success.emit(info_file)
@@ -168,6 +170,7 @@ class GenerateApksList(QThread):
             self.success.emit(info_file)
         else:
             self.failure.emit(0, "生成 apk list 信息文件失败")
+            
 class PullApk(QThread):
     """
     导出手机内 apk

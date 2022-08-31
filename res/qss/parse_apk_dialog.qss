@@ -9,13 +9,27 @@ QLabel#parse_apk_path_label {
     font-weight: bold;
 }
 
+QPushButton#depack_root_dir_btn {
+     background-color: transparent;
+     color: #FFFFFF;
+     font-family: "Microsoft YaHei";
+     font-size: 12px;
+     text-decoration: underline;
+}
+QPushButton#depack_root_dir_btn:default {
+     color: #FFFFFF;
+}
+QPushButton#depack_root_dir_btn:hover{
+     color: #64C8FE;
+}
+
 QLineEdit {
     background:#FFFFFF;
     selection-background-color: #4197FF;
     border-radius: 4px;
     font-family: "Microsoft YaHei";
     font-size: 14px;
-    color: #A4A4A4;
+    color: #3D3D3D;
 }
 
 QPushButton#parse_apk_path_btn {
@@ -59,6 +73,6 @@ QPushButton#parse_apk_btn:disabled{
 }
 
 QCheckBox {
-    color:#A4A4A4;
+    color:#FFFFFF;
     font-family: "Microsoft YaHei";
 }

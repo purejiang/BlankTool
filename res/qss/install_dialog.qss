@@ -15,7 +15,7 @@ QLineEdit {
     border-radius: 4px;
     font-family: "Microsoft YaHei";
     font-size: 14px;
-    color: #A4A4A4;
+    color: #3D3D3D;
 }
 
 QPushButton#install_path_btn {

@@ -2,7 +2,6 @@
 
 
 from PySide2.QtCore import QSize
-from common.myapplication import MyApplication
 from manager.apk_manager import ApkManager
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar

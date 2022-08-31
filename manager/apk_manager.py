@@ -167,5 +167,18 @@ class ApkManager(object):
         content = FileHelper.fileContent(os.path.join(depack_path, "AndroidManifest.xml"))
         # 非贪婪模式，取第一个
         icon_name_list = re.findall("android:icon=\"(.*?)\"", content)
+
         if len(icon_name_list)>0:
-            icon_name_list[0].split("/")[1]
+            icon_name = icon_name_list[0].split("/")[1]
+        res_dir_name = icon_name_list[0].split("/")[0].replace("@", "")
+        res_dir_list=[]
+        for res_dir in FileHelper.getChild(os.path.join(depack_path, "res"), FileHelper.TYPE_DIR):
+            if res_dir_name in res_dir:
+                res_dir_list.append(res_dir)
+        for file in FileHelper.getChild(res_dir_list[-1], FileHelper.TYPE_FILE):
+            if icon_name in file and (FileHelper.getSuffix(file)==".png" or FileHelper.getSuffix(file)==".jpg"):
+                return os.path.abspath(file)
+        return None
+    
+# if __name__=="__main__":
+#     print(ApkManager.parseIcon(r"F:\python_project\blank_tool\cache\apk\parse_apk\49ac555c4369a8cc8757b2576c36f39d"))

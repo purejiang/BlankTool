@@ -1,0 +1,3 @@
+QDialog{
+    background: url(./res/img/big_dialog_bg);
+}

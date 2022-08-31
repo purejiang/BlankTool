@@ -65,7 +65,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="repack_apk_btn">
+       <widget class="QPushButton" name="repack_resign_btn">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>

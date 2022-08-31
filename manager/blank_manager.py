@@ -2,6 +2,7 @@
 
 
 import traceback
+from common.cmd import cmdBySystem
 from common.constant import *
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime, write_print
@@ -35,7 +36,7 @@ class BlankManager(object):
             for index in range(file_count):
                 file = file_list[index]
                 FileHelper.delFile(file)
-                write_print(loguer, "index*progress_factor:"+index*progress_factor)
+                write_print(loguer, "index*progress_factor:"+ str(index*progress_factor))
                 progress_callback(index*progress_factor, "删除："+file)
             cls.check_cache_dir(loguer)
             return True
@@ -55,10 +56,10 @@ class BlankManager(object):
         # 程序自检
         cls.__checkApplcation(loguer)
         # 设置临时的环境变量
-        tmp_path= "{0};{1};{2}".format(JAVA_PATH, AAPT2_PATH, ADB_PATH)
+        tmp_path= "{0};{1};{2};".format(JAVA_PATH, AAPT2_PATH, ADB_PATH)
         write_print(loguer, "初始化临时环境变量:{0}".format(tmp_path))
-        os.environ['PATH']+=tmp_path
-        
+        os.environ['PATH']=tmp_path+os.environ['PATH']
+        write_print(loguer, os.environ['PATH'])
         # CMD.setPath(tmp_path)
 
     @classmethod

@@ -17,6 +17,7 @@ import hashlib
 import zipfile
 from pathlib import Path
 
+
 class FileType(object):
     """
     文件类型
@@ -125,7 +126,7 @@ class FileHelper(object):
         :return 文件返回 True，文件夹返回 False，不存在返回 None
         """
         if cls.fileExist(file_path):
-            return os.path.isfile(os.path.abspath(file_path))
+            return os.path.isfile(file_path)
         else:
             return None
 
@@ -196,7 +197,7 @@ class FileHelper(object):
         """
         if not cls.fileExist(old_file):
             raise FileExistsError(old_file+" is not exist.")
-        if  cls.fileExist(new_file) and not is_write:
+        if cls.fileExist(new_file) and not is_write:
             return
         if not cls.fileExist(cls.parentDir(new_file)):
             cls.createDir(cls.parentDir(new_file))
@@ -220,6 +221,47 @@ class FileHelper(object):
         if cls.fileExist(new_file) and is_write:
             cls.delFile(new_file)
         shutil.move(old_file, new_file)
+
+    @classmethod
+    def writeLines(cls, file_path, lines, mode="w+"):
+        """
+        写入内容到文件
+
+        :param file: 源文件
+        :param lines: 合并后的新文件夹
+
+        """
+        with open(file_path, mode=mode, encoding="utf-8") as file:
+            file.writelines(lines)
+
+    @classmethod
+    def writeContent(cls, file_path, content, mode="w+"):
+        """
+        写入内容到文件
+
+        :param file: 源文件
+        :param lines: 合并后的新文件夹
+
+        """
+        try:
+            with open(file_path, mode=mode, encoding="utf-8") as file:
+                file.write(content)
+            return True
+        except Exception as e:
+            return False
+
+    @classmethod
+    def readLines(cls, file_path):
+        """
+        读取文件内容
+
+        :param file: 源文件
+
+        """
+        lines = []
+        with open(file_path, mode="r+", encoding="utf-8") as file:
+            lines = file.readlines()
+        return lines
 
     @classmethod
     def mergeDirs(cls, dirs, target_dir, is_write=False, is_delete=False):
@@ -345,22 +387,22 @@ class FileHelper(object):
             return file_list
 
     @classmethod
-    def getChild(cls, file_path, type):
+    def getChild(cls, dir_path, type):
         """
         获取文件夹下的所有的文件/文件夹(不包括子目录)
 
-        :param file_path: 文件夹
+        :param dir_path: 文件夹
         :param type: 要获取的类型
         :return 文件/文件夹列表
         """
-        if cls.fileExist(file_path):
-            files = os.listdir(file_path)
+        if cls.fileExist(dir_path):
+            files = os.listdir(dir_path)
             if type is cls.TYPE_FILE:
-                return [os.path.join(file_path, file) for file in files if cls.isFile(file)]
+                return [os.path.join(dir_path, file) for file in files if cls.isFile(os.path.join(dir_path, file))]
             elif type is cls.TYPE_DIR:
-                return [os.path.join(file_path, file) for file in files if not cls.isFile(file)]
+                return [os.path.join(dir_path, file) for file in files if not cls.isFile(os.path.join(dir_path, file))]
             else:
-                return [os.path.join(file_path, file) for file in files]
+                return [os.path.join(dir_path, file) for file in files]
 
     @classmethod
     def sortFile(cls, dir_path, regular):
