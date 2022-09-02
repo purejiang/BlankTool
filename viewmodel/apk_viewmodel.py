@@ -130,6 +130,7 @@ class Depack(QThread):
         if result:
             self.success.emit(ApkManager.parseIcon(self.out_put_path))
         else:
+            FileHelper.delFile(self.out_put_path)
             self.failure.emit(0, "反编译失败")
 
 class Parse(QThread):

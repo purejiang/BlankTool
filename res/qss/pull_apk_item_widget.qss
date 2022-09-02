@@ -25,6 +25,9 @@ QPushButton:default {
 QPushButton:hover {
      background-color: #64C8FE;
 }
+QPushButton:disabled{
+     background-color: #C3C3C3;
+}
 
 QPushButton#pull_apk_staute_btn {
      background-color: transparent;

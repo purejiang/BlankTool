@@ -48,14 +48,17 @@ class PullApkItemWidget(BaseWidget):
             os.startfile(FileHelper.parentDir(self.output_file))
         else:
             self._ui.pull_apk_staute_btn.setText("导出中...")
+            self._ui.pull_apk_btn.setEnabled(False)
             self.apk_viewmodel.pull_apk(self.package_name, self.path)
     
     def __pull_success(self, output_file):
+        self._ui.pull_apk_btn.setEnabled(True)
         self._ui.pull_apk_staute_btn.setText("已导出")
         self.output_file = output_file
         self.is_output =True
         self._ui.pull_apk_btn.setText("打开")
 
     def __pull_failure(self, code, msg):
+        self._ui.pull_apk_btn.setEnabled(True)
         self._ui.pull_apk_staute_btn.setText("{0} : {1}".format(code, msg)) 
         self.is_output =False
