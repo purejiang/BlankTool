@@ -1,15 +1,12 @@
 # -*- coding:utf-8 -*-
 
-import os
 from PySide2.QtCore import Qt
-from manager.bundle_manager import BundleManager
-from common.constant import INSTALL_CACHE_PATH
 from ui.progress_dialog import ProgressDialog
 from ui.toast import Toast
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from utils.file_helper import FileHelper
-from utils.ui_utils import chooseFile
+from utils.ui_utils import chooseFile, toast_left, toast_top
 from viewmodel.aab_viewmodel import AabViewModel
 from viewmodel.apk_viewmodel import ApkViewModel
 
@@ -25,7 +22,7 @@ class InstallDialog(BaseDialog):
     """
     __UI_FILE = "./res/ui/install_dialog.ui"
     __QSS_FILE = "./res/qss/install_dialog.qss"
-    __TITLE = "Install"
+    __TITLE = "install"
 
     def __init__(self, main_window):
         super(InstallDialog, self).__init__(main_window)
@@ -94,7 +91,7 @@ class InstallDialog(BaseDialog):
         file_path = self._ui.install_path_edt.text()
         if not FileHelper.fileExist(file_path):
             toast = Toast(self)
-            toast.make_text("请输入正确的路径", self.left, self.top, times=3)
+            toast.make_text("请输入正确的路径", toast_left(self), toast_top(self), times=3)
             return
         self.progressbar_dialog = ProgressDialog(self, "安装应用", None)
         self.progressbar_dialog.progress_callback(msg="安装中...")

@@ -3,15 +3,14 @@
 import os
 import time
 from PySide2.QtCore import Qt
-from common.constant import PARSE_CACHE_PATH
+from common.constant import Constant
 from ui.choose_file_widget import ChooseFileWidget
 from ui.progress_dialog import ProgressDialog
 from ui.toast import Toast
 from ui.apk_info_dialog import ApkInfoDialog
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
-from utils.file_helper import FileHelper
-from utils.ui_utils import chooseFile
+from utils.ui_utils import OFFSET_X, OFFSET_Y, toast_left, toast_top
 from viewmodel.apk_viewmodel import ApkViewModel
 
 
@@ -26,7 +25,7 @@ class ParseApkDialog(BaseDialog):
     """
     __UI_FILE = "./res/ui/parse_apk_dialog.ui"
     __QSS_FILE = "./res/qss/parse_apk_dialog.qss"
-    __TITLE= "Pull Apk"
+    __TITLE= "parse apk"
 
     def __init__(self, main_window):
         super(ParseApkDialog, self).__init__(main_window)
@@ -40,15 +39,12 @@ class ParseApkDialog(BaseDialog):
         self.title_bar = NormalTitilBar(self)
         self.title_bar.set_title(self.__TITLE)
         self._ui.parse_apk_dialog_title_bar.addWidget(self.title_bar)
-        self.choose_parse_apk_path_widget = ChooseFileWidget(self, "选择 Apk", "选择 apk", "Apk (*.apk)", self.__parse_apk_path_change)
+        self.choose_parse_apk_path_widget = ChooseFileWidget(self, "选择 Apk", "选择 apk", self.__parse_apk_path_change, "Apk (*.apk)")
         self._ui.choose_parse_apk_path_layout.addWidget(self.choose_parse_apk_path_widget)
         self.apk_viewmodel = ApkViewModel(self)
 
     def _setup_qss(self):
         self.setWindowTitle(self.__TITLE)
-        # 禁止其他界面响应
-        self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):
@@ -67,7 +63,7 @@ class ParseApkDialog(BaseDialog):
         pass
 
     def __open_depack_root_dir(self):
-        os.startfile(PARSE_CACHE_PATH)
+        os.startfile(Constant.CachePath.PARSE_CACHE_PATH)
 
     def __check_depackage(self, state):
         if state == Qt.Checked:
@@ -86,7 +82,7 @@ class ParseApkDialog(BaseDialog):
     def __parse(self):
         if not self.choose_parse_apk_path_widget.check():
             toast = Toast(self)
-            toast.make_text("请输入正确的路径", self.left, self.top, times=3)
+            toast.make_text("请输入正确的路径", toast_left(self), toast_top(self), times=3)
             return
         self.progress_dialog = ProgressDialog(self, "解析 apk", self.__jump_to_apk_info)
         self.progress_dialog.progress_callback(msg="解析中...")
@@ -106,5 +102,5 @@ class ParseApkDialog(BaseDialog):
     def __jump_to_apk_info(self):
         self.apk_info_dialog = ApkInfoDialog(self, self.apk_path, self.info_file_path, self.is_depackage)
         # 相对于父窗口偏移点距离，避免完全遮盖父窗口
-        self.apk_info_dialog.move(self.geometry().x()+30, self.geometry().y()+30)
+        self.apk_info_dialog.move(self.geometry().x()+OFFSET_X, self.geometry().y()+OFFSET_Y)
         self.apk_info_dialog.show()

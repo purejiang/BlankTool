@@ -4,7 +4,7 @@ import os
 from PySide2.QtGui import QMovie, QPixmap
 from PySide2.QtCore import Qt
 
-from common.constant import  APK_TOOL_PATH
+from common.constant import Constant
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from viewmodel.apk_viewmodel import ApkViewModel
@@ -23,7 +23,7 @@ class ApkInfoDialog(BaseDialog):
     __UI_FILE = "./res/ui/apk_info_dialog.ui"
     __QSS_FILE = "./res/qss/apk_info_dialog.qss"
     __LOADING_FILE ="./res/img/loading.gif"
-    __TITLE ="Apk Info"
+    __TITLE ="apk info"
 
     def __init__(self, main_window, apk_path, info_file_path, is_depackage=False) -> None:
         super(ApkInfoDialog, self).__init__(main_window)
@@ -72,7 +72,7 @@ class ApkInfoDialog(BaseDialog):
     def __depackage(self, depack_path):
         self.is_pass_error_dex = self._ui.pass_err_dex_check.isChecked()
         self.is_only_res = self._ui.only_res_check.isChecked()
-        self.apk_viewmodel.depack(APK_TOOL_PATH, self.apk_path, depack_path, self.is_pass_error_dex, self.is_only_res)
+        self.apk_viewmodel.depack(Constant.Re.APK_TOOL_PATH, self.apk_path, depack_path, self.is_pass_error_dex, self.is_only_res)
     
     def __reset_depackage_ui(self, depackage_status, show_check):
         self._ui.depackage_statue_btn.setText(depackage_status)

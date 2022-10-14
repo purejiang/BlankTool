@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 
+import os
 import traceback
-from common.cmd import cmdBySystem
-from common.constant import *
+from common.constant import Constant
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime, write_print
 
@@ -30,7 +30,7 @@ class BlankManager(object):
         """
         write_print(loguer, "开始清理缓存，时间："+ currentTime())
         try:
-            file_list = FileHelper.getChild(CACHE_PATH, FileHelper.TYPE_BOTH)
+            file_list = FileHelper.getChild(Constant.CachePath.CACHE_PATH, FileHelper.TYPE_BOTH)
             file_count = len(file_list)
             progress_factor = file_count/100
             for index in range(file_count):
@@ -56,7 +56,7 @@ class BlankManager(object):
         # 程序自检
         cls.__checkApplcation(loguer)
         # 设置临时的环境变量
-        tmp_path= "{0};{1};{2};".format(JAVA_PATH, AAPT2_PATH, ADB_PATH)
+        tmp_path= "{0};{1};{2};".format(Constant.Re.JAVA_PATH, Constant.Re.AAPT2_PATH, Constant.Re.ADB_PATH)
         write_print(loguer, "初始化临时环境变量:{0}".format(tmp_path))
         os.environ['PATH']=tmp_path+os.environ['PATH']
         write_print(loguer, os.environ['PATH'])
@@ -69,7 +69,7 @@ class BlankManager(object):
     @classmethod
     def check_cache_dir(cls, loguer):
         write_print(loguer, "检测缓存目录是否完整")
-        for cache_dir in [CACHE_PATH, *BASE_CACHE_LIST, *APK_CACHE_LIST]:
+        for cache_dir in [Constant.CachePath.CACHE_PATH, *Constant.CachePath.BASE_CACHE_LIST, *Constant.CachePath.APK_CACHE_LIST]:
             # 如果缓存目录被误删则重新创建缓存目录
             if not FileHelper.fileExist(cache_dir):
                 FileHelper.createDir(cache_dir)

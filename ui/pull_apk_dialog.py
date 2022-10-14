@@ -19,7 +19,7 @@ class PullApkDialog(BaseDialog):
     """
     __UI_FILE = "./res/ui/pull_apk_dialog.ui"
     __QSS_FILE = "./res/qss/pull_apk_dialog.qss"
-    __TITLE= "Pull Apk"
+    __TITLE= "pull apk"
     
     def __init__(self, application, info_file) -> None:
         super(PullApkDialog, self).__init__(application)

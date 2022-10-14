@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-from PySide2.QtCore import Qt
 from ui.base_dialog import BaseDialog
 from ui.normal_titlebar_widget import NormalTitilBar
 from ui.repack_widget import RePackWidget
@@ -20,7 +19,6 @@ class RePackReSignDialog(BaseDialog):
 
     def __init__(self, main_window):
         super(RePackReSignDialog, self).__init__(main_window)
-        pass
     
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
@@ -33,9 +31,6 @@ class RePackReSignDialog(BaseDialog):
        
     def _setup_qss(self):
         self.setWindowTitle(self.__TITLE)
-        # 禁止其他界面响应
-        self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):

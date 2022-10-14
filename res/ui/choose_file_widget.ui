@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>520</width>
-    <height>38</height>
+    <height>50</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,10 +19,19 @@
      <x>0</x>
      <y>0</y>
      <width>521</width>
-     <height>41</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="5,1">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetNoConstraint</enum>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QLineEdit" name="choose_file_path_edt">
       <property name="sizePolicy">

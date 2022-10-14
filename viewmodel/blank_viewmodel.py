@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 from manager.blank_manager import BlankManager
-from manager.bundle_manager import BundleManager
 from viewmodel.viewmodel_signal import ViewModelSignal
 
 from PySide2.QtCore import QThread, Signal

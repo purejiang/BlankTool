@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
-from common.constant import INSTALL_CACHE_PATH
+from common.constant import Constant
 from manager.bundle_manager import BundleManager
 from utils.file_helper import FileHelper
 from utils.loguer import Loguer
@@ -47,8 +47,8 @@ class InstallAAB(QThread):
 
     def run(self):
         md5 = FileHelper.md5(self.aab_path)
-        apks_path = os.path.join(INSTALL_CACHE_PATH, "{0}.apks".format(md5))
-        loguer = Loguer(os.path.join(INSTALL_CACHE_PATH, "{0}.log".format(md5)))
+        apks_path = os.path.join(Constant.CachePath.INSTALL_CACHE_PATH, "{0}.apks".format(md5))
+        loguer = Loguer(os.path.join(Constant.CachePath.INSTALL_CACHE_PATH, "{0}.log".format(md5)))
         result = BundleManager.install_aab(self.aab_path, apks_path, self.keystore_config, loguer, self.progress_callback)
         print("result:"+str(result))
         if result:

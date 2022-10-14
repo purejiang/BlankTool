@@ -164,15 +164,15 @@ class CMD(object):
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
     @classmethod
-    def signApk(cls,jarsigner_path, kwargs):
+    def signApk(cls, jarsigner_path, origin_apk_path, final_apk_path, keystore_config):
         """
         jarsigner 签名
 
-        :param kwargs: 签名配置
+        :param kwargs: 签名配置 ['ks_path'], ['ksw'], ['kw'], ['final_apk'], ['new_apk'], ['kalias']
 
         """
         win_cmd = "{0} -keystore {1} -storepass {2} -keypass {3} -digestalg SHA1 -sigalg MD5withRSA -signedjar {4} {5} {6}".format(
-            jarsigner_path, kwargs['ks_path'], kwargs['ksw'], kwargs['kw'], kwargs['final_apk'], kwargs['new_apk'], kwargs['kalias'])
+            jarsigner_path, keystore_config.keystore_path, keystore_config.keystore_password, keystore_config.key_password, final_apk_path, origin_apk_path, keystore_config.key_alias)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -392,6 +392,38 @@ class CMD(object):
             bundle_tool_path, base_zip, output_aab)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
+
+    ########################### 打包命令 ###############################################
+
+    @classmethod
+    def qrc2Rcc(cls, rcc_exe, qrc_file, rcc_file):
+        """
+        qrc 转 rcc
+
+        :param rcc_exe: rcc.exe 路径
+        :param qrc_file:  .qyc 文件
+        :param rcc_file:  输出的 .rcc （包含了资源的二进制文件）
+
+        [ rcc.exe ] -binary [.qrc 文件] -o [输出的 .rcc 文件]
+        """
+        win_cmd ="{0} -binary {1} -o {2}".format(rcc_exe, qrc_file, rcc_file)
+        linux_cmd = ""
+        mac_cmd = ""
+        return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
+
+    @classmethod
+    def pyinstallerExe(cls, pyinstaller, py_file):
+        """
+        打包 .py
+
+        :param py_file: .py 文件
+
+        [ pyinsatller.exe ] -D [.py 文件]
+        """
+        win_cmd ="{0} -D {1}".format(pyinstaller, py_file)
+        linux_cmd = ""
+        mac_cmd = ""
+        return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
 def cmdBySystem(win_cmd, linux_cmd, mac_cmd):
     """

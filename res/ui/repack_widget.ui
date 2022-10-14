@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>380</height>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,18 +19,18 @@
      <x>0</x>
      <y>0</y>
      <width>601</width>
-     <height>381</height>
+     <height>301</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,2,4,3">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,1,2">
     <property name="spacing">
-     <number>15</number>
+     <number>6</number>
     </property>
     <property name="leftMargin">
      <number>40</number>
     </property>
     <property name="topMargin">
-     <number>20</number>
+     <number>40</number>
     </property>
     <property name="rightMargin">
      <number>40</number>
@@ -39,68 +39,18 @@
      <number>40</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="choose_repack_path_layout" stretch=""/>
+     <layout class="QHBoxLayout" name="choose_repack_path_layout"/>
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="1">
-       <widget class="QPushButton" name="reset_default_keystore_btn">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>修改默认签名</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="use_default_keystore_check">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>使用默认签名</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <layout class="QHBoxLayout" name="choose_keystore_path_layout" stretch=""/>
-    </item>
-    <item>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <property name="spacing">
-       <number>10</number>
+      <property name="topMargin">
+       <number>6</number>
       </property>
-      <item row="0" column="2">
-       <widget class="QLineEdit" name="store_pwd_edt">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
+      <property name="bottomMargin">
+       <number>6</number>
+      </property>
       <item row="0" column="1">
-       <widget class="QLabel" name="store_pwd_label">
+       <widget class="QPushButton" name="show_signer_btn">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -113,60 +63,40 @@
          </font>
         </property>
         <property name="text">
-         <string>store password:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <string>修改签名</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
-       <widget class="QLineEdit" name="key_pwd_edt">
+      <item row="0" column="0">
+       <widget class="QLineEdit" name="pull_package_name_edt">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
-      <item row="1" column="2">
-       <widget class="QLineEdit" name="key_alias_edt">
+     </layout>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="pass_err_dex_check">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLabel" name="key_alias_label">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
         <property name="text">
-         <string>key alias:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="key_pwd_label">
-        <property name="font">
-         <font>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>key password:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <string>支持aapt2</string>
         </property>
        </widget>
       </item>

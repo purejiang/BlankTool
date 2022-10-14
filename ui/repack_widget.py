@@ -1,12 +1,14 @@
 # -*- coding:utf-8 -*-
 
-
-from PySide2.QtCore import Qt
+import os
+from common.constant import Constant
 from ui.base_widget import BaseWidget
 from ui.choose_file_widget import ChooseFileWidget
-from ui.toast import Toast
+from ui.progress_dialog import ProgressDialog
+from ui.signer_dialog import SignerDialog
 from utils.file_helper import FileHelper
-from utils.ui_utils import chooseFile
+from viewmodel.apk_viewmodel import ApkViewModel
+from viewmodel.signer_viewmodel import SignerViewModel
 
 class RePackWidget(BaseWidget):
     """
@@ -22,42 +24,77 @@ class RePackWidget(BaseWidget):
 
     def __init__(self, main_window):
         super(RePackWidget, self).__init__(main_window)
-        self.left = self.geometry().x() + self.size().width() / 2
-        self.top = self.geometry().y() + self.size().height() / 13
-        self.reapck_path=""
-        self.keystore_path=""
+        self.init()
+        self.keystore_config=None
+
+    def init(self):
+        self.signer_viewmodel.get_keystores()
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
-        self.choose_repack_path_widget = ChooseFileWidget(self, "重编路径", "选择重编译路径", "/", self.__repack_path_change)
+        self.choose_repack_path_widget = ChooseFileWidget(self, "重编路径", "选择重编译路径", self.__repack_path_change)
         self._ui.choose_repack_path_layout.addWidget(self.choose_repack_path_widget)
-        self.choose_keystore_path_widget = ChooseFileWidget(self, "签名文件", "选择签名文件", "签名文件 (*.jks *.keystore)", self.__keystore_path_change)
-        self._ui.choose_keystore_path_layout.addWidget(self.choose_keystore_path_widget)
         self._ui.reapckage_btn.setEnabled(False)
+        self.signer_viewmodel = SignerViewModel(self)
+        self.apk_viewmodel = ApkViewModel(self)
         
     def __repack_path_change(self, path):
         if path is None or len(path) == 0:
             self._ui.reapckage_btn.setEnabled(False)
         else:
             self.reapck_path = path
-            if len(self.keystore_path)!=0:
-                self._ui.reapckage_btn.setEnabled(True)
+            self._ui.reapckage_btn.setEnabled(True)
     
-    def __keystore_path_change(self, path):
-        if path is None or len(path) == 0:
-            self._ui.reapckage_btn.setEnabled(False)
-        else:
-            self.keystore_path = path
-            if len(self.reapck_path)!=0:
-                self._ui.reapckage_btn.setEnabled(True)
+    def __show_signer(self):
+        self.signer_dialog = SignerDialog(self)
+        self.signer_dialog.show()
 
     def _setup_qss(self):
         self._loadQss(self.__QSS_FILE)
 
     def _setup_listener(self):
+        # 事件
+        self.signer_viewmodel.get_keystores_success.connect(self.__get_keystores_success)
+        self.signer_viewmodel.get_keystores_failure.connect(self.__get_keystores_failure)
+
+        self.apk_viewmodel.repack_apk_success.connect(self.__repack_apk_success)
+        self.apk_viewmodel.repack_apk_failure.connect(self.__repack_apk_failure)
+
+        self.signer_viewmodel.sign_success.connect(self.__sign_apk_success)
+        self.signer_viewmodel.sign_failure.connect(self.__sign_apk_failure)
+        # view
         self._ui.reapckage_btn.clicked.connect(self.__repack)
+        self._ui.show_signer_btn.clicked.connect(self.__show_signer)
     
     def __repack(self):
-        self.reapck_path
-        self.keystore_path
+        out_put_path = os.path.join(FileHelper.parentDir(self.reapck_path), FileHelper.filename(self.reapck_path)+".apk")
+        self.apk_viewmodel.repack(Constant.Re.APK_TOOL_PATH, self.reapck_path, out_put_path,False)
+        self.progressbar_dialog = ProgressDialog(self, "重编译 apk", None)
+        self.progressbar_dialog.progress_callback(msg="重编译中...")
+        self.progressbar_dialog.show()
+
+    def __get_keystores_success(self, list):
+        self.keystore_config = list[0]
+        self._ui.pull_package_name_edt.setText(list[0].keystore_name)
+
+    def __get_keystores_failure(self, code, msg):
         pass
+
+    def __repack_apk_success(self, apk_path):
+        self.progressbar_dialog.progress_callback(50, "重编译 apk 成功, 签名...")
+        final_apk_path = os.path.join(FileHelper.parentDir(apk_path), FileHelper.filename(apk_path, False)+"_signed.apk")
+        self.signer_viewmodel.sign(apk_path, final_apk_path, self.keystore_config)
+
+    def __repack_apk_failure(self, code, msg):
+        self.progressbar_dialog.progress_callback(50, "{0} : {1}".format(code, msg))
+        self.progressbar_dialog.showEnd("确认")
+
+    def __sign_apk_success(self,):
+        self.progressbar_dialog.progress_callback(100, "签名 apk 成功")
+        self.progressbar_dialog.showEnd("确认")
+
+
+    def __sign_apk_failure(self, code, msg):
+        self.progressbar_dialog.progress_callback(100, "{0} : {1}".format(code, msg))
+        self.progressbar_dialog.showEnd("确认")
+    

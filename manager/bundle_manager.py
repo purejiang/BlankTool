@@ -2,7 +2,7 @@
 
 import traceback
 from common.cmd import CMD
-from common.constant import BUNDLE_TOOL_PATH
+from common.constant import Constant
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime, write_print
 
@@ -49,14 +49,14 @@ class BundleManager(object):
 
             progress_callback(30, "aab 转 apks ...")
             loguer.log_start(2, "开始 aab2apks")
-            if cls.aab2apks(BUNDLE_TOOL_PATH, aab_path, apks_path, keystore_config, loguer):
+            if cls.aab2apks(Constant.Re.BUNDLE_TOOL_PATH, aab_path, apks_path, keystore_config, loguer):
                 loguer.log_end(2, "aab2apks 完成")
             else:
                 loguer.log_end(2, "aab2apks 失败")
                 return False
             progress_callback(70, "安装 apks ...")
             loguer.log_start(3, "安装 apks")
-            if cls.install_apks(BUNDLE_TOOL_PATH, apks_path, loguer):
+            if cls.install_apks(Constant.Re.BUNDLE_TOOL_PATH, apks_path, loguer):
                 loguer.log_end(3, "安装 apks 完成")
             else:
                 loguer.log_end(3, "安装 apks 失败")

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
-from common.constant import AAPT_INFO_CACHE_PATH, ADB_INFO_CACHE_PATH, PARSE_CACHE_PATH, PULL_APK_CACHE_PATH
+from common.constant import Constant
 from manager.apk_manager import ApkManager
 from utils.file_helper import FileHelper
 from utils.other_util import currentTimeMillis
@@ -34,6 +34,8 @@ class ApkViewModel(object):
         self.generate_list_failure = ViewModelSignal()      # 获取手机内 apk 列表失败
         self.pull_apk_success = ViewModelSignal()           # 导出手机内 apk 成功
         self.pull_apk_failure = ViewModelSignal()           # 导出手机内 apk 失败
+        self.repack_apk_success = ViewModelSignal()         # 重编译 apk 成功
+        self.repack_apk_failure = ViewModelSignal()         # 重编译 apk 失败
         
     def install(self, apk_path):
         install_thread = Install(self.parent, apk_path)
@@ -71,6 +73,11 @@ class ApkViewModel(object):
         pull_apk_thread.failure.connect(self.pull_apk_failure.to_method())
         pull_apk_thread.start()
 
+    def repack(self, apktool_path, repackage_path, out_put_path, is_support_aapt2):
+        repack_thread = Repackage(self.parent, apktool_path, repackage_path, out_put_path, is_support_aapt2)
+        repack_thread.success.connect(self.repack_apk_success.to_method())
+        repack_thread.failure.connect(self.repack_apk_failure.to_method())
+        repack_thread.start()
 class Install(QThread):
     """
     安装 apk
@@ -101,7 +108,7 @@ class GenerateApkInfo(QThread):
         self.apk_path = apk_path
 
     def run(self):
-        info_file = os.path.join(AAPT_INFO_CACHE_PATH, "{0}_info.txt").format(FileHelper.md5(self.apk_path))
+        info_file = os.path.join(Constant.CachePath.AAPT_INFO_CACHE_PATH, "{0}_info.txt").format(FileHelper.md5(self.apk_path))
         if FileHelper.fileExist(info_file):
             FileHelper.delFile(info_file)
         result = ApkManager.aapt_apk_info(self.apk_path, info_file)
@@ -146,7 +153,7 @@ class Parse(QThread):
         self.apk_path = apk_path
 
     def run(self):
-        depack_path = os.path.join(PARSE_CACHE_PATH, FileHelper.md5(self.apk_path))
+        depack_path = os.path.join(Constant.CachePath.PARSE_CACHE_PATH, FileHelper.md5(self.apk_path))
         result, apk_info = ApkManager.parseApkInfo(self.info_file, self.apk_path, depack_path)
         if result:
             self.success.emit(apk_info)
@@ -165,7 +172,7 @@ class GenerateApksList(QThread):
         self.is_sys = is_sys
 
     def run(self):
-        info_file = os.path.join(ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
+        info_file = os.path.join(Constant.CachePath.ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
         result = ApkManager.get_apk_list_info(info_file, self.is_sys)
         if result:
             self.success.emit(info_file)
@@ -185,9 +192,30 @@ class PullApk(QThread):
         self.package_name = package_name
 
     def run(self):
-        target_file = os.path.join(PULL_APK_CACHE_PATH, "{0}.apk".format(self.package_name))
+        target_file = os.path.join(Constant.CachePath.PULL_APK_CACHE_PATH, "{0}.apk".format(self.package_name))
         result = ApkManager.pull_apk(self.in_phone_path, target_file)
         if result:
             self.success.emit(target_file)
+        else:
+            self.failure.emit(0, "导出 apk 失败")
+
+class Repackage(QThread):
+    """
+    重编译 apk
+    """
+    success = Signal(str)
+    failure = Signal(int, str)
+
+    def __init__(self, parent, apktool_path, repackage_path, out_put_path, is_support_aapt2):
+        QThread.__init__(self, parent)
+        self.apktool_path = apktool_path
+        self.repackage_path = repackage_path
+        self.out_put_path = out_put_path
+        self.is_support_aapt2 = is_support_aapt2
+
+    def run(self):
+        result = ApkManager.repackage(self.apktool_path, self.repackage_path, self.out_put_path, self.is_support_aapt2)
+        if result:
+            self.success.emit(self.out_put_path)
         else:
             self.failure.emit(0, "导出 apk 失败")

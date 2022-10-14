@@ -1,10 +1,8 @@
 # -*- coding:utf-8 -*-
 import os
-from common.constant import ADB_INFO_CACHE_PATH
-from manager.apk_manager import ApkManager
+
 from ui.base_widget import BaseWidget
 from utils.file_helper import FileHelper
-from utils.work_thread import SUCCESS, WorkThread
 from viewmodel.apk_viewmodel import ApkViewModel
 
 
