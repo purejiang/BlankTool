@@ -8,7 +8,7 @@ a = Analysis(
     ['f:\\python_project\\blank_tool_release\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('data', 'data'),('resource', 'resource'),('re', 're')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -37,6 +37,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='res/img/app_icon.ico',
 )
 coll = COLLECT(
     exe,
