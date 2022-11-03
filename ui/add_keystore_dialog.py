@@ -4,6 +4,7 @@ from ui.base_dialog import BaseDialog
 from ui.choose_file_widget import ChooseFileWidget
 from ui.toast import Toast
 from utils.file_helper import FileHelper
+from utils.other_util import currentTimeMillis
 from utils.ui_utils import toast_left, toast_top
 from viewmodel.signer_viewmodel import SignerViewModel
 from vo.keystore_config import KeystoreConfig
@@ -25,8 +26,9 @@ class AddKeystoreDialog(BaseDialog):
     __QSS_FILE = "./res/qss/add_keystore_dialog.qss"
     __TITLE ="add keystore"
 
-    def __init__(self, main_window) -> None:
+    def __init__(self, main_window, close_listener) -> None:
         super(AddKeystoreDialog, self).__init__(main_window)
+        self.close_listener = close_listener
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
@@ -54,11 +56,12 @@ class AddKeystoreDialog(BaseDialog):
         keystore_password = self._ui.store_pwd_edt.text().strip()
         key_alias = self._ui.key_alias_edt.text().strip()
         key_password = self._ui.key_pwd_edt.text().strip()
-        info = KeystoreConfig(FileHelper.filename(self.keystore_path), self.keystore_path, keystore_password, key_alias, key_password, 0)
+        info = KeystoreConfig(FileHelper.filename(self.keystore_path), self.keystore_path, keystore_password, key_alias, key_password, currentTimeMillis())
         self.signer_viewmodel.add_keystore(keystore_config=info)
 
     def __add_keystore_success(self):
         self.close()
+        self.close_listener()
 
     def __add_keystore_failure(self, code, msg):
         toast = Toast(self)
@@ -87,6 +90,7 @@ class AddKeystoreDialog(BaseDialog):
 
     def __close(self):
         self.close()
+        self.close_listener()
 
 
     

@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
 
-from manager.blank_manager import BlankManager
-
 from ui.base_widget import BaseWidget
 from ui.install_dialog import InstallDialog
 from ui.progress_dialog import ProgressDialog

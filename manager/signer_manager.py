@@ -63,14 +63,18 @@ class SignerManager(object):
 
         """
         write_print(loguer, "get keystores ...")
-        keystore_dict = json.loads(FileHelper.fileContent(cls.signer_data_path))
-        keystore_config_list =[]
-        for keystore in keystore_dict.values():
-            keystore_json = json.loads(keystore)
-            keystore_config = KeystoreConfig(keystore_json["keystore_name"], keystore_json["keystore_path"], keystore_json["keystore_password"], keystore_json["key_alias"], keystore_json["key_password"], keystore_json["step"])
-            keystore_config_list.append(keystore_config)
-        keystore_config_list.sort(key=lambda x:x.step, reverse=True)
-        return True, keystore_config_list
+        try:
+            keystore_dict = json.loads(FileHelper.fileContent(cls.signer_data_path))
+            keystore_config_list =[]
+            for keystore in keystore_dict.values():
+                keystore_json = json.loads(keystore)
+                keystore_config = KeystoreConfig(keystore_json["keystore_name"], keystore_json["keystore_path"], keystore_json["keystore_password"], keystore_json["key_alias"], keystore_json["key_password"], keystore_json["step"])
+                keystore_config_list.append(keystore_config)
+            keystore_config_list.sort(key=lambda x:x.step, reverse=True)
+            return True, keystore_config_list
+        except Exception as e:
+            write_print(loguer, str(e))
+            return False
 
     @classmethod
     def sign(cls, apk_path, out_path, keystore_config, loguer=None):

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>repackage_widget</class>
- <widget class="QWidget" name="repackage_widget">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Dialog</string>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
@@ -22,7 +22,7 @@
      <height>301</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,1,2">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,2,2">
     <property name="spacing">
      <number>6</number>
     </property>
@@ -39,7 +39,7 @@
      <number>40</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="choose_repack_path_layout"/>
+     <layout class="QHBoxLayout" name="choose_resign_apk_path_layout"/>
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout">
@@ -83,27 +83,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="pass_err_dex_check">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>支持aapt2</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
-     <widget class="QPushButton" name="repack_btn">
+     <widget class="QPushButton" name="resign_btn">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
@@ -116,7 +96,7 @@
        </font>
       </property>
       <property name="text">
-       <string>重编译</string>
+       <string>重签名</string>
       </property>
      </widget>
     </item>

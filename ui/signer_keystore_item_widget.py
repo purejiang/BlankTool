@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from ui.base_widget import BaseWidget
+from utils.other_util import currentTimeMillis
 from viewmodel.signer_viewmodel import SignerViewModel
 
 
@@ -15,10 +16,11 @@ class SignerKeystoreItemWidget(BaseWidget):
     __UI_FILE = "./res/ui/signer_keystore_item_widget.ui"
     __QSS_FILE = "./res/qss/signer_keystore_item_widget.qss"
 
-    def __init__(self, main_window, keystore_config) -> None:
+    def __init__(self, main_window, keystore_config, refersh_listener) -> None:
         super(SignerKeystoreItemWidget, self).__init__(main_window)
         self.main_window = main_window
         self.keystore_config = keystore_config
+        self.refersh_listener = refersh_listener
         self.init(keystore_config)
 
     def init(self, keystore_config):
@@ -33,21 +35,26 @@ class SignerKeystoreItemWidget(BaseWidget):
     
     def _setup_listener(self):
         # 事件 
-
+        self.signer_viewmodel.del_keystore_success.connect(self.__del_success)
+        self.signer_viewmodel.add_keystore_success.connect(self.__add_success)
         # view
-        self._ui.item_select_bt.clicked.connect(self.__select_keystore)
+        self._ui.item_topup_btn.clicked.connect(self.__set_keystore_topup)
         self._ui.item_del_btn.clicked.connect(self.__del_keystore)
         self._ui.item_edit_btn.clicked.connect(self.__edit_keystore)
         
     def __edit_keystore(self):
         pass
 
+    def __del_success(self): 
+        self.refersh_listener()
+    
+    def __add_success(self):
+        self.refersh_listener()
+
     def __del_keystore(self):
         self.signer_viewmodel.del_keystore(self.keystore_config)
-        self.close()
-
-    def __select_keystore(self):
-        self.keystore_config.step = 999
+        
+    def __set_keystore_topup(self):
+        self.keystore_config.step = currentTimeMillis()
         self.signer_viewmodel.add_keystore(self.keystore_config)
-        self.main_window.close()
 

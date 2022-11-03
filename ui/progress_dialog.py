@@ -30,8 +30,7 @@ class ProgressDialog(BaseDialog):
         self._ui.progress_bar.setMinimum(self.__min_value)
         self._ui.progress_bar.setMaximum(self.__max_value)
         self._ui.progress_bar.setVisible(True)
-        self._ui.progress_confirm_btn.setVisible(False)
-        
+        self._ui.progress_confirm_btn.setVisible(False)      
 
     def _setup_qss(self):
         self._loadQss(self.__QSS_FILE)

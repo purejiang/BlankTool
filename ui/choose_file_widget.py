@@ -2,7 +2,6 @@
 
 from PySide2.QtCore import Qt
 from ui.base_widget import BaseWidget
-from ui.toast import Toast
 from utils.file_helper import FileHelper
 from utils.ui_utils import chooseDir, chooseFile
 

@@ -218,4 +218,4 @@ class Repackage(QThread):
         if result:
             self.success.emit(self.out_put_path)
         else:
-            self.failure.emit(0, "导出 apk 失败")
+            self.failure.emit(0, "重编译 apk 失败")

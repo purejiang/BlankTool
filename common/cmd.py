@@ -412,15 +412,15 @@ class CMD(object):
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
     @classmethod
-    def pyinstallerExe(cls, pyinstaller, py_file):
+    def pyinstallerExe(cls, pyinstaller, spec_file):
         """
-        打包 .py
+        打包 python 项目
 
-        :param py_file: .py 文件
+        :param spec_file: 配置文件
 
-        [ pyinsatller.exe ] -D [.py 文件]
+        [ pyinsatller.exe ] [ spec 配置文件]
         """
-        win_cmd ="{0} -D {1}".format(pyinstaller, py_file)
+        win_cmd ="{0} {1}".format(pyinstaller, spec_file)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)

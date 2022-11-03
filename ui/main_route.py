@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-import sys
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QDesktopWidget
 from manager.blank_manager import BlankManager
@@ -25,8 +24,7 @@ class MainRoute(BaseRoute):
 
     def __init__(self, application) -> None:
         super(MainRoute, self).__init__(application)
-        # 工具的初始化
-        BlankManager.init()
+        BlankManager.checkApplication(None)
 
     def _on_pre_show(self, data):
         self._loadUi(self.__UI_FILE)

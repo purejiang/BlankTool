@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 
 import os
-import time
 from PySide2.QtCore import Qt
 from common.constant import Constant
 from ui.choose_file_widget import ChooseFileWidget

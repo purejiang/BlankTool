@@ -24,29 +24,29 @@ class RePackWidget(BaseWidget):
 
     def __init__(self, main_window):
         super(RePackWidget, self).__init__(main_window)
-        self.init()
+        self.__refersh()
         self.keystore_config=None
 
-    def init(self):
+    def __refersh(self):
         self.signer_viewmodel.get_keystores()
 
     def _on_pre_show(self):
         self._loadUi(self.__UI_FILE)
         self.choose_repack_path_widget = ChooseFileWidget(self, "重编路径", "选择重编译路径", self.__repack_path_change)
         self._ui.choose_repack_path_layout.addWidget(self.choose_repack_path_widget)
-        self._ui.reapckage_btn.setEnabled(False)
+        self._ui.repack_btn.setEnabled(False)
         self.signer_viewmodel = SignerViewModel(self)
         self.apk_viewmodel = ApkViewModel(self)
         
     def __repack_path_change(self, path):
         if path is None or len(path) == 0:
-            self._ui.reapckage_btn.setEnabled(False)
+            self._ui.repack_btn.setEnabled(False)
         else:
-            self.reapck_path = path
-            self._ui.reapckage_btn.setEnabled(True)
+            self.repack_path = path
+            self._ui.repack_btn.setEnabled(True)
     
     def __show_signer(self):
-        self.signer_dialog = SignerDialog(self)
+        self.signer_dialog = SignerDialog(self,  self.__refersh)
         self.signer_dialog.show()
 
     def _setup_qss(self):
@@ -63,19 +63,19 @@ class RePackWidget(BaseWidget):
         self.signer_viewmodel.sign_success.connect(self.__sign_apk_success)
         self.signer_viewmodel.sign_failure.connect(self.__sign_apk_failure)
         # view
-        self._ui.reapckage_btn.clicked.connect(self.__repack)
+        self._ui.repack_btn.clicked.connect(self.__repack)
         self._ui.show_signer_btn.clicked.connect(self.__show_signer)
     
     def __repack(self):
-        out_put_path = os.path.join(FileHelper.parentDir(self.reapck_path), FileHelper.filename(self.reapck_path)+".apk")
-        self.apk_viewmodel.repack(Constant.Re.APK_TOOL_PATH, self.reapck_path, out_put_path,False)
+        out_put_path = os.path.join(FileHelper.parentDir(self.repack_path), FileHelper.filename(self.repack_path)+".apk")
+        self.apk_viewmodel.repack(Constant.Re.APK_TOOL_PATH, self.repack_path, out_put_path,False)
         self.progressbar_dialog = ProgressDialog(self, "重编译 apk", None)
         self.progressbar_dialog.progress_callback(msg="重编译中...")
         self.progressbar_dialog.show()
 
     def __get_keystores_success(self, list):
         self.keystore_config = list[0]
-        self._ui.pull_package_name_edt.setText(list[0].keystore_name)
+        self._ui.keystore_name_edt.setText(list[0].keystore_name)
 
     def __get_keystores_failure(self, code, msg):
         pass

@@ -163,8 +163,11 @@ class FileHelper(object):
         """
         删除文件或者文件夹
 
-        :param file_path: 文件/文件夹
+        :param file_path: 文件/文件夹路径
+
         """
+        # 解除 windows 系统对于文件路径过长的限制，否则会导致删除失败
+        file_path = '\\\\?\\{}'.format(file_path)
         if cls.fileExist(file_path):
             if cls.isFile(file_path):
                 os.remove(file_path)
@@ -530,21 +533,21 @@ class FileHelper(object):
                             {'ext': it['extension'].lower(), 'des': it['description']})
                 return FileType(sign, info)
 
-    @classmethod
-    def delLongPathDir(cls, dir_path):
-        """
-        删除路径过长的文件夹
+    # @classmethod
+    # def delLongPathDir(cls, dir_path):
+    #     """
+    #     删除路径过长的文件夹
 
-        :param dir_path: 文件夹
-        """
-        index = 0
-        old_dir = dir_path
-        try:
-            while True:
-                for file in cls.getChild(old_dir, cls.TYPE_DIR):
-                    index += 1
-                    new_dir = r"{0}\{1}".format(dir_path, index)
-                    cls.moveFile(file, new_dir)
-                old_dir = r"{0}\{1}".format(dir_path, index)
-        except Exception as e:
-            cls.delFile(dir_path)
+    #     :param dir_path: 文件夹
+    #     """
+    #     index = 0
+    #     old_dir = dir_path
+    #     try:
+    #         while True:
+    #             for file in cls.getChild(old_dir, cls.TYPE_DIR):
+    #                 index += 1
+    #                 new_dir = r"{0}\{1}".format(dir_path, index)
+    #                 cls.moveFile(file, new_dir)
+    #             old_dir = r"{0}\{1}".format(dir_path, index)
+    #     except Exception as e:
+    #         cls.delFile(dir_path)

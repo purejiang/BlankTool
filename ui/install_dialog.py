@@ -64,7 +64,7 @@ class InstallDialog(BaseDialog):
             pass
 
     def __install_success(self):
-        self.progressbar_dialog.progress_callback(100, "安装 aab 成功")
+        self.progressbar_dialog.progress_callback(100, "安装成功")
         self.progressbar_dialog.showEnd("确认")
 
     def __install_failure(self, code, msg):
