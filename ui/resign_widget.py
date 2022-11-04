@@ -72,8 +72,9 @@ class ReSignWidget(BaseWidget):
         self.progressbar_dialog.show()
 
     def __get_keystores_success(self, list):
-        self.keystore_config = list[0]
-        self._ui.keystore_name_edt.setText(list[0].keystore_name)
+        if len(list)>0:
+            self.keystore_config = list[0]
+            self._ui.keystore_name_edt.setText(list[0].keystore_name)
 
     def __get_keystores_failure(self, code, msg):
         pass
