@@ -12,7 +12,7 @@ android_jar = r".\re\android.jar"
 bundle_tool = r".\re\bundletool-all-1.7.0.jar"
 smali_tool = r".\re\smali-2.5.2.jar"  
 
-class Apk2Aab(object):
+class Apk2Aab():
     """
 
     @author: purejiang
@@ -137,7 +137,7 @@ class Apk2Aab(object):
         with zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED) as zf:
             for dirpath, dirnames, filenames in os.walk(dir_path):
                 fpath = dirpath.replace(dir_path, '')
-                fpath = fpath and fpath + os.sep or ''
+                fpath = fpath and fpath + os.path.sep or ''
                 for filename in filenames:
                     zf.write(os.path.join(dirpath, filename), fpath+filename)
         return buildBundle(self.__bundle_tool, zip_file, self.__output_path)

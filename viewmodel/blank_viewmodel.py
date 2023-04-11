@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 
-from manager.blank_manager import BlankManager
-from viewmodel.viewmodel_signal import ViewModelSignal
+from logic.blank_manager import BlankManager
+from viewmodel.base_viewmodel import BaseThread, Operation
 
-from PySide2.QtCore import QThread, Signal
+from PySide6.QtCore import Signal
 
-class BlankViewModel(object):
+class BlankViewModel():
     """
     程序的相关操作
 
@@ -14,36 +14,52 @@ class BlankViewModel(object):
 
     """
     def __init__(self, parent) -> None:
-        super(BlankViewModel, self).__init__()
+        super().__init__()
         self.parent = parent
-        self.clean_cache_success = ViewModelSignal()        # 清理缓存成功
-        self.clean_cache_progress = ViewModelSignal()        # 清理缓存进度
-        self.clean_cache_failure = ViewModelSignal()        # 清理缓存失败
-
-    def clean_cache(self):
-        clean_cache_thread = CleanCache(self.parent)
-        clean_cache_thread.success.connect(self.clean_cache_success.to_method())
-        clean_cache_thread.clean_progress.connect(self.clean_cache_progress.to_method())
-        clean_cache_thread.failure.connect(self.clean_cache_failure.to_method())
-        clean_cache_thread.start()
         
-class CleanCache(QThread):
+        self.init_app_opreation = Operation()           # 初始化应用
+
+        self.clean_cache_opreation = Operation()        # 清理缓存
+
+    def initApp(self):
+        init_app_thread = InitApp()
+        self.init_app_opreation.loadThread(init_app_thread)
+        self.init_app_opreation.start()
+    
+
+    def cleanCache(self):
+        clean_cache_thread = CleanCache()
+        self.clean_cache_opreation.loadThread(clean_cache_thread)
+        self.clean_cache_opreation.start()
+
+class CleanCache(BaseThread):
     """
     清理缓存
     """
-    success = Signal()
-    clean_progress = Signal(int, str)
-    failure = Signal(int, str)
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self):
+        super().__init__()
 
     def run(self):
-        result = BlankManager.cleanCache(self.progress_callback)
+        result = BlankManager.cleanCache(self._progressCallback)
         if result:
-            self.success.emit()
+            self._success_signal.emit()
         else:
-            self.failure.emit(0, "清理缓存失败")
+            self._failure_signal.emit(0, "清理缓存失败")
+
+class InitApp(BaseThread):
+    """
+    初始化应用
+    """
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        result = BlankManager.initApplication(self._progressCallback)
+        if result:
+            self._success_signal.emit()
+        else:
+            self._failure_signal.emit(0, "初始化应用失败")
+
             
-    def progress_callback(self, progress, msg):
-        self.clean_progress.emit(progress, msg)

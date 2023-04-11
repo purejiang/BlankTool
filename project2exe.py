@@ -15,7 +15,7 @@ from utils.file_helper import FileHelper
 from utils.other_util import currentTimeMillis, currentTimeNumber, write_print
 
 
-class ResToRcc(object):
+class ResToRcc():
     qrc_text_temp = """
 <!DOCTYPE RCC>
 <RCC version="1.0">
@@ -81,7 +81,7 @@ class ResToRcc(object):
 
 if __name__ == "__main__":
     # 用到的工具
-    rcc_exe = r"D:\ProgramData\Miniconda3\envs\py_blank_tool\Lib\site-packages\PySide2\rcc.exe"
+    rcc_exe = r"D:\ProgramData\Miniconda3\envs\py_blank_tool\Lib\site-packages\PySide6\rcc.exe"
     pyinstaller_exe = r"D:\ProgramData\Miniconda3\envs\py_blank_tool\Scripts\pyinstaller.exe"
 
     ####### step 1 ：当前版本为发布版本时，复制项目到工作目录 #######
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     if FileHelper.fileExist(release_project):
         FileHelper.delFile(release_project)
     FileHelper.createDir(release_project)
-    for file in FileHelper.getChild(debug_project, FileHelper.TYPE_BOTH):
+    for file in FileHelper.getChild(debug_project):
         file_name = FileHelper.filename(file)
         if file_name not in exclude_files:
             new_file = os.path.join(

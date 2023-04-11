@@ -18,7 +18,7 @@ import zipfile
 from pathlib import Path
 
 
-class FileType(object):
+class FileType():
     """
     文件类型
     """
@@ -28,7 +28,7 @@ class FileType(object):
         self.info = info
 
 
-class FileHelper(object):
+class FileHelper():
     """
     文件操作工具类
 
@@ -42,7 +42,6 @@ class FileHelper(object):
     REGULAR_SIZE = "size"
     TYPE_DIR = "type_dir"
     TYPE_FILE = "type_file"
-    TYPE_BOTH = "type_both"
 
     @classmethod
     def tozip(cls, dir_path, zip_file):
@@ -55,7 +54,7 @@ class FileHelper(object):
         with zipfile.ZipFile(zip_file, 'w', zipfile.ZIP_DEFLATED) as zf:
             for dirpath, dirnames, filenames in os.walk(dir_path):
                 fpath = dirpath.replace(dir_path, '')
-                fpath = fpath and fpath + os.sep or ''
+                fpath = fpath and fpath + os.path.sep or ''
                 for filename in filenames:
                     zf.write(os.path.join(dirpath, filename), fpath+filename)
         return True
@@ -368,29 +367,28 @@ class FileHelper(object):
             return size / 1024.0 ** 3
 
     @classmethod
-    def getAllChild(cls, file_path, type, file_list=None):
+    def getAllChild(cls, file_path, type):
         """
         获取文件夹下的所有文件/文件夹，递归
 
         :param file_path: 文件夹
         :param type: 获取的类型
         """
-        if file_list is None:
-            file_list = []
-        if cls.fileExist(file_path):
-            files = os.listdir(file_path)
+        dirlist=[]
+        filelist =[]
+        for root,dirs,files in os.walk(file_path):
+            for dir in dirs:
+                dirlist.append(os.path.join(root, dir))
             for file in files:
-                temp_path = os.path.join(file_path, file)
-                if cls.isFile(temp_path) and type is cls.TYPE_FILE:
-                    file_list.append(temp_path)
-                elif not cls.isFile(temp_path):
-                    if type is cls.TYPE_DIR:
-                        file_list.append(temp_path)
-                    cls.getAllChild(temp_path, type, file_list)
-            return file_list
+                filelist.append(os.path.join(root, file))
+        if type is cls.TYPE_DIR:
+            return dirlist.reverse()
+        elif type is cls.TYPE_FILE:
+            return filelist
+
 
     @classmethod
-    def getChild(cls, dir_path, type):
+    def getChild(cls, dir_path, type=None):
         """
         获取文件夹下的所有的文件/文件夹(不包括子目录)
 
@@ -551,3 +549,6 @@ class FileHelper(object):
     #             old_dir = r"{0}\{1}".format(dir_path, index)
     #     except Exception as e:
     #         cls.delFile(dir_path)
+if __name__=="__main__":
+    filelist = FileHelper.getAllChild(r"F:\python_project\blank_tool\cache", FileHelper.TYPE_DIR)
+    print(filelist)

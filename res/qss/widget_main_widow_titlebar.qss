@@ -1,0 +1,38 @@
+QPushButton {
+    /* 可以去掉按下的下沉效果 */
+    border-radius: 1px;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+}
+
+QPushButton:default {
+    background-color: transparent;
+}
+
+QPushButton:hover {
+    background-color: #50AAAAAA;
+}
+
+QPushButton#btn_close_window {
+    background-image: url(./res/img/btn_bg_close_window);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-origin:padding;
+}
+
+QPushButton#btn_min_window {
+    background-image: url(./res/img/btn_bg_min_window);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-origin:padding;
+}
+
+QPushButton#btn_tool_setting {
+    background-image: url(./res/img/btn_bg_more_window);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-origin:padding;
+   
+}

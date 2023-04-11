@@ -1,0 +1,82 @@
+QWidget#widget_parse_apk {
+  background-color: #303030;
+}
+
+QWidget#widget_parse_apk_fuction_bar {
+  border-radius: 5px;
+  background-color: #595959;
+}
+
+QPushButton#btn_select_apk{
+  /* 可以去掉按下的下沉效果 */
+  border-radius: 5px;
+  border: 1px solid #FFFFFF;
+  background-color: transparent;
+  color: #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+}
+QPushButton#btn_select_apk:default {
+  background-color: transparent;
+}
+
+QPushButton#btn_select_apk:hover{
+  background-color: #97c4dd;
+}
+
+QLineEdit {
+  background: #FFFFFF;
+  border-radius: 4px;
+  border: 1px solid #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  color: #3D3D3D;
+}
+
+QPushButton#btn_depack_dir_path {
+  background-color: transparent;
+  color: #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+  text-decoration: underline;
+}
+QPushButton#btn_depack_dir_path:default {
+  color: #FFFFFF;
+}
+QPushButton#btn_depack_dir_path:hover{
+  color: #46A6FD;
+}
+
+QProgressBar#pb_depack_progress {    
+  background-color: #4e4e4e;
+}
+QProgressBar#pb_depack_progress::chunk {  
+  background-color: #46A6FD;
+}
+
+QListWidget {
+    border-radius: 5px;
+    border: 0px;
+    outline: 0px;
+    background-color: #595959;
+}
+
+QListWidget::Item {
+    background: transparent;
+    color: transparent;
+    min-width: 700px;
+    min-height: 93px;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+QListWidget::Item:hover {
+    background: #646464;
+}
+
+QListWidget::Item:selected {
+    background: #4e4e4e;
+}
+

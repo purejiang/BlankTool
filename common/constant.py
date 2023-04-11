@@ -1,5 +1,9 @@
 # -*- coding:utf-8 -*-
+import json
 import os
+
+from utils.file_helper import FileHelper
+from vo.apk_info import ApkInfo
 """
 
 @author: purejiang
@@ -8,53 +12,77 @@ import os
 常量
 
 """
+APP_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+
+class Config:
+    
+    CONFIG_PATH = os.path.join(APP_PATH, "config")
+    APP_CONFIG_PATH = os.path.join(CONFIG_PATH, "app_config.json")
+    DEFAULT_CONFIG_PATH = os.path.join(CONFIG_PATH, "default_config.json")  
+    APP_CONFIG_JSON= json.loads(FileHelper.fileContent(APP_CONFIG_PATH).replace("\./", APP_PATH))
+    DEFAULT_CONFIG_JSON = json.loads(FileHelper.fileContent(DEFAULT_CONFIG_PATH).replace("\\./", APP_PATH))
+    
+    @classmethod
+    def parseAppConfig(cls, key):
+        return cls.APP_CONFIG_JSON[key]
+
+    @classmethod
+    def parseDefaultConfig(cls, key):
+        return cls.DEFAULT_CONFIG_JSON[key]
 class Constant:
     class AppInfo:
-        APP_NAME = "Blank Tool"
-
-    class AppPath:
-        APP_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-        RESOURCE_PATH = "resource"
+        ###### App 信息 ######
+        __APP_INFO = Config.parseAppConfig("app_info")
+        APP_NAME = __APP_INFO["app_name"]
+        MODE = __APP_INFO["mode"]
+        VERSION= __APP_INFO["version"]
+        CREATE_TIME = __APP_INFO["create_time"]
+        
     class Re:
         ###### 使用的工具所在的路径 ######
-        BUNDLE_TOOL_PATH = os.path.abspath("./re/bundletool/bundletool-all-1.11.0.jar")
-        APK_TOOL_PATH = os.path.abspath("./re/apktool/apktool_2.6.1.jar")
-        JARSIGNER_PATH = os.path.abspath("./re/jre/bin/jarsigner.exe")
-        ADB_PATH = os.path.abspath("./re/adb")
-        AAPT2_PATH = os.path.abspath("./re/aapt")
-        JAVA_PATH = os.path.abspath("./re/jre/bin")
+        __RE = Config.parseDefaultConfig("path")["re"]
+        BUNDLETOOL_PATH = os.path.abspath(__RE["bundletool_path"])
+        APKTOOL_PATH = os.path.abspath(__RE["apktool_path"])
+        KEYTOOL_PATH = os.path.abspath(__RE["keytool_path"])
+        JARSIGNER_PATH = os.path.abspath(__RE["jarsigner_path"])
+        ADB_PATH = os.path.abspath(__RE["adb_path"])
+        AAPT2_PATH = os.path.abspath(__RE["aapt_path"])
+        JAVA_PATH = os.path.abspath(__RE["java_path"])
+        ALL_RE_PATH_LIST=[BUNDLETOOL_PATH, APKTOOL_PATH, KEYTOOL_PATH, JARSIGNER_PATH, ADB_PATH, AAPT2_PATH, JAVA_PATH]
 
-    class Data:
-
+    class Path:
         ###### 数据目录 ######
-        DATA_PATH = os.path.abspath("./data")
-    class CachePath:
-
+        __DATA= Config.parseDefaultConfig("path")["data"]
+        DATA_PATH = os.path.abspath(__DATA["base_data"])
+        SIGNER_DATA_FILE = os.path.abspath(__DATA["signer_data"])
+        
         ###### 缓存目录 ######
-        CACHE_PATH = os.path.abspath("./cache")
-
-        ###### 安装功能的缓存 ######
-        INSTALL_CACHE_PATH = os.path.join(CACHE_PATH, "install")
-        ######apk 功能的缓存 ######
-        APK_CACHE_PATH = os.path.join(CACHE_PATH, "apk")
+        __CACHE = Config.parseDefaultConfig("path")["cache"]
+        CACHE_PATH = os.path.abspath(__CACHE["base_cache"])
+        # 安装功能的缓存
+        INSTALL_CACHE_PATH = os.path.abspath(__CACHE["install_cache"])
         # 解析功能的缓存
-        PARSE_CACHE_PATH = os.path.join(APK_CACHE_PATH, "parse_apk")
+        PARSE_CACHE_PATH = os.path.abspath(__CACHE["parse_apk_cache"])
+        # 解析后的信息文件名，在反编的目录下
+        PAESE_APK_INFO_FILE_NAME = "parse_apk_info.json"
         # adb 信息文件的缓存
-        ADB_INFO_CACHE_PATH = os.path.join(APK_CACHE_PATH, "adb_info")
+        ADB_INFO_CACHE_PATH = os.path.abspath(__CACHE["adb_cache"])
         # 手机内导出的 apk 文件的缓存
-        PULL_APK_CACHE_PATH = os.path.join(APK_CACHE_PATH, "pull_apk")
+        PULL_APK_CACHE_PATH = os.path.abspath(__CACHE["pull_apk_cache"])
         # aapt 信息文件的缓存
-        AAPT_INFO_CACHE_PATH = os.path.join(APK_CACHE_PATH, "aapt_info")
-        ###### aab 功能的缓存 ######
-        AAB_CACHE_PATH = os.path.join(CACHE_PATH, "aab")
-        ###### Blank Tool 的缓存 ######
-        BLANK_CACHE_PATH = os.path.join(CACHE_PATH, "blank")
+        AAPT_INFO_CACHE_PATH = os.path.abspath(__CACHE["aapt_cache"])
+        # aab 功能的缓存
+        AAB_CACHE_PATH = os.path.abspath(__CACHE["aab_cache"])
+        # Blank Tool 的缓存
+        SETTING_CACHE_PATH = os.path.abspath(__CACHE["setting_cache"])
 
-        BASE_CACHE_LIST = [APK_CACHE_PATH, AAB_CACHE_PATH, BLANK_CACHE_PATH, INSTALL_CACHE_PATH]
-        APK_CACHE_LIST = [AAPT_INFO_CACHE_PATH, PARSE_CACHE_PATH, ADB_INFO_CACHE_PATH, PULL_APK_CACHE_PATH]
+        ###### 资源目录 ######
+        RESOURCE_PATH = os.path.abspath(Config.parseDefaultConfig("path")["res"])
+
+        ALL_CACHE_PATH_LIST = [ADB_INFO_CACHE_PATH, AAB_CACHE_PATH, SETTING_CACHE_PATH, AAPT_INFO_CACHE_PATH, INSTALL_CACHE_PATH, PARSE_CACHE_PATH, PULL_APK_CACHE_PATH,]
+        ALL_OTHER_PATH_LIST = [RESOURCE_PATH]
 
 
     class ErrorCode:
         CREATE_APK_LIST_INFO_FILE_FAILEURE = 10001
-        
-
+        PARSE_APK_FAILEURE = 40001

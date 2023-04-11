@@ -1,0 +1,18 @@
+QTableWidget{
+    background:#FFFFFF;
+    border:none;
+
+    font-size:12px;
+    font-family:"Microsoft YaHei";
+    color:#666666;
+}
+
+QTableWidget::item{
+    border-bottom:1px solid #EEF1F7;
+}
+
+QTableWidget::item::selected{
+    color:#9697D1;
+    background:#EFF4FF;
+}
+

@@ -1,0 +1,57 @@
+QToolBox {
+  background: #303030;
+}
+
+QToolBoxButton {
+  min-width: 189px;
+  min-height: 64px;
+}
+
+QToolBox::tab {
+  text-align: right;
+  padding-left: 26px;
+  background: #646464;
+  color: #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+}
+
+QToolBox::tab:hover {
+  background: #979797;
+}
+
+QToolBox::tab:selected {
+  background: #717171;
+}
+
+QLabel#lb_function_item_icon_2{
+  border-image: url(./res/img/ic_step);
+}
+
+QScrollArea{
+  border: 0px;
+  outline: 0px;
+}
+
+QListWidget {
+  border: 0px;
+  outline: 0px;
+  background-color: #4e4e4e;
+}
+
+QListWidget::Item {
+    background: #595959;
+    color: transparent;
+    min-width: 192px;
+    min-height: 50px;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+}
+
+QListWidget::Item:hover {
+    background: #828282;
+}
+
+QListWidget::Item:selected {
+    background: #303030;
+}

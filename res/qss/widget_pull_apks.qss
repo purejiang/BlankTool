@@ -1,0 +1,43 @@
+QWidget#widget_parse_apk {
+  background-color: #828282;
+}
+
+QWidget#widget_pull_apks_fuction_bar {
+  border-radius: 5px;
+  background-color: #595959;
+}
+
+QPushButton#btn_select_apk{
+  /* 可以去掉按下的下沉效果 */
+  border-radius: 5px;
+  border: 1px solid #FFFFFF;
+  background-color: transparent;
+  color: #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+}
+QPushButton#btn_select_apk:default {
+  background-color: transparent;
+}
+
+QPushButton#btn_select_apk:hover{
+  background-color: #97c4dd;
+}
+
+QLineEdit {
+  background: #FFFFFF;
+  border-radius: 4px;
+  border: 1px solid #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 14px;
+  color: #3D3D3D;
+}
+
+QListWidget {
+    border-radius: 5px;
+    border: 0px;
+    outline: 0px;
+    background-color: #595959;
+}
+
+

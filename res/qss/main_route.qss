@@ -1,3 +1,0 @@
-QWidget#main_widget{
-  background: url(./res/img/main_bg);
-}

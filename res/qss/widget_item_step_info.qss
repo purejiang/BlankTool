@@ -1,0 +1,15 @@
+QLabel#lb_step_icon {
+  border-image:  url(./res/img/ic_step);
+}
+
+QLabel#lb_step_info_icon {
+  border-image:  url(./res/img/ic_step_info);
+}
+
+QLabel#lb_parse_apk_step{
+  color: #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}

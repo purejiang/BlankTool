@@ -1,23 +1,16 @@
 # -*- coding:utf-8 -*-
 
-import os
 import sys
 from common.myapplication import MyApplication
-from manager.blank_manager import BlankManager
-from ui.main_route import MainRoute
-
+from widget.window_main import MainWindow
 
 
 if __name__ == '__main__':
-    # 初始化工具的执行环境
-    BlankManager.initRe()
-     
-    os.chdir(sys.path[0]) 
-    
-    app = MyApplication(sys.argv)
 
-    login_route = MainRoute(app)
-    
-    app.show(MainRoute)
+        app = MyApplication(sys.argv)
 
-    sys.exit(app.exec_())
+        login_route = MainWindow(app)
+        
+        app.show(MainWindow)
+
+        sys.exit(app.exec())

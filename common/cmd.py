@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 
+import locale
 import os
 import platform
 import subprocess
 import traceback
+from typing import Union
+from logic.signer_manager import SignerConfig
+
+from utils.b_loger import Loger
 
 
-class CMD(object):
+class CMD():
     """
 
     @author: purejiang
@@ -37,7 +42,7 @@ class CMD(object):
 
     ########################### apk 相关 ###############################################
     @classmethod
-    def depackage(cls, apktool_path, apk_path, output_dir, is_pass_dex=False, is_only_res=False):
+    def depackage(cls, apktool_path, apk_path, output_dir, is_pass_dex=False, is_only_res=False)->Union[bool, str]:
         """
         反编 .apk
 
@@ -164,7 +169,7 @@ class CMD(object):
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
     @classmethod
-    def signApk(cls, jarsigner_path, origin_apk_path, final_apk_path, keystore_config):
+    def signApk(cls, jarsigner_path, origin_apk_path, final_apk_path, signer_config:SignerConfig):
         """
         jarsigner 签名
 
@@ -172,7 +177,7 @@ class CMD(object):
 
         """
         win_cmd = "{0} -keystore {1} -storepass {2} -keypass {3} -digestalg SHA1 -sigalg MD5withRSA -signedjar {4} {5} {6}".format(
-            jarsigner_path, keystore_config.keystore_path, keystore_config.keystore_password, keystore_config.key_password, final_apk_path, origin_apk_path, keystore_config.key_alias)
+            jarsigner_path, signer_config.signer_file_path, signer_config.signer_pwd, signer_config.signer_key_pwd, final_apk_path, origin_apk_path, signer_config.signer_alias)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -273,6 +278,21 @@ class CMD(object):
 
         """
         all_cmd = "adb pull {0} {1}".format(in_phone_path, target_path)
+        return cmdBySystem(all_cmd, all_cmd, all_cmd)
+    
+    @classmethod
+    def apkSignerByKeyTool(cls, keytool_path, rsa_path):
+        """
+        通过 keytool 获取 apk 的签名信息
+
+        :param keytool_path: keytool 路径
+        :param rsa_path: .RSA 文件路径
+
+        win: keytool.exe -printcert (-jarfile [.apk 文件] | -file [RSA 文件])
+        linux: keytool -printcert (-jarfile [.apk 文件] | -file [RSA 文件])
+
+        """
+        all_cmd = "{0} -printcert -file {1}".format(keytool_path, rsa_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
         
     ########################### aab 相关 ###############################################
@@ -425,7 +445,7 @@ class CMD(object):
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
-def cmdBySystem(win_cmd, linux_cmd, mac_cmd):
+def cmdBySystem(win_cmd, linux_cmd, mac_cmd)->Union[bool, str]:
     """
     执行 CMD 命令
 
@@ -434,6 +454,7 @@ def cmdBySystem(win_cmd, linux_cmd, mac_cmd):
     :param mac_cmd: mac 上的命令行
 
     """
+    loger = Loger()
     try:
         if platform.system() == "Windows":
             cmd = win_cmd
@@ -442,11 +463,18 @@ def cmdBySystem(win_cmd, linux_cmd, mac_cmd):
         elif platform.system() == 'Darwin':
             cmd = mac_cmd
         else:
-            return False, cmd+"\n"+"cmd not support this system"
+            loger.warning("cmd not support this system")
+            return False
+        loger.info("执行命令：{0}".format(cmd))
         process = subprocess.check_output(cmd, shell=True)
-        return True, cmd+"\n"+"cmd_result:\n"+process.decode(encoding='gbk')
+        # 不指定utf-8，在windows上会有gbk转utf-8的问题
+        cmd_result = process.decode(encoding=locale.getpreferredencoding())
+        loger.info("执行结果：{0}".format(cmd_result))
+        return True, cmd_result
     except Exception as e:
-        return False, cmd+"\nexce:\n"+traceback.format_exc()
+        e_msg = traceback.format_exc()
+        loger.warning("执行异常：{0}".format(e_msg))
+        return False, "exce:\n{0}".format(e_msg)
 
 
 if __name__ == "__main__":

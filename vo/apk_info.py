@@ -15,6 +15,7 @@ class ApkInfo:
                  version_name, target_version, min_version, abis, langs, output_path=None):
         """
         :param apk_path: apk 路径
+        :param md5: apk 的 md5
         :param app_name: app 名称
         :param icon: icon 的路径
         :param package_name: 包名
@@ -24,15 +25,15 @@ class ApkInfo:
         :param min_version: 最小版本
         :param abis: 支持的架构
         :param langs: 支持的语言
+        :param signer_md5: apk 签名的 md5
+        :param signer_sha1: apk 签名的 sha1
+        :param signer_sha256: apk 签名的 sha256
         :param output_path: 反编后的路径，可为空
         """
         self.apk_path = apk_path
         self.app_name = app_name
         self.output_path = output_path
-        if output_path!= None:
-            self.icon = os.path.join(output_path, icon)
-        else:
-            self.icon = icon
+        self.icon = icon
         self.package_name = package_name
         self.version_code = version_code
         self.version_name = version_name
@@ -40,6 +41,10 @@ class ApkInfo:
         self.min_version = min_version
         self.abis = abis
         self.langs = langs
+        self.md5 = None
+        self.signer_md5 = None
+        self.signer_sha1 = None
+        self.signer_sha256 = None
 
     def __str__(self):
         return str(self.__dict__)

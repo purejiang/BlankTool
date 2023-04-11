@@ -1,0 +1,7 @@
+QWidget#widget_main {
+    border-radius: 1px;
+    background-color: #3D3D3D;
+}
+QWidget#widget_main_content {
+    background-color: #303030;
+}

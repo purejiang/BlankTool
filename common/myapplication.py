@@ -1,6 +1,5 @@
 
-from PySide2.QtWidgets import QApplication
-
+from PySide6.QtWidgets import QApplication
 
 class MyApplication(QApplication):
     """
@@ -20,14 +19,13 @@ class MyApplication(QApplication):
     def jump2Window(self, from_window, to_window_clazz, data=None):
         for window in self.window_list:
             if isinstance(window, to_window_clazz):
-                window._on_pre_show(data)
-                window._setup_qss()
+                window._onPreShow(data)
                 window.show()
-                window._setup_listener()
-                window._on_after_show(data)
+                window._setupListener()
+                window._onAfterShow(data)
                 self.current_window = window
                 if from_window:
-                    from_window.on_hide()
+                    from_window.onHide()
                     from_window.close()
                 window._onJumpFinish()
 

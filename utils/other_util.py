@@ -27,8 +27,8 @@ def currentTimeMillis():
     """
     return int(time.time())
 
-def write_print(loguer, msg):
-    if loguer:
-        loguer.log(msg)
-    else:
-        print(msg)
+def new_file_name(file_name, md5):
+    return "{0}_{1}".format(file_name, md5)
+
+def get_file_name_md5(file_name):
+    return file_name.split("_")[:-1]

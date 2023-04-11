@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
 
-from manager.signer_manager import SignerManager
-from viewmodel.viewmodel_signal import ViewModelSignal
-from PySide2.QtCore import QThread, Signal
+from PySide6.QtCore import Signal
+from logic.signer_manager import SignerManager
 
-class SignerViewModel(object):
+from viewmodel.base_viewmodel import BaseThread, Operation
+from vo.signer import SignerConfig
+
+class SignerViewModel():
     """
     签名的相关操作
 
@@ -13,113 +15,116 @@ class SignerViewModel(object):
 
     """
     def __init__(self, parent) -> None:
-        super(SignerViewModel, self).__init__()
+        super().__init__()
         self.parent = parent
-        self.add_keystore_success = ViewModelSignal()       # 添加签名成功
-        self.add_keystore_failure = ViewModelSignal()       # 添加签名失败
-        self.del_keystore_success = ViewModelSignal()       # 删除签名成功
-        self.del_keystore_failure = ViewModelSignal()       # 删除签名失败
-        self.get_keystores_success = ViewModelSignal()      # 获取签名列表成功
-        self.get_keystores_failure = ViewModelSignal()      # 获取签名列表失败
-        self.sign_success = ViewModelSignal()               # 签名成功
-        self.sign_failure = ViewModelSignal()               # 签名失败
+        self.add_operation = Operation()                 # 添加签名
+        self.del_operation = Operation()                 # 删除签名
+        self.modify_operation = Operation()              # 修改签名
+        self.get_operation = Operation()                 # 获取签名
+        self.all_operation = Operation()                 # 获取所有签名
     
-    def add_keystore(self, keystore_config):
-        add_thread = AddKeyStore(self.parent, keystore_config)
-        add_thread.success.connect(self.add_keystore_success.to_method())
-        add_thread.failure.connect(self.add_keystore_failure.to_method())
-        add_thread.start()
+    def addSigner(self, signer_config):
+        add_thread = AddSigner(signer_config)
+        self.add_operation.loadThread(add_thread)
+        self.add_operation.start()
     
-    def del_keystore(self, keystore_config):
-        del_thread = DelKeyStore(self.parent, keystore_config)
-        del_thread.success.connect(self.del_keystore_success.to_method())
-        del_thread.failure.connect(self.del_keystore_failure.to_method())
-        del_thread.start()
+    def delSigner(self, signer_id):
+        del_thread = DelSigner(signer_id)
+        self.del_operation.loadThread(del_thread)
+        self.del_operation.start()
     
-    def get_keystores(self):
-        get_thread = GetKeyStoreList(self.parent)
-        get_thread.success.connect(self.get_keystores_success.to_method())
-        get_thread.failure.connect(self.get_keystores_failure.to_method())
-        get_thread.start()
+    def getSigner(self, signer_id):
+        get_thread = GetSigner(signer_id)
+        self.get_operation.loadThread(get_thread)
+        self.get_operation.start()
+
+    def modifySigner(self, signer_config):
+        modify_thread = ModifySigner(signer_config)
+        self.modify_operation.loadThread(modify_thread)
+        self.modify_operation.start()
+
+    def allSigners(self):
+        all_thread = AllSignerList()
+        self.all_operation.loadThread(all_thread)
+        self.all_operation.start()
+ 
     
-    def sign(self, apk_path, output_path, keystore_config):
-        sign_thread = Sign(self.parent, apk_path, output_path, keystore_config)
-        sign_thread.success.connect(self.sign_success.to_method())
-        sign_thread.failure.connect(self.sign_failure.to_method())
-        sign_thread.start()   
-    
-class AddKeyStore(QThread):
+class AddSigner(BaseThread):
     """
     添加 keystore
     """
-    success = Signal()
-    failure = Signal(int, str)
-
-    def __init__(self, parent, keystore_config):
-        super().__init__(parent)
-        self.keystore_config = keystore_config
+    def __init__(self, signer_config):
+        super().__init__()
+        self.signer_config = signer_config
 
     def run(self):
-        result = SignerManager.addKeystore(self.keystore_config)
+        result = SignerManager.addKeystore(self.signer_config, self._progressCallback)
         if result:
-            self.success.emit()
+            self._success_signal.emit()
         else:
-            self.failure.emit(0, "添加失败")
+            self._failure_signal.emit(0, "添加失败")
 
-    def progress_callback(self, progress, msg):
-        self.install_progress.emit(progress, msg)
-
-class DelKeyStore(QThread):
+class DelSigner(BaseThread):
     """
-    删除 keystore
+    删除签名
     """
-    success = Signal()
-    failure = Signal(int, str)
 
-    def __init__(self, parent, keystore_info):
-        super().__init__(parent)
-        self.keystore_info = keystore_info
+    def __init__(self, configer_id):
+        super().__init__()
+        self.configer_id = configer_id
 
     def run(self):
-        result = SignerManager.delKeystore(self.keystore_info)
+        result = SignerManager.delSigner(self.configer_id, self._progressCallback)
         if result:
-            self.success.emit()
+            self._success_signal.emit()
         else:
-            self.failure.emit(0, "删除失败")
+            self._failure_signal.emit(0, "删除失败")
 
-class GetKeyStoreList(QThread):
+class ModifySigner(BaseThread):
     """
-    获取 keystore 列表
+    修改签名
     """
-    success = Signal(list)
-    failure = Signal(int, str)
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, signer_config):
+        super().__init__()
+        self.signer_config = signer_config
 
     def run(self):
-        result, list = SignerManager.getKeystores()
+        result = SignerManager.modifySigner(self.signer_config, self._progressCallback)
         if result:
-            self.success.emit(list)
+            self._success_signal.emit()
         else:
-            self.failure.emit(0, "获取失败")
-    
-class Sign(QThread):
+            self._failure_signal.emit(0, "修改失败")
+        
+class GetSigner(BaseThread):
     """
-    签名
+    获取签名
     """
-    success = Signal()
-    failure = Signal(int, str)
 
-    def __init__(self, parent, apk_path, out_path, keystore_config):
-        super().__init__(parent)
-        self.apk_path = apk_path
-        self.out_path = out_path
-        self.keystore_config = keystore_config
+    def __init__(self, signer_config_id):
+        super().__init__()
+        self.signer_config_id = signer_config_id
+        self._success_signal = Signal(SignerConfig)
 
     def run(self):
-        result = SignerManager.sign(self.apk_path, self.out_path, self.keystore_config)
+        result, ks_config = SignerManager.getSigner(self.signer_config_id, self._progressCallback)
         if result:
-            self.success.emit()
+            self._success_signal.emit(ks_config)
         else:
-            self.failure.emit(0, "签名失败")
+            self._failure_signal.emit(0, "获取失败")
+            
+class AllSignerList(BaseThread):
+    """
+    获取签名列表
+    """
+    _success_signal = Signal(list)
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        signer_list = SignerManager.allSigners(self._progressCallback)
+        if signer_list!=None:
+            self._success_signal.emit(signer_list)
+        else:
+            self._failure_signal.emit(0, "获取失败")

@@ -1,0 +1,74 @@
+/* 
+基础的样式，全局使用 
+
+主色：（外壳）#3D3D3D
+副色：#303030、 #828282、（控件正常）#595959、#FFFFFF、
+
+*/
+
+QLabel {
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;
+}
+
+QLineEdit {
+    background: #FFFFFF;
+    border-radius: 4px;
+    border: 1px solid #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    color: #3D3D3D;
+}
+
+QPushButton {
+  /* 可以去掉按下的下沉效果 */
+  border-radius: 5px;
+  background-color: #46A6FD;
+  color: #FFFFFF;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+}
+QPushButton:default {
+  background-color: #46A6FD;
+}
+
+QPushButton:hover{
+  background-color: #64C8FE;
+}
+
+QCheckBox {
+    color: #A4A4A4;
+    font-family: "Microsoft YaHei";
+}
+
+
+/* 整个滚动条区域样式 */
+QScrollBar:vertical {
+  border-radius: 5px;
+  background-color: transparent;
+  width: 10px;
+}
+/* 滑块区域样式 */
+QScrollBar::handle:vertical {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  min-height: 20px;
+}
+/* 向上/下区域的样式 */
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+  background: none;
+}
+/* 滑块上面区域样式 */
+QScrollBar::sub-page:vertical {
+  background: transparent;
+  border: 0px;
+}
+
+/* 滑块下面区域样式 */
+QScrollBar::add-page:vertical {
+  background: transparent;
+  border: 0px;
+}
