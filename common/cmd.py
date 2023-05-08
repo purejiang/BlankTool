@@ -8,7 +8,7 @@ import traceback
 from typing import Union
 from logic.signer_manager import SignerConfig
 
-from utils.b_loger import Loger
+from utils.j_loger import JLoger
 
 
 class CMD():
@@ -62,7 +62,7 @@ class CMD():
         s = ""
         if is_only_res:
             s = " -s"
-        all_cmd = "java -jar {0}{1} d{2} {3} -o {4}".format(
+        all_cmd = "java -jar \"{0}{1}\" d{2} \"{3}\" -o \"{4}\"".format(
             apktool_path, s, pass_dex, apk_path, output_dir)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -83,7 +83,7 @@ class CMD():
         aapt2 = ""
         if is_support_aapt2:
             aapt2 = " --use-aapt2"
-        all_cmd = "java -jar {0} b{1} {2} -f -o {3}".format(
+        all_cmd = "java -jar \"{0}\" b{1} \"{2}\" -f -o \"{3}\"".format(
             apktool_path, aapt2, dir_path, output_apk_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -100,7 +100,7 @@ class CMD():
         """
         if os.path.exists(output_jar_path):
             return False, "jar is exist: {0}".format(output_jar_path)
-        all_cmd = "python {0}/debug.py -o {1} {2}".format(
+        all_cmd = "python {0}/debug.py -o \"{1}\" \"{2}\"".format(
             enjarify_path, output_jar_path, apk_path)
         
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
@@ -122,9 +122,9 @@ class CMD():
         if os.path.exists(output_jar_path):
             return False, "jar is exist: {0}".format(output_jar_path)
         for dex_path in dexs_list:
-            win_cmd = "{0}/d2j-dex2jar.bat {1} -o {2}".format(
+            win_cmd = "{0}/d2j-dex2jar.bat \"{1}\" -o \"{2}\"".format(
                 dex2jar_path, dex_path, output_jar_path)
-            linux_cmd = "{0}/d2j-dex2jar {1} -o {2} ".format(
+            linux_cmd = "{0}/d2j-dex2jar \"{1}\" -o \"{2}\"".format(
                 dex2jar_path, dex_path, output_jar_path)
             mac_cmd = ""
             cmd_result = cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -145,9 +145,9 @@ class CMD():
         """
         if os.path.exists(output_jar_path):
             return False, "jar is exist: {0}".format(output_jar_path)
-        win_cmd = "{0}/d2j-dex2jar.bat {1} -o {2}".format(
+        win_cmd = "{0}/d2j-dex2jar.bat \"{1}\" -o \"{2}\"".format(
             dex2jar_path, apk_path, output_jar_path)
-        linux_cmd = "{0}/d2j-dex2jar {1} -o {2} ".format(
+        linux_cmd = "{0}/d2j-dex2jar \"{1}\" -o \"{2}\"".format(
             dex2jar_path, apk_path, output_jar_path)
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -176,7 +176,7 @@ class CMD():
         :param kwargs: 签名配置 ['ks_path'], ['ksw'], ['kw'], ['final_apk'], ['new_apk'], ['kalias']
 
         """
-        win_cmd = "{0} -keystore {1} -storepass {2} -keypass {3} -digestalg SHA1 -sigalg MD5withRSA -signedjar {4} {5} {6}".format(
+        win_cmd = "\"{0}\" -keystore \"{1}\" -storepass \"{2}\" -keypass \"{3}\" -digestalg SHA1 -sigalg MD5withRSA -signedjar \"{4}\" \"{5}\" \"{6}\"".format(
             jarsigner_path, signer_config.signer_file_path, signer_config.signer_pwd, signer_config.signer_key_pwd, final_apk_path, origin_apk_path, signer_config.signer_alias)
         linux_cmd = ""
         mac_cmd = ""
@@ -191,7 +191,7 @@ class CMD():
 
         adb install xxx.apk
         """
-        all_cmd = "adb install {0}".format(apk_path)
+        all_cmd = "adb install \"{0}\"".format(apk_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
     @classmethod
@@ -206,7 +206,7 @@ class CMD():
         """
         if os.path.exists(info_file_path):
             return True, "info file is exist: {0}".format(info_file_path)
-        win_cmd = "aapt2 dump badging {0} >> {1}".format(apk_path, info_file_path)
+        win_cmd = "aapt2 dump badging \"{0}\" >> \"{1}\"".format(apk_path, info_file_path)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -229,7 +229,7 @@ class CMD():
             val_cmd+=" -f"
         if is_sys:
             val_cmd+=" -s"
-        win_cmd = "adb shell pm list packages{0} >> {1}".format(val_cmd, info_file_path)
+        win_cmd = "adb shell pm list packages{0} >> \"{1}\"".format(val_cmd, info_file_path)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -245,7 +245,7 @@ class CMD():
         """
         if os.path.exists(info_file_path):
             return True, "info file is exist: {0}".format(info_file_path)
-        win_cmd = "adb shell dumpsys package packages >> {0}".format(info_file_path)
+        win_cmd = "adb shell dumpsys package packages >> \"{0}\"".format(info_file_path)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -263,7 +263,7 @@ class CMD():
         """
         if os.path.exists(info_file_path):
             return True, "info file is exist: {0}".format(info_file_path)
-        win_cmd = "adb shell pm path {0} >> {1}".format(package_name, info_file_path)
+        win_cmd = "adb shell pm path {0} >> \"{1}\"".format(package_name, info_file_path)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -277,7 +277,7 @@ class CMD():
         :param target_path: 导出的目录
 
         """
-        all_cmd = "adb pull {0} {1}".format(in_phone_path, target_path)
+        all_cmd = "adb pull \"{0}\" \"{1}\"".format(in_phone_path, target_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
     
     @classmethod
@@ -292,7 +292,7 @@ class CMD():
         linux: keytool -printcert (-jarfile [.apk 文件] | -file [RSA 文件])
 
         """
-        all_cmd = "{0} -printcert -file {1}".format(keytool_path, rsa_path)
+        all_cmd = "\"{0}\" -printcert -file \"{1}\"".format(keytool_path, rsa_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
         
     ########################### aab 相关 ###############################################
@@ -326,9 +326,9 @@ class CMD():
 
         keystore_str = ""
         if keystore_config:
-            keystore_str = " --ks={0} --ks-pass=pass:{1} --ks-key-alias={2} --key-pass=pass:{3}".format(
+            keystore_str = " --ks=\"{0}\" --ks-pass=pass:{1} --ks-key-alias={2} --key-pass=pass:{3}".format(
                 keystore_config["store_file"], keystore_config["store_password"], keystore_config["key_alias"], keystore_config["key_password"])
-        all_cmd = "java -jar {0} build-apks --bundle {1} --output {2}{3}".format(
+        all_cmd = "java -jar \"{0}\" build-apks --bundle \"{1}\" --output \"{2}\" {3}".format(
             bundletool_path, aab_path, output_apks_path, keystore_str)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -342,7 +342,7 @@ class CMD():
 
         java -jar [ bundletool 文件] install-apks --apks [ .apks 文件]  --adb= [ .adb 文件]
         """
-        all_cmd = "java -jar {0} install-apks --apks {1}".format(
+        all_cmd = "java -jar \"{0}\" install-apks --apks \"{1}\"".format(
             bundletool_path, apks_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -357,7 +357,7 @@ class CMD():
 
         [ aapt2 文件] compile --dir [ res 路径] -o [生成资源的 .zip ]
         """
-        all_cmd = "aapt2 compile --dir {0} -o {1}".format(
+        all_cmd = "aapt2 compile --dir \"{0}\" -o \"{1}\"".format(
              res_path, output_zip_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -377,7 +377,7 @@ class CMD():
 
         [ aapt2 文件] link --proto-format [资源的 zip ] -o [输出的 base.apk] -I [ android.jar 文件] --manifest [ manifest 文件] --min-sdk-version [最小版本] --target-sdk-version [目标版本] --version-code [版本号] --compile-sdk-version-name [版本名]
         """
-        all_cmd = "aapt2 link --proto-format {0} -o {1} -I {2} --manifest {3} --min-sdk-version {4} --target-sdk-version {5} --version-code {6} --compile-sdk-version-name {7}".format(
+        all_cmd = "aapt2 link --proto-format \"{0}\" -o \"{1}\" -I \"{2}\" --manifest \"{3}\" --min-sdk-version {4} --target-sdk-version {5} --version-code {6} --compile-sdk-version-name {7}".format(
              zip_path, base_apk_path, android_jar, manifest_file, min_ver, target_ver, ver_code, ver_name)
 
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
@@ -393,7 +393,7 @@ class CMD():
 
         java -jar [ smali.jar ] assemble -o [ .dex 文件] [ smali 文件夹]
         """
-        all_cmd = "java -jar {0} assemble -o {1} {2}".format(
+        all_cmd = "java -jar \"{0}\" assemble -o \"{1}\" \"{2}\"".format(
             smali_jar_path, dex_path, smali_dir)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -408,7 +408,7 @@ class CMD():
 
         java -jar [ bundletool.jar ] build-bundle --modules [ base.zip 文件] --output=[输出的 .aab ]
         """
-        all_cmd = "java -jar {0} build-bundle --modules {1} --output={2}".format(
+        all_cmd = "java -jar \"{0}\" build-bundle --modules \"{1}\" --output=\"{2}\"".format(
             bundle_tool_path, base_zip, output_aab)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 
@@ -426,7 +426,7 @@ class CMD():
 
         [ rcc.exe ] -binary [.qrc 文件] -o [输出的 .rcc 文件]
         """
-        win_cmd ="{0} -binary {1} -o {2}".format(rcc_exe, qrc_file, rcc_file)
+        win_cmd ="\"{0}\" -binary \"{1}\" -o \"{2}\"".format(rcc_exe, qrc_file, rcc_file)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -440,7 +440,7 @@ class CMD():
 
         [ pyinsatller.exe ] [ spec 配置文件]
         """
-        win_cmd ="{0} {1}".format(pyinstaller, spec_file)
+        win_cmd ="\"{0}\" \"{1}\"".format(pyinstaller, spec_file)
         linux_cmd = ""
         mac_cmd = ""
         return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
@@ -454,7 +454,7 @@ def cmdBySystem(win_cmd, linux_cmd, mac_cmd)->Union[bool, str]:
     :param mac_cmd: mac 上的命令行
 
     """
-    loger = Loger()
+    loger = JLoger()
     try:
         if platform.system() == "Windows":
             cmd = win_cmd

@@ -1,6 +1,8 @@
 
 from PySide6.QtWidgets import QApplication
 
+from widget.base.base_window import BaseWindow
+
 class MyApplication(QApplication):
     """
 
@@ -13,21 +15,29 @@ class MyApplication(QApplication):
         self.window_list = []
         self.current_window = None
 
-    def addWindow(self, window):
-        self.window_list.append(window)
+    def addWindow(self, window:BaseWindow):
+        if window not in self.window_list:
+            self.window_list.append(window)
 
-    def jump2Window(self, from_window, to_window_clazz, data=None):
+    def jump(self, from_window:BaseWindow, to_window_clazz, data=None):
+        to_window = None
         for window in self.window_list:
             if isinstance(window, to_window_clazz):
-                window._onPreShow(data)
-                window.show()
-                window._setupListener()
-                window._onAfterShow(data)
-                self.current_window = window
-                if from_window:
-                    from_window.onHide()
-                    from_window.close()
-                window._onJumpFinish()
+                to_window = window
+               
+        if to_window is None:
+            to_window = to_window_clazz(self)
+            self.addWindow(to_window)
 
-    def show(self, window):
-        self.jump2Window(None, window)
+        if from_window:
+            from_window._onHide()
+            from_window.close()
+
+        to_window._onPreShow(data)
+        to_window.show()
+        to_window._setupListener()
+        to_window._onAfterShow(data)
+        self.current_window = to_window
+
+    def showClazz(self, window_clazz):
+        self.jump(None, window_clazz)

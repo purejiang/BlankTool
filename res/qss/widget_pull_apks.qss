@@ -7,7 +7,7 @@ QWidget#widget_pull_apks_fuction_bar {
   background-color: #595959;
 }
 
-QPushButton#btn_select_apk{
+QPushButton#btn_searcher_in_pull_apk{
   /* 可以去掉按下的下沉效果 */
   border-radius: 5px;
   border: 1px solid #FFFFFF;
@@ -16,12 +16,12 @@ QPushButton#btn_select_apk{
   font-family: "Microsoft YaHei";
   font-size: 12px;
 }
-QPushButton#btn_select_apk:default {
+QPushButton#btn_searcher_in_pull_apk:default {
   background-color: transparent;
 }
 
-QPushButton#btn_select_apk:hover{
-  background-color: #97c4dd;
+QPushButton#btn_searcher_in_pull_apk:hover{
+  background-color: #64C8FE;
 }
 
 QLineEdit {

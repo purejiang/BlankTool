@@ -1,17 +1,16 @@
 # -*- coding:utf-8 -*-
-import os
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime
 from utils.ui_utils import chooseFile
 from viewmodel.aab_viewmodel import AabViewModel
 from viewmodel.apk_viewmodel import ApkViewModel
 
-from widget.base.base_widget import BaseWidget
 from widget.custom.toast import Toast
+from widget.function.widget_function import FunctionWidget
 from widget.step_info.widget_step_info import StepInfoWidget
 
 
-class InstallWidget(BaseWidget):
+class InstallWidget(FunctionWidget):
     """
 
     @author: purejiang
@@ -41,10 +40,11 @@ class InstallWidget(BaseWidget):
     def __chooseFile(self):
         file_path = chooseFile(self, "选取 Apk/aab", "安卓应用文件 (*.aab *.apk)")
         self._ui.edt_install_path.setText(file_path)
+
+    def __install(self):
         # 清除list中的item
         self.__widget_install_step_info._clear()
 
-    def __install(self):
         file_path = self._ui.edt_install_path.text()
         if not FileHelper.fileExist(file_path) or file_path=="":
             toast = Toast(self)
@@ -88,3 +88,6 @@ class InstallWidget(BaseWidget):
 
     def __aabInstallPrgress(self, progress, title, des):
         self.__widget_install_step_info.loadStep(title, currentTime(), des)
+
+    def _entry(self):
+        return super()._entry()

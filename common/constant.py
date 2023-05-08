@@ -3,7 +3,6 @@ import json
 import os
 
 from utils.file_helper import FileHelper
-from vo.apk_info import ApkInfo
 """
 
 @author: purejiang
@@ -76,12 +75,11 @@ class Constant:
         # Blank Tool 的缓存
         SETTING_CACHE_PATH = os.path.abspath(__CACHE["setting_cache"])
 
-        ###### 资源目录 ######
+        ###### RCC资源目录 ######
         RESOURCE_PATH = os.path.abspath(Config.parseDefaultConfig("path")["res"])
 
         ALL_CACHE_PATH_LIST = [ADB_INFO_CACHE_PATH, AAB_CACHE_PATH, SETTING_CACHE_PATH, AAPT_INFO_CACHE_PATH, INSTALL_CACHE_PATH, PARSE_CACHE_PATH, PULL_APK_CACHE_PATH,]
         ALL_OTHER_PATH_LIST = [RESOURCE_PATH]
-
 
     class ErrorCode:
         CREATE_APK_LIST_INFO_FILE_FAILEURE = 10001

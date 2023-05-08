@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 
-import os
 from logic.bundle_manager import BundleManager
 
 from viewmodel.base_viewmodel import BaseThread, Operation

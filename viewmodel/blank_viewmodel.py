@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
-
+from PySide6.QtCore import Signal
 from logic.blank_manager import BlankManager
 from viewmodel.base_viewmodel import BaseThread, Operation
-
-from PySide6.QtCore import Signal
 
 class BlankViewModel():
     """
@@ -18,14 +16,18 @@ class BlankViewModel():
         self.parent = parent
         
         self.init_app_opreation = Operation()           # 初始化应用
-
+        self.get_chache_size_opreation = Operation()    # 获取缓存大小
         self.clean_cache_opreation = Operation()        # 清理缓存
 
     def initApp(self):
         init_app_thread = InitApp()
         self.init_app_opreation.loadThread(init_app_thread)
         self.init_app_opreation.start()
-    
+
+    def getCacheSize(self):
+        get_chache_size_thread = GetCacheSize()
+        self.get_chache_size_opreation.loadThread(get_chache_size_thread)
+        self.get_chache_size_opreation.start()
 
     def cleanCache(self):
         clean_cache_thread = CleanCache()
@@ -46,6 +48,22 @@ class CleanCache(BaseThread):
             self._success_signal.emit()
         else:
             self._failure_signal.emit(0, "清理缓存失败")
+
+class GetCacheSize(BaseThread):
+    """
+    获取缓存大小
+    """
+    _success_signal = Signal(str)   
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        result = BlankManager.getChache(self._progressCallback)
+        if result:
+            self._success_signal.emit(result)
+        else:
+            self._failure_signal.emit(0, "获取缓存失败")
 
 class InitApp(BaseThread):
     """

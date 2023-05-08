@@ -21,7 +21,10 @@ QPushButton#btn_select_apk:default {
 }
 
 QPushButton#btn_select_apk:hover{
-  background-color: #97c4dd;
+  background-color: #64C8FE;
+}
+QPushButton#btn_select_apk:disabled{
+    background-color: #C3C3C3;
 }
 
 QLineEdit {

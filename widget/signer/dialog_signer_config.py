@@ -2,7 +2,6 @@
 
 from utils.file_helper import FileHelper
 from utils.ui_utils import chooseFile
-from viewmodel.signer_viewmodel import SignerViewModel
 from vo.signer import SignerConfig
 from widget.base.base_dialog import BaseDialog
 from widget.custom.toast import Toast

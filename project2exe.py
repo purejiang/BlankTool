@@ -12,7 +12,7 @@ import re
 from common.cmd import CMD
 
 from utils.file_helper import FileHelper
-from utils.other_util import currentTimeMillis, currentTimeNumber, write_print
+from utils.other_util import currentTimeMillis, currentTimeNumber
 
 
 class ResToRcc():
@@ -61,7 +61,7 @@ class ResToRcc():
         将 .qrc 文件的映射转换为二进制的 .rcc 文件（.qrc 中所有映射的资源文件都会打包进 .rcc 文件）
         """
         cmd_result = CMD.qrc2Rcc(rcc_exe, qrc_file, rcc_file)
-        write_print(None, cmd_result[1])
+        print(cmd_result[1])
         return cmd_result[0]
 
     def start(self, rcc_exe, res_dir, tags, qrc_file, rcc_file):
@@ -71,18 +71,18 @@ class ResToRcc():
                 qResource_list.append(self.qResourceText(
                     os.path.join(res_dir, tag), tag))
             else:
-                write_print(None, "tag not in tags")
+                print("tag not in tags")
         if self.createQrc(qResource_list, qrc_file):
             return self.createRcc(rcc_exe, qrc_file, rcc_file)
         else:
-            write_print(None, "creata qrc file failed")
+            print("creata qrc file failed")
             return False
 
 
 if __name__ == "__main__":
     # 用到的工具
-    rcc_exe = r"D:\ProgramData\Miniconda3\envs\py_blank_tool\Lib\site-packages\PySide6\rcc.exe"
-    pyinstaller_exe = r"D:\ProgramData\Miniconda3\envs\py_blank_tool\Scripts\pyinstaller.exe"
+    rcc_exe = r"D:\ProgramData\Miniconda3\envs\pyside6_re\Lib\site-packages\PySide6\rcc.exe"
+    pyinstaller_exe = r"D:\ProgramData\Miniconda3\envs\pyside6_re\Scripts\pyinstaller.exe"
 
     ####### step 1 ：当前版本为发布版本时，复制项目到工作目录 #######
     # 不复制的文件/文件夹
@@ -110,17 +110,17 @@ if __name__ == "__main__":
     ####### step 2：替换并修改文件中所使用的静态资源的相对路径为二进制资源包中的路径，例：.res/qss/xxxx.qss 为 :qss/xxxx #######
     # 命令行进入到发行版根目录
     os.chdir(release_project)
-    check_dirs = ["ui", "res/qss"]
+    check_dirs = ["widget", "res/qss"]
     for check_dir in check_dirs:
-        for file in FileHelper.getChild(os.path.join(release_project, check_dir), FileHelper.TYPE_FILE):
-            print(file)
-            content = FileHelper.fileContent(file)
-            str_list = re.findall("\./res/.*[\.\w?]", content)
-            for str in str_list:
-                print(str_list)
-                new_str = str.replace("./res/", ":").split(".")[0]
-                content = content.replace(str, new_str)
-            FileHelper.writeContent(file, content.replace(str, new_str))
+        for file in FileHelper.getAllChild(os.path.join(release_project, check_dir), FileHelper.TYPE_FILE):
+            if FileHelper.getSuffix(file)==".py" or FileHelper.getSuffix(file)==".qss":
+                content = FileHelper.fileContent(file)
+                res_list = re.findall("[\"(]\./res/.*?[\")]", content)
+                for res in res_list:
+                    old_str = res.replace(")","").replace("(","").replace("\"","")
+                    new_str = old_str.replace("./res/", ":").split(".")[0]
+                    content = content.replace(old_str, new_str)
+                FileHelper.writeContent(file, content.replace(res, new_str))
 
     ####### step 3：生成 res.rcc 文件 #######
     res_dir = os.path.join(release_project, "res")

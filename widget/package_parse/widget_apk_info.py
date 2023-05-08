@@ -5,10 +5,10 @@ from PySide6.QtWidgets import QTableWidgetItem,QHeaderView
 
 from vo.apk_info import ApkInfo
 
-from widget.base.base_widget import BaseWidget
+from widget.function.widget_function import FunctionWidget
 
 
-class ApkInfoWidget(BaseWidget):
+class ApkInfoWidget(FunctionWidget):
     """
 
     @author: purejiang
@@ -25,19 +25,19 @@ class ApkInfoWidget(BaseWidget):
 
     def _onPreShow(self):
         pass
-    
-    def _setupListener(self):
-        pass
 
-    def receiveApkInfo(self, apk_info):
-        if apk_info !=None:
+    def _entry(self):
+        if None !=None:
             self._ui.lb_notic_please_update_apk.setVisible(False)
             self._ui.tw_apk_info_table.setVisible(True)
-            self.__showApkInfo(apk_info)
+            self.__showApkInfo(None)
         else:
             self._ui.lb_notic_please_update_apk.setVisible(True)
             self._ui.tw_apk_info_table.setVisible(False)
     
+    def _setupListener(self):
+        pass
+
     def __showApkInfo(self, apk_info:ApkInfo):
         table = self._ui.tw_apk_info_table
         columb_count=2

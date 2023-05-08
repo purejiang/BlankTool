@@ -14,6 +14,7 @@ import math
 import shutil
 import struct
 import hashlib
+import subprocess
 import zipfile
 from pathlib import Path
 
@@ -69,6 +70,16 @@ class FileHelper():
         """
         with zipfile.ZipFile(zip_file, 'a') as zf:
             zf.extractall(unnzip_dir)
+
+    @classmethod
+    def fileSize(cls, file_path)->int:
+        """
+        文件大小
+
+        :param file: 文件的路径
+        """
+        file_path = '\\\\?\\{}'.format(file_path)
+        return os.path.getsize(file_path)
 
     @classmethod
     def zipDelFiles(cls, zip_file, del_files):
@@ -347,7 +358,7 @@ class FileHelper():
             return file.read()
 
     @classmethod
-    def fileSize(cls, file_path, unit):
+    def fileSizeStr(cls, file_path, unit):
         """
         获取文件大小，单位为字节
 
@@ -481,6 +492,11 @@ class FileHelper():
             file.seek(0)
             file.truncate()
             file.write(content)
+    
+    @classmethod
+    def showInExplorer(cls, file_or_dir_path):
+        # 在资源管理器中选中指定文件
+        subprocess.run(['explorer', '/select,', file_or_dir_path], shell=True)
 
     @classmethod
     def md5(cls, file_path):
@@ -531,24 +547,6 @@ class FileHelper():
                             {'ext': it['extension'].lower(), 'des': it['description']})
                 return FileType(sign, info)
 
-    # @classmethod
-    # def delLongPathDir(cls, dir_path):
-    #     """
-    #     删除路径过长的文件夹
-
-    #     :param dir_path: 文件夹
-    #     """
-    #     index = 0
-    #     old_dir = dir_path
-    #     try:
-    #         while True:
-    #             for file in cls.getChild(old_dir, cls.TYPE_DIR):
-    #                 index += 1
-    #                 new_dir = r"{0}\{1}".format(dir_path, index)
-    #                 cls.moveFile(file, new_dir)
-    #             old_dir = r"{0}\{1}".format(dir_path, index)
-    #     except Exception as e:
-    #         cls.delFile(dir_path)
 if __name__=="__main__":
     filelist = FileHelper.getAllChild(r"F:\python_project\blank_tool\cache", FileHelper.TYPE_DIR)
     print(filelist)

@@ -3,10 +3,9 @@
 import os
 from common.constant import Constant
 from logic.apk_manager import ApkManager
-from utils.file_helper import FileHelper
-from utils.other_util import currentTimeMillis, new_file_name
+from utils.other_util import currentTimeMillis
 from viewmodel.base_viewmodel import BaseThread, Operation
-from PySide6.QtCore import QThread, Signal
+from PySide6.QtCore import Signal
 
 from vo.apk_info import ApkInfo
 from vo.signer import SignerConfig

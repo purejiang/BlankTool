@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 import threading
 
 from PySide6 import QtWidgets, QtGui, QtCore

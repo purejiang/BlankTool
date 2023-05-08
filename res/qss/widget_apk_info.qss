@@ -1,7 +1,13 @@
-QTableWidget{
-    background:#FFFFFF;
-    border:none;
+QLabel#lb_notic_please_update_apk{
+    border-radius: 5px;
+    background-color: #595959;
+}
 
+QTableWidget{
+    border-radius: 5px;
+    background-color: #595959;
+    padding: 24px;
+    border:none;
     font-size:12px;
     font-family:"Microsoft YaHei";
     color:#666666;
@@ -12,7 +18,7 @@ QTableWidget::item{
 }
 
 QTableWidget::item::selected{
-    color:#9697D1;
+    color:#64C8FE;
     background:#EFF4FF;
 }
 

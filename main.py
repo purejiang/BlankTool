@@ -2,15 +2,14 @@
 
 import sys
 from common.myapplication import MyApplication
-from widget.window_main import MainWindow
+from widget.window_init import InitWindow
+
 
 
 if __name__ == '__main__':
 
         app = MyApplication(sys.argv)
 
-        login_route = MainWindow(app)
-        
-        app.show(MainWindow)
+        MyApplication.showClazz(app, InitWindow)
 
         sys.exit(app.exec())

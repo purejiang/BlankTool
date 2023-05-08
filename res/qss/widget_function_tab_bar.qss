@@ -1,5 +1,7 @@
 QToolBox {
-  background: #303030;
+  border: 0px;
+  background: #717171;
+  margin: 0px;
 }
 
 QToolBoxButton {
@@ -8,6 +10,7 @@ QToolBoxButton {
 }
 
 QToolBox::tab {
+  border: 0px;
   text-align: right;
   padding-left: 26px;
   background: #646464;

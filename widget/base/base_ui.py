@@ -12,6 +12,8 @@ class BaseUi():
     基础的 UI，实现解析 .qss 文件和动态加载 .ui 文件
 
     """
+    _BASE_QSS_FILE = "./res/qss/widget_base.qss"
+
     def __init__(self):
         self._ui = None
 

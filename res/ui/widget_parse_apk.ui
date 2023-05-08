@@ -63,7 +63,7 @@
            <height>93</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,1,1,1">
+         <layout class="QHBoxLayout" name="layout_parse_function" stretch="3,1,1,1">
           <property name="spacing">
            <number>6</number>
           </property>

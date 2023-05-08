@@ -1,10 +1,9 @@
 # -*- coding:utf-8 -*-
-import os
 
-from widget.base.base_widget import BaseWidget
+from widget.function.widget_function import FunctionWidget
 
 
-class PullApksWidget(BaseWidget):
+class PullApksWidget(FunctionWidget):
     """
 
     @author: purejiang
@@ -18,6 +17,9 @@ class PullApksWidget(BaseWidget):
     def __init__(self, main_window) -> None:
         super(PullApksWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
 
+    def _entry(self):
+        pass
+    
     def _onPreShow(self):
         self._loadUi(self.__UI_FILE)
     

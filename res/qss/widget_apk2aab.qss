@@ -1,0 +1,4 @@
+QLabel#lb_not_open{
+    border-radius: 5px;
+    background-color: #595959;
+}

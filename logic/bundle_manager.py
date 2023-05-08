@@ -5,7 +5,7 @@ import traceback
 from common.cmd import CMD
 from common.constant import Constant
 from utils.file_helper import FileHelper
-from utils.b_loger import Loger
+from utils.j_loger import JLoger
 from utils.other_util import currentTime
 
 class BundleManager():
@@ -16,7 +16,7 @@ class BundleManager():
     .aab 相关的功能管理
 
     """
-    loger = Loger()
+    loger = JLoger()
     
     @classmethod
     def __aab2apks(cls, bundletool_path, aab_path, apks_path, signer_config):

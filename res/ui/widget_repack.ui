@@ -59,10 +59,10 @@
              <x>0</x>
              <y>0</y>
              <width>721</width>
-             <height>131</height>
+             <height>121</height>
             </rect>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="4,1">
+           <layout class="QHBoxLayout" name="layout_repack_function" stretch="4,1">
             <property name="spacing">
              <number>10</number>
             </property>
@@ -190,7 +190,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="btn_repack_apk_2">
+               <widget class="QPushButton" name="btn_jump_to_repack_path">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                   <horstretch>0</horstretch>

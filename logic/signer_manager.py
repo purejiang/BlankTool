@@ -2,9 +2,8 @@
 
 import json
 import traceback
-from typing import Union
 from utils.file_helper import FileHelper
-from utils.b_loger import Loger
+from utils.j_loger import JLoger
 from utils.other_util import currentTimeNumber
 from vo.signer import SignerConfig
 
@@ -33,7 +32,7 @@ class SignerManager():
     签名相关的功能管理
 
     """
-    loger = Loger()
+    loger = JLoger()
 
     @classmethod
     def addKeystore(cls, curr_signer_config, progress_callback):

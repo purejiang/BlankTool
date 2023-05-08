@@ -1,17 +1,8 @@
 # -*- coding:utf-8 -*-
-import os
-from utils.file_helper import FileHelper
-from utils.other_util import currentTime
-from utils.ui_utils import chooseDir
-from viewmodel.apk_viewmodel import ApkViewModel
-from viewmodel.signer_viewmodel import SignerViewModel
-from widget.base.base_widget import BaseWidget
-from widget.custom.toast import Toast
-from widget.step_info.widget_step_info import StepInfoWidget
 
+from widget.function.widget_function import FunctionWidget
 
-
-class Apk2AabWidget(BaseWidget):
+class Apk2AabWidget(FunctionWidget):
     """
 
     @author: purejiang
@@ -26,7 +17,9 @@ class Apk2AabWidget(BaseWidget):
         super(Apk2AabWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__initView()
 
-
+    def _entry(self):
+        pass
+    
     def __initView(self):
         pass
 

@@ -2,21 +2,20 @@
 
 
 import os
-import sys
+import shutil
 import traceback
-from common.constant import Constant
+from common.constant import APP_PATH, Constant
 from utils.file_helper import FileHelper
-from utils.b_loger import Loger
+from utils.j_loger import JLoger
 from utils.other_util import currentTime
 from PySide6.QtCore import QResource
 
-from vo.function import Function
 
 
 class BlankManager():
     DEBUG_MODE= "DEBUG"
     REALEASE_MODE="RELEASE"
-    loger = Loger()
+    loger = JLoger()
     """
 
     @author: purejiang
@@ -26,32 +25,6 @@ class BlankManager():
 
     """
 
-    @classmethod
-    def cleanCache(cls, progress_callback)->bool:
-        """
-        清理缓存
-
-        :param progress_callback: 执行进度
-        :param loguer: 日志工具
-
-        """
-        cls.loger.info("开始清理缓存，时间：" + currentTime())
-        try:
-            for dir in Constant.Path.ALL_CACHE_PATH_LIST:
-                file_list = FileHelper.getAllChild(dir, FileHelper.TYPE_DIR)
-                if file_list is None:
-                    progress_callback("很干净，没有数据需要清理")
-                    return True
-                else:
-                    for file in file_list:
-                        progress_callback("删除："+file)
-                        FileHelper.delFile(file)
-            return True
-        except Exception as e:
-            cls.loger.warning("清理失败："+traceback.format_exc())
-            return False
-        finally:
-            cls.check_cache_dir()
 
     @classmethod
     def __initRe(cls)->bool:
@@ -68,7 +41,7 @@ class BlankManager():
         os.environ['PATH'] = tmp_path+os.environ['PATH']
         cls.loger.info("最终环境变量: {0}".format(os.environ['PATH']))
         # CMD.setPath(tmp_path)
-        os.chdir(sys.path[0]) 
+        # os.chdir(sys.path[0]) 
         return True
 
     @classmethod   
@@ -79,7 +52,7 @@ class BlankManager():
         """
         cls.loger.info("加载 .rcc 资源")
         try:
-            for file in FileHelper.getChild(os.path.join(Constant.AppPath.APP_PATH, Constant.AppPath.RESOURCE_PATH), FileHelper.TYPE_FILE):
+            for file in FileHelper.getChild(os.path.join(APP_PATH, Constant.Path.RESOURCE_PATH), FileHelper.TYPE_FILE):
                 if FileHelper.getSuffix(file) == ".rcc":
                     QResource.registerResource(file)
             return True
@@ -88,35 +61,8 @@ class BlankManager():
             cls.loger.warning("load .rcc file error")
             return False
 
-
     @classmethod
-    def initApplication(cls, callback_progress)->bool:
-        """
-        初始化程序
-        """
-        callback_progress(20, "初始化环境变量", "")
-        if not cls.__initRe():
-            return False
-
-        callback_progress(40, "检查运行环境", "")
-        if not cls.__checkRe():
-            return False
-
-        callback_progress(60, "加载 .rcc", "")
-        if not cls.__loadRcc() and Constant.AppInfo.MODE==cls.DEBUG_MODE:
-            return False
-
-        callback_progress(80, "检查工具目录", "")
-        if not cls.checkToolDir():
-            pass
-
-        callback_progress(90, "检查更新", "")
-        if not cls.checkUpdate():
-            pass
-        return True
-
-    @classmethod
-    def checkToolDir(cls)->bool:
+    def __checkToolDir(cls)->bool:
         """
         检测工具目录
         """
@@ -141,17 +87,115 @@ class BlankManager():
         return True
 
     @classmethod
+    def initApplication(cls, callback_progress)->bool:
+        """
+        初始化程序
+        """
+        callback_progress(20, "初始化环境变量", "")
+        if not cls.__initRe():
+            return False
+
+        callback_progress(40, "检查运行环境", "")
+        if not cls.__checkRe():
+            return False
+
+        callback_progress(60, "加载 .rcc", "")
+        if not cls.__loadRcc() and Constant.AppInfo.MODE==cls.REALEASE_MODE:
+            return False
+
+        callback_progress(80, "检查工具目录", "")
+        if not cls.__checkToolDir():
+            pass
+
+        callback_progress(90, "检查更新", "")
+        if not cls.checkUpdate():
+            pass
+        return True
+    
+
+    @classmethod
+    def getChache(cls, progress_callback)->str:
+        """
+        获取缓存大小
+
+        :param progress_callback: 执行进度
+
+        """
+        cls.loger.info("开始分析缓存文件：" + currentTime())
+        total_size = 0
+        progress = 0 
+        cache_len = len(Constant.Path.ALL_CACHE_PATH_LIST)
+        try:
+            for folder_path in Constant.Path.ALL_CACHE_PATH_LIST:
+                progress+=1
+                progress_callback(progress*100/cache_len, "分析：{0}".format(folder_path), "")
+                for dirpath, dirnames, filenames in os.walk(folder_path):
+                    for file_name in filenames:
+                        file_path = os.path.join(dirpath, file_name)
+                        try:
+                            total_size += FileHelper.fileSize(file_path)
+                        except Exception as e:
+                            cls.loger.warning("获取文件大小失败："+traceback.format_exc())   
+            if total_size <= 1024.0:
+                return "{:.2f} B".format(total_size)
+            elif total_size <= 1024.0**2:
+                return "{:.2f} KB".format(total_size/1024.0)
+            elif total_size <= 1024.0**3:
+                return "{:.2f} MB".format(total_size/(1024.0 ** 2))
+            else:
+                return "{:.2f} GB".format(total_size/(1024.0 ** 3))
+        except Exception as e:
+            cls.loger.warning("分析缓存文件失败："+traceback.format_exc())
+            return None
+
+    @classmethod
+    def cleanCache(cls, progress_callback)->bool:
+        """
+        清理缓存
+
+        :param progress_callback: 执行进度
+
+        """
+        cls.loger.info("开始清理缓存，时间：" + currentTime())
+        cache_len = len(Constant.Path.ALL_CACHE_PATH_LIST)
+        progress = 0 
+        try:
+            for folder_path in Constant.Path.ALL_CACHE_PATH_LIST:
+                progress+=1
+                progress_callback(progress*100/cache_len, "清理：{0}".format(folder_path), "")
+                for dirpath, dirnames, filenames in os.walk(folder_path):
+                    for dir in dirnames:
+                        try:
+                            cls.loger.info("开始清理文件夹：" + os.path.join(dirpath, dir))
+                            FileHelper.delFile(os.path.join(dirpath, dir))
+                        except Exception as e:
+                            cls.loger.warning("清理清理文件夹失败："+traceback.format_exc())
+                            return False
+                    for file in filenames:
+                        try:
+                            cls.loger.info("开始清理文件：" + file)
+                            FileHelper.delFile(os.path.join(dirpath, file))
+                        except Exception as e:
+                            cls.loger.warning("清理文件失败："+traceback.format_exc())     
+            return True
+        except Exception as e:
+            cls.loger.warning("清理缓存失败："+traceback.format_exc())
+            return False
+    
+
+
+    @classmethod
     def checkUpdate(cls):
         """
         检测更新
         """
-        pass
+        cls.loger.info("检测更新")
 
-    @classmethod
-    def getFunctions(cls, progress_callback):
-        """
-        获取功能列表（暂为本地）
-        """
-        progress_callback("获取功能列表")
-        apk_function = Function("Apk 分析", "./res/img/app_icon_small", ["Apk 解析", "Apk 解析结果"])
-        return []
+    # @classmethod
+    # def getFunctions(cls, progress_callback):
+    #     """
+    #     获取功能列表（暂为本地）
+    #     """
+    #     progress_callback("获取功能列表")
+    #     apk_function = Function("Apk 分析", "./res/img/app_icon_small", ["Apk 解析", "Apk 解析结果"])
+    #     return []

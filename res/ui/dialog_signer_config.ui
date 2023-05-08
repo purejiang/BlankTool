@@ -27,16 +27,16 @@
      <number>6</number>
     </property>
     <property name="leftMargin">
-     <number>6</number>
+     <number>24</number>
     </property>
     <property name="topMargin">
-     <number>20</number>
+     <number>24</number>
     </property>
     <property name="rightMargin">
-     <number>6</number>
+     <number>24</number>
     </property>
     <property name="bottomMargin">
-     <number>20</number>
+     <number>24</number>
     </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="4,1">

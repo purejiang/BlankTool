@@ -1,0 +1,4 @@
+QDialog#dialog_signer_config{
+    border-radius: 5px;
+    background-color: #3D3D3D;
+}

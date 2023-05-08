@@ -1,16 +1,13 @@
 # -*- coding:utf-8 -*-
 
-import hashlib
-import json
 import os
 import re
 import traceback
 from typing import Union
-import zipfile
 from common.cmd import CMD
 from common.constant import Constant
 from utils.file_helper import FileHelper
-from utils.b_loger import Loger
+from utils.j_loger import JLoger
 from vo.apk_info import ApkInfo
 
 
@@ -23,7 +20,7 @@ class ApkManager():
     .apk 相关的功能管理
 
     """
-    loger = Loger()
+    loger = JLoger()
 
     @classmethod
     def installApk(cls, apk_path, progress_callback):
@@ -46,7 +43,6 @@ class ApkManager():
 
         :param apktool_path: apktool 路径
         :param apk_path: APK 路径
-        :param output_dir: 反编后目录
         :param is_pass_dex: 是否忽略错误的 dex, 默认不忽略
         :param is_only_res: 是否只反编译资源文件, 默认编译所有
 
@@ -218,7 +214,6 @@ class ApkManager():
 
         :param package_name: 包名
         :param info_file_path: 输出信息的文件
-        :param loguer: 日志工具
 
         """
         cls.loger.info("get {0}'s path ...".format(package_name))
@@ -231,7 +226,6 @@ class ApkManager():
         通过 adb 命令将指定路径下的 apk 拉到 pc
 
         :param package_name: 包名
-        :param loguer: 日志工具
 
         """
         cls.loger.info("pull apk ...")
@@ -246,7 +240,6 @@ class ApkManager():
         :param apk_path: 未签名的 apk 路径
         :param out_path: 签名后的 apk 输出的路径
         :param signer_config: 签名信息
-        :param loguer: 日志工具，可空
 
         """
         cls.loger.info("sign {0} ...".format(origin_apk_path))

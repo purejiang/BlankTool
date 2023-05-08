@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 
 from viewmodel.signer_viewmodel import SignerViewModel
-from vo.signer import SignerConfig
 from widget.base.base_widget import BaseWidget
+from widget.function.widget_function import FunctionWidget
 from widget.signer.dialog_signer_config import SignerConfigDialog
 from widget.signer.listwidget_signer import SignerListWidget
 
-class SignerConfigWidget(BaseWidget):
+class SignerConfigWidget(FunctionWidget):
     """
 
     @author: purejiang
@@ -35,8 +35,8 @@ class SignerConfigWidget(BaseWidget):
     def __showAddSignerDialog(self):
         self._add_signer_dialog = SignerConfigDialog(self, self.__changedListener)
         self._add_signer_dialog.show()
-        
-    def refersh(self):
+    
+    def _entry(self):
         self.signer_viewmodel.allSigners()
 
     def __allSignerSuccess(self, signer_list):
@@ -53,7 +53,7 @@ class SignerConfigWidget(BaseWidget):
         self.signer_viewmodel.addSigner(signer)
         
     def __addSignerSuccess(self):
-        self.refersh()
+        self.signer_viewmodel.allSigners()
 
     def __addSignerProgress(self, progress, title, des):
         pass

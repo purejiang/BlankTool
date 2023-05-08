@@ -13,7 +13,7 @@ class SignerListItem(QListWidgetItem):
         super().__init__()
         self.setText(signer.signer_name)
         # 添加自定义属性
-        self.data1 = signer
+        self.signer = signer
 
 class SignerListWidget(QListWidget):
     """
@@ -42,7 +42,7 @@ class SignerListWidget(QListWidget):
 
     def __delItem(self):
         item = self.takeItem(self.currentRow())
-        self.signer_viewmodel.delSigner(item.data1.signer_id)
+        self.signer_viewmodel.delSigner(item.signer.signer_id)
         del item
     
     def loadList(self, sigenr_list):
