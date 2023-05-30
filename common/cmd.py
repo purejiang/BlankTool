@@ -294,6 +294,21 @@ class CMD():
         """
         all_cmd = "\"{0}\" -printcert -file \"{1}\"".format(keytool_path, rsa_path)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
+    
+    @classmethod
+    def apkSignerMd5ByKeyTool(cls, keytool_path, rsa_path):
+        """
+        通过 keytool 获取 apk 的签名md5
+
+        :param keytool_path: keytool 路径
+        :param rsa_path: .RSA 文件路径
+
+        win: keytool.exe -printcert (-jarfile [.apk 文件] | -file [RSA 文件]) | openssl dgst -md5 
+        linux: keytool -printcert (-jarfile [.apk 文件] | -file [RSA 文件]) | openssl dgst -md5 
+
+        """
+        all_cmd = "\"{0}\" -printcert -file \"{1}\" | openssl dgst -md5 ".format(keytool_path, rsa_path)
+        return cmdBySystem(all_cmd, all_cmd, all_cmd)
         
     ########################### aab 相关 ###############################################
     @classmethod

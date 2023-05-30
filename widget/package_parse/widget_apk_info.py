@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from PySide6.QtWidgets import QTableWidgetItem,QHeaderView
+from viewmodel.apk_viewmodel import ApkViewModel
 
 
 from vo.apk_info import ApkInfo
@@ -27,10 +28,10 @@ class ApkInfoWidget(FunctionWidget):
         pass
 
     def _entry(self):
-        if None !=None:
+        if ApkViewModel._parse_apk_info !=None:
             self._ui.lb_notic_please_update_apk.setVisible(False)
             self._ui.tw_apk_info_table.setVisible(True)
-            self.__showApkInfo(None)
+            self.__showApkInfo(ApkViewModel._parse_apk_info)
         else:
             self._ui.lb_notic_please_update_apk.setVisible(True)
             self._ui.tw_apk_info_table.setVisible(False)

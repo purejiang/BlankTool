@@ -22,7 +22,7 @@
      <height>301</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,3,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,3,1">
     <property name="spacing">
      <number>6</number>
     </property>
@@ -60,6 +60,17 @@
         </property>
         <property name="text">
          <string>选择文件</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QCheckBox" name="ckb_is_used_signer">
+        <property name="text">
+         <string>是否启用</string>
         </property>
        </widget>
       </item>

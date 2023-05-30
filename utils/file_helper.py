@@ -90,8 +90,7 @@ class FileHelper():
         :param del_files: 需要删除的文件列表
         """
         zin = zipfile.ZipFile(zip_file, 'r')  # 读取对象
-        new_zip_file = os.path.join(cls.parentDir(
-            zip_file), "cache-{0}".format(cls.filename(zip_file)))
+        new_zip_file = os.path.join(os.path.abspath(os.path.dirname(zip_file))), "cache-{0}".format(os.path.basename(zip_file))
         zout = zipfile.ZipFile(new_zip_file, 'w')  # 被写入对象
         for item in zin.infolist():
             is_contains = False

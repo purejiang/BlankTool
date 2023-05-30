@@ -18,9 +18,12 @@ class ApkViewModel():
     @created: 2022/7/29
 
     """
+    _parse_apk_info = None
+    
     def __init__(self, parent) -> None:
         super().__init__()
         self.parent = parent
+        
         self.install_apk_operation = Operation()            # 安装 apk
         self.generate_info_operation = Operation()          # 生成 apk 信息文件
         self.depack_apk_operation = Operation()             # 反编译 apk

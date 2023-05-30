@@ -33,7 +33,6 @@ class ParseApkWidget(FunctionWidget):
     def _onPreShow(self):
         self.apk_viewmodel = ApkViewModel(self)
         self._ui.pb_depack_progress.setVisible(False)
-        self._ui.edt_parse_apk_path.setEnabled(False)
         self.__widget_parse_step_info = StepInfoWidget()
         self.layout_parse_step_info.addWidget(self.__widget_parse_step_info)
     
@@ -52,6 +51,8 @@ class ParseApkWidget(FunctionWidget):
         self._ui.edt_parse_apk_path.setText(file_path)
     
     def __startParse(self):
+        ApkViewModel._parse_apk_info = None
+        self.apk_info = None
         # 清除list中的item
         self.__widget_parse_step_info._clear()
         apk_path = self._ui.edt_parse_apk_path.text()
@@ -59,16 +60,17 @@ class ParseApkWidget(FunctionWidget):
             toast = Toast(self)
             toast.make_text("请输入正确的路径", Toast.toast_left(self), Toast.toast_top(self), times=3)
             return
-        self.apk_viewmodel.parseApk(apk_path)
         # 展示进度条
         self._ui.pb_depack_progress.setValue(0)
         self._ui.pb_depack_progress.setVisible(True)
         self._ui.btn_depack_dir_path.setVisible(False)
         # 禁止点击
         self._ui.widget_parse_apk_fuction_bar.setDisabled(True)
+        self.apk_viewmodel.parseApk(apk_path)
 
     def __parseApkSuccess(self, apk_info):
         self.apk_info = apk_info
+        ApkViewModel._parse_apk_info = apk_info
         self.__widget_parse_step_info.loadStep("分析成功", currentTime(), "")
         # 恢复点击
         self._ui.widget_parse_apk_fuction_bar.setDisabled(False)

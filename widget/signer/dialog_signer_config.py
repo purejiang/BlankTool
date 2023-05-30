@@ -38,6 +38,7 @@ class SignerConfigDialog(BaseDialog):
             self._ui.edt_signer_pwd.setText(self.__signer.signer_pwd)
             self._ui.edt_signer_key_pwd.setText(self.__signer.signer_key_pwd)
             self._ui.edt_signer_key_alias.setText(self.__signer.signer_alias)
+            self._ui.ckb_is_used_signer.setChecked(self.__signer.is_used)
 
     def _setupListener(self):
         self._ui.btn_signer_confirm.clicked.connect(self.__comfirm)
@@ -50,6 +51,7 @@ class SignerConfigDialog(BaseDialog):
         signer_pwd = self._ui.edt_signer_pwd.text()
         signer_key_pwd = self._ui.edt_signer_key_pwd.text()
         signer_alias = self._ui.edt_signer_key_alias.text()
+        is_used = self._ui.ckb_is_used_signer.isChecked()
  
         info_list = [signer_name, signer_file_path, signer_pwd, signer_key_pwd, signer_alias]
         for i in range(len(info_list)):
@@ -70,6 +72,7 @@ class SignerConfigDialog(BaseDialog):
         signer.signer_pwd = signer_pwd
         signer.signer_key_pwd = signer_key_pwd
         signer.signer_alias = signer_alias
+        signer.is_used = is_used
         self.__changed_listener(signer)
         self.close()
 

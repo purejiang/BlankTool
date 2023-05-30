@@ -79,7 +79,7 @@ class SignerListWidget(QListWidget):
         pass
 
     def __modifyItem(self, item):
-        self._add_signer_dialog = SignerConfigDialog(self, self.__changedListener, item.data1)
+        self._add_signer_dialog = SignerConfigDialog(self, self.__changedListener, item.signer)
         self._add_signer_dialog.show()
 
     def __changedListener(self, signer):
@@ -101,6 +101,7 @@ class SignerListWidget(QListWidget):
         up_action = menu.addAction("上移") 
         down_action = menu.addAction("下移") 
         top_action = menu.addAction("置顶")
+        
 
         # 显示菜单
         action = menu.exec_(self.mapToGlobal(point))

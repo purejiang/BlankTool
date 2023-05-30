@@ -50,10 +50,11 @@ class RepackApkWidget(FunctionWidget):
 
     def __loadSignersSuccess(self, signer_list):
         self._ui.cb_signers.clear()
-        self.__signer_list = signer_list
+        self.__signer_list = []
         if signer_list!=None:
             for signer in signer_list:
                 if signer.is_used == True:
+                    self.__signer_list.append(signer)
                     self._ui.cb_signers.addItem(signer.signer_name, signer)
 
     def __loadSignersProgress(self, progress, title, des):
@@ -65,7 +66,7 @@ class RepackApkWidget(FunctionWidget):
     def __chooseFile(self):
         repack_dir_path = chooseDir(self, "需要重编的目录")
         self._ui.edt_repack_dir_path.setText(repack_dir_path)
-        self._ui.btn_jump_to_repack_path.setVisible(False)
+        
     
     def __startRepack(self):
         self.__widget_repack_step_info._clear()
@@ -79,7 +80,8 @@ class RepackApkWidget(FunctionWidget):
         index = self._ui.cb_signers.currentIndex()
         self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, True, self.__signer_list[index])
         # 禁止点击
-        self._ui.layout_repack_function.setEnabled(False)
+        self._ui.widget_repack_fuction_bar.setDisabled(True)
+        self._ui.btn_jump_to_repack_path.setVisible(False)
 
     def __jumpToRepackPath(self):
         if self.__ouput_apk_path!=None:
@@ -89,7 +91,7 @@ class RepackApkWidget(FunctionWidget):
         self.apk_info = apk_info
         self.__widget_repack_step_info.loadStep("重编成功", currentTime(), "")
         # 恢复点击
-        self._ui.layout_repack_function.setEnabled(True)
+        self._ui.widget_repack_fuction_bar.setDisabled(False)
         self._ui.btn_jump_to_repack_path.setVisible(True)
 
     def __repackProgress(self, progress, title, des):
@@ -98,5 +100,5 @@ class RepackApkWidget(FunctionWidget):
     def __repackFailure(self, code, msg):
         self.__widget_repack_step_info.loadStep("code:{0}, msg:{1}".format(code, msg), currentTime(), "")
         # 恢复点击
-        self._ui.layout_repack_function.setEnabled(True)
-        # 隐藏进度条
+        self._ui.widget_repack_fuction_bar.setDisabled(False)
+        
