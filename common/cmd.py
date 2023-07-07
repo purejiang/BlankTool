@@ -59,10 +59,11 @@ class CMD():
         pass_dex = ""
         if is_pass_dex:
             pass_dex = " --only -main-classes"
+        
         s = ""
         if is_only_res:
             s = " -s"
-        all_cmd = "java -jar \"{0}{1}\" d{2} \"{3}\" -o \"{4}\"".format(
+        all_cmd = "java -jar \"{0}\"{1} d{2} \"{3}\" -o \"{4}\"".format(
             apktool_path, s, pass_dex, apk_path, output_dir)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
 

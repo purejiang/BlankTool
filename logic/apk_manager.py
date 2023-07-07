@@ -99,6 +99,7 @@ class ApkManager():
         callback_progress(30, "重编译，生成未签名 APK：" + output_apk_path, "")
         repack_tmp_apk_result = cls.__repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk_path, is_support_aapt2)
         if not repack_tmp_apk_result[0]:
+            cls.loger.info(repack_tmp_apk_result[1])
             return False
         # 第二步，重签名 APK
         callback_progress(60, "重签名 APK：" + output_apk_path, "")

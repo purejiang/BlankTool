@@ -42,7 +42,7 @@ class ApkViewModel():
     #     self.generate_info_operation.loadThread(generate_apk_thread)
     #     self.generate_info_operation.start()
 
-    def parseApk(self, apk_path, is_pass_error_dex=False, is_only_res=False):
+    def parseApk(self, apk_path, is_pass_error_dex=True, is_only_res=True):
         parse_thread = ParseApk(apk_path, is_pass_error_dex, is_only_res)
         self.parse_apk_operation.loadThread(parse_thread)
         self.parse_apk_operation.start()
@@ -113,7 +113,7 @@ class ParseApk(BaseThread):
         self.is_only_res = is_only_res
 
     def run(self):
-        result, apk_info = ApkManager.parseApk(self.apk_path, False, False, self._progressCallback)
+        result, apk_info = ApkManager.parseApk(self.apk_path, self.is_pass_error_dex, self.is_only_res, self._progressCallback)
         if result:
             self._success_signal.emit(apk_info)
         else:

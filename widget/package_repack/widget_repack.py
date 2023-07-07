@@ -18,7 +18,7 @@ class RepackApkWidget(FunctionWidget):
     @author: purejiang
     @created: 2023/2/23
 
-    解析 Apk 功能对应的主页
+    重编 Apk 功能对应的主页
     """
     __UI_FILE = "./res/ui/widget_repack.ui"
     __QSS_FILE = "./res/qss/widget_repack.qss"
@@ -66,7 +66,6 @@ class RepackApkWidget(FunctionWidget):
     def __chooseFile(self):
         repack_dir_path = chooseDir(self, "需要重编的目录")
         self._ui.edt_repack_dir_path.setText(repack_dir_path)
-        
     
     def __startRepack(self):
         self.__widget_repack_step_info._clear()

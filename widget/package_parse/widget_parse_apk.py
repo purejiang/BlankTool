@@ -86,8 +86,7 @@ class ParseApkWidget(FunctionWidget):
     def __parseApkFailure(self, code, msg):
         self.__widget_parse_step_info.loadStep("code:{0}, msg:{1}".format(code, msg), currentTime(), "")
         # 恢复点击
-        self._ui.btn_select_apk.setEnabled(True)
-        self._ui.btn_parse_apk.setEnabled(True)
+        self._ui.widget_parse_apk_fuction_bar.setDisabled(False)
         # 隐藏进度条
         self._ui.pb_depack_progress.setValue(100)
         self._ui.pb_depack_progress.setVisible(False)
