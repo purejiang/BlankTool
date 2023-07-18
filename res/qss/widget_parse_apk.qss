@@ -38,16 +38,16 @@ QLineEdit {
 
 QPushButton#btn_depack_dir_path {
   background-color: transparent;
-  color: #FFFFFF;
+  color: #46A6FD;
   font-family: "Microsoft YaHei";
   font-size: 12px;
-  text-decoration: underline;
+  font-weight: bold;
 }
 QPushButton#btn_depack_dir_path:default {
-  color: #FFFFFF;
+  color: #46A6FD;
 }
 QPushButton#btn_depack_dir_path:hover{
-  color: #46A6FD;
+  color: #d1e9ff;
 }
 
 QProgressBar#pb_depack_progress {    

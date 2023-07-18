@@ -198,7 +198,6 @@ class ApkManager():
             apktool_path, apk_path, output_dir, is_pass_dex, is_only_res)
         return cmd_result
 
-
     @classmethod
     def __aapt_apk_info(cls, apk_path, info_file_path)->Union[bool, str]:
         """
@@ -299,7 +298,7 @@ class ApkManager():
                 return ""
             
         content = FileHelper.fileContent(info_file)
-        apk_name = get_value(content, "application: label=")
+        app_name = get_value(content, "application: label=")
         apk_icon = os.path.join(depackage_path, get_value(content, "icon="))
         package_name = get_value(content, "package: name=")
         version_code = get_value(content, "versionCode=")
@@ -308,7 +307,7 @@ class ApkManager():
         target_version = get_value(content, "targetSdkVersion:")
         abis = get_list(content, "native-code:", "\n")
         langs = get_list(content, "locales:", "\n")
-        return ApkInfo(apk_path, apk_name, apk_icon, package_name, version_code, version_name, target_version, min_version, abis, langs, depackage_path)
+        return ApkInfo(apk_path, app_name, apk_icon, package_name, version_code, version_name, target_version, min_version, abis, langs, depackage_path)
 
         
     @classmethod

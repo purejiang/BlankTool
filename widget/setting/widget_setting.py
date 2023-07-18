@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from common.constant import Constant
 from viewmodel.blank_viewmodel import BlankViewModel
 from widget.custom.dialog_normal import NormalDialog
 from widget.function.widget_function import FunctionWidget
@@ -23,12 +24,26 @@ class SettingWidget(FunctionWidget):
     def _onPreShow(self):
         self.__blank_viewmodel = BlankViewModel(self)
         self.__cleanCacheDialog = NormalDialog(self, "提示", "是否清理应用缓存")
+        self._ui.lb_app_vesion_name.setText(Constant.AppInfo.VERSION_NAME)
+        self._ui.lb_app_vesion_code.setText(Constant.AppInfo.VERSION_CODE)
+        self._ui.lb_app_create_time.setText(Constant.AppInfo.CREATE_TIME)
+        self._ui.lb_app_mode.setText(Constant.Setting.MODE)
+        if Constant.Setting.iS_OUTPUT_LOG:
+            self._ui.ckb_is_output_log.setChecked(True)
+        self._ui.lb_app_web_url.setText(Constant.AppInfo.WEB_URL)
 
     def _setupListener(self):
         self.__blank_viewmodel.get_chache_size_opreation.setListener(self.__getCacheSizeSuccess, self.__getCacheSizeProgress, self.__getCacheSizeFailure)
         self.__blank_viewmodel.clean_cache_opreation.setListener(self.__cleanCacheSuccess, self.__cleanCacheProgress, self.__cleanCacheFailure)
         self._ui.pb_clean_cache.clicked.connect(self.__showCacheDialog)
+        self._ui.ckb_is_output_log.stateChanged.connect(self.__IsOutputLog)
         self.__refershCacheDialog()
+
+    def __IsOutputLog(self, checked):
+        if checked:
+            self.__blank_viewmodel.setAppSetting({"is_output_log": True})
+        else:
+            self.__blank_viewmodel.setAppSetting({"is_output_log": False})
 
     def __refershCacheDialog(self):
         self.__cleanCacheDialog.setConfirm("清理", self.__cleanCache)

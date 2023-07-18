@@ -42,7 +42,7 @@ class ApkViewModel():
     #     self.generate_info_operation.loadThread(generate_apk_thread)
     #     self.generate_info_operation.start()
 
-    def parseApk(self, apk_path, is_pass_error_dex=True, is_only_res=True):
+    def parseApk(self, apk_path, is_pass_error_dex=False, is_only_res=False):
         parse_thread = ParseApk(apk_path, is_pass_error_dex, is_only_res)
         self.parse_apk_operation.loadThread(parse_thread)
         self.parse_apk_operation.start()
@@ -67,7 +67,7 @@ class InstallApk(BaseThread):
     安装 apk
     """
 
-    def __init__(self, apk_path):
+    def __init__(self, apk_path:str):
         super().__init__()
         self._apk_path = apk_path
 
@@ -106,7 +106,7 @@ class ParseApk(BaseThread):
     """
     _success_signal = Signal(ApkInfo)
 
-    def __init__(self, apk_path, is_pass_error_dex, is_only_res):
+    def __init__(self, apk_path:str, is_pass_error_dex:bool, is_only_res:bool):
         super().__init__()
         self.apk_path = apk_path
         self.is_pass_error_dex = is_pass_error_dex
@@ -125,7 +125,7 @@ class GenerateApksList(BaseThread):
     """
     _success_signal = Signal(str)
 
-    def __init__(self, is_sys):
+    def __init__(self, is_sys:bool):
         super().__init__(self)
         self.is_sys = is_sys
 
@@ -143,7 +143,7 @@ class PullApk(BaseThread):
     """
     _success_signal = Signal(str)
 
-    def __init__(self, package_name, in_phone_path):
+    def __init__(self, package_name:str, in_phone_path:str):
         super().__init__(self)
         self.in_phone_path = in_phone_path
         self.package_name = package_name
@@ -161,7 +161,7 @@ class RepackageAndSign(BaseThread):
     重编译 apk
     """
     _success_signal = Signal(str)
-    def __init__(self, repackage_path, output_apk_path, is_support_aapt2, ks_config):
+    def __init__(self, repackage_path:str, output_apk_path:str, is_support_aapt2:bool, ks_config:dict):
         super().__init__()
         self.repackage_path = repackage_path
         self.output_apk_path = output_apk_path

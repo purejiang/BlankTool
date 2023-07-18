@@ -18,6 +18,7 @@ class BlankViewModel():
         self.init_app_opreation = Operation()           # 初始化应用
         self.get_chache_size_opreation = Operation()    # 获取缓存大小
         self.clean_cache_opreation = Operation()        # 清理缓存
+        self.set_setting_opreation = Operation()        # 修改配置
 
     def initApp(self):
         init_app_thread = InitApp()
@@ -33,6 +34,28 @@ class BlankViewModel():
         clean_cache_thread = CleanCache()
         self.clean_cache_opreation.loadThread(clean_cache_thread)
         self.clean_cache_opreation.start()
+
+    def setAppSetting(self, config:dict):
+        set_setting_thread = SettingSetter(config)
+        self.set_setting_opreation.loadThread(set_setting_thread)
+        self.set_setting_opreation.start()
+
+
+class SettingSetter(BaseThread):
+    """
+    修改配置
+    """
+
+    def __init__(self, config:dict):
+        super().__init__()
+        self._config = config
+
+    def run(self):
+        result = BlankManager.setSetting(self._config, self._progressCallback)
+        if result:
+            self._success_signal.emit()
+        else:
+            self._failure_signal.emit(0, "修改配置失败")
 
 class CleanCache(BaseThread):
     """

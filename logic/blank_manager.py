@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
 
 
+import json
 import os
-import shutil
 import traceback
-from common.constant import APP_PATH, Constant
+from common.constant import APP_PATH, Config, Constant
 from utils.file_helper import FileHelper
 from utils.j_loger import JLoger
-from utils.other_util import currentTime
 from PySide6.QtCore import QResource
 
 
@@ -16,6 +15,7 @@ class BlankManager():
     DEBUG_MODE= "DEBUG"
     REALEASE_MODE="RELEASE"
     loger = JLoger()
+    cache_files=[]
     """
 
     @author: purejiang
@@ -121,7 +121,7 @@ class BlankManager():
         :param progress_callback: 执行进度
 
         """
-        cls.loger.info("开始分析缓存文件：" + currentTime())
+        cls.loger.info("开始分析缓存文件...")
         total_size = 0
         progress = 0 
         cache_len = len(Constant.Path.ALL_CACHE_PATH_LIST)
@@ -129,13 +129,10 @@ class BlankManager():
             for folder_path in Constant.Path.ALL_CACHE_PATH_LIST:
                 progress+=1
                 progress_callback(progress*100/cache_len, "分析：{0}".format(folder_path), "")
-                for dirpath, dirnames, filenames in os.walk(folder_path):
-                    for file_name in filenames:
-                        file_path = os.path.join(dirpath, file_name)
-                        try:
-                            total_size += FileHelper.fileSize(file_path)
-                        except Exception as e:
-                            cls.loger.warning("获取文件大小失败："+traceback.format_exc())   
+                for file in FileHelper.getAllChild(folder_path, FileHelper.TYPE_FILE):
+                    cls.cache_files.append(file)
+                    total_size += FileHelper.fileSize(file)
+
             if total_size <= 1024.0:
                 return "{:.2f} B".format(total_size)
             elif total_size <= 1024.0**2:
@@ -156,33 +153,48 @@ class BlankManager():
         :param progress_callback: 执行进度
 
         """
-        cls.loger.info("开始清理缓存，时间：" + currentTime())
-        cache_len = len(Constant.Path.ALL_CACHE_PATH_LIST)
-        progress = 0 
+        cls.loger.info("开始清理缓存...")
+        dir_list = [] 
         try:
             for folder_path in Constant.Path.ALL_CACHE_PATH_LIST:
-                progress+=1
-                progress_callback(progress*100/cache_len, "清理：{0}".format(folder_path), "")
-                for dirpath, dirnames, filenames in os.walk(folder_path):
-                    for dir in dirnames:
-                        try:
-                            cls.loger.info("开始清理文件夹：" + os.path.join(dirpath, dir))
-                            FileHelper.delFile(os.path.join(dirpath, dir))
-                        except Exception as e:
-                            cls.loger.warning("清理清理文件夹失败："+traceback.format_exc())
-                            return False
-                    for file in filenames:
-                        try:
-                            cls.loger.info("开始清理文件：" + file)
-                            FileHelper.delFile(os.path.join(dirpath, file))
-                        except Exception as e:
-                            cls.loger.warning("清理文件失败："+traceback.format_exc())     
+                for dir in FileHelper.getChild(folder_path, FileHelper.TYPE_DIR):
+                    dir_list.append(dir)
+            del_file_counts=0
+            all_file_counts = len(cls.cache_files)
+            
+            for file in cls.cache_files:
+                del_file_counts+=1
+                try:
+                    file_str = "{0}...{1}".format(file.split(os.path.sep)[0:2], file.split(os.path.sep)[-3])
+                    progress_callback(del_file_counts*100/all_file_counts, "\n清理：\n{0}".format(file_str), "")
+                    FileHelper.delFile(file)
+                except Exception as e:
+                    cls.loger.warning("清理文件失败："+traceback.format_exc())   
+            cls.loger.info("清理文件数：{0}".format(del_file_counts))
+            for dir in dir_list:
+                FileHelper.delFile(dir)
+                cls.loger.info("清理文件夹：" + dir)  
             return True
         except Exception as e:
             cls.loger.warning("清理缓存失败："+traceback.format_exc())
             return False
     
+    @classmethod
+    def setSetting(cls, config, progress_callback)->bool:
+        """
+        修改配置
 
+        :param config: 配置
+        :param progress_callback: 执行进度
+
+        """
+        cls.loger.info("开始修改配置")
+        origin_json = Config.APP_CONFIG_JSON
+        for key in config:
+            origin_json["setting"][key] = config[key]
+            cls.loger.info("{0} -> {1}".format(key, config[key]))
+        return FileHelper.writeContent(Config.APP_CONFIG_PATH, json.dumps(origin_json))
+    
 
     @classmethod
     def checkUpdate(cls):

@@ -3,18 +3,16 @@ QWidget#widget_setting{
     background-color: #595959;
 }
 
-QPushButton{ 
-  border-radius: 5px;
-  border: 1px solid #FFFFFF;
+QPushButton#pb_clean_cache {
   background-color: transparent;
-  color: #FFFFFF;
+  color: #46A6FD;
   font-family: "Microsoft YaHei";
   font-size: 12px;
+  font-weight: bold;
 }
-QPushButton:default {
-  background-color: transparent;
+QPushButton#pb_clean_cache:default {
+  color: #46A6FD;
 }
-
-QPushButton:hover{
-  background-color: #64C8FE;
+QPushButton#pb_clean_cache:hover{
+  color: #d1e9ff;
 }

@@ -74,6 +74,7 @@ class ApkInfoWidget(FunctionWidget):
     def __apkinfo2data(self, apkinfo:ApkInfo):
         dataset = []
         dataset.append(["icon", apkinfo.icon])
+        dataset.append(["app name", apkinfo.app_name])
         dataset.append(["apk path", apkinfo.apk_path])
         dataset.append(["package name", apkinfo.package_name])
         dataset.append(["version code", apkinfo.version_code])

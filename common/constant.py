@@ -12,10 +12,10 @@ from utils.file_helper import FileHelper
 
 """
 APP_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-
+DATA_PATH = os.path.join(APP_PATH, "data")
+CONFIG_PATH = os.path.join(APP_PATH, "config")
 class Config:
     
-    CONFIG_PATH = os.path.join(APP_PATH, "config")
     APP_CONFIG_PATH = os.path.join(CONFIG_PATH, "app_config.json")
     DEFAULT_CONFIG_PATH = os.path.join(CONFIG_PATH, "default_config.json")  
     APP_CONFIG_JSON= json.loads(FileHelper.fileContent(APP_CONFIG_PATH).replace("\./", APP_PATH))
@@ -33,10 +33,17 @@ class Constant:
         ###### App 信息 ######
         __APP_INFO = Config.parseAppConfig("app_info")
         APP_NAME = __APP_INFO["app_name"]
-        MODE = __APP_INFO["mode"]
-        VERSION= __APP_INFO["version"]
+        VERSION_NAME = __APP_INFO["version_name"]
+        VERSION_CODE = __APP_INFO["version_code"]
         CREATE_TIME = __APP_INFO["create_time"]
-        
+        WEB_URL = __APP_INFO["web_url"]
+
+    class Setting:
+        ###### App 信息 ######
+        __SETTING = Config.parseAppConfig("setting")
+        iS_OUTPUT_LOG = __SETTING["is_output_log"]
+        MODE = __SETTING["mode"]
+
     class Re:
         ###### 使用的工具所在的路径 ######
         __RE = Config.parseDefaultConfig("path")["re"]
@@ -47,7 +54,7 @@ class Constant:
         ADB_PATH = os.path.abspath(__RE["adb_path"])
         AAPT2_PATH = os.path.abspath(__RE["aapt_path"])
         JAVA_PATH = os.path.abspath(__RE["java_path"])
-        ALL_RE_PATH_LIST=[BUNDLETOOL_PATH, APKTOOL_PATH, KEYTOOL_PATH, JARSIGNER_PATH, ADB_PATH, AAPT2_PATH, JAVA_PATH]
+        ALL_RE_PATH_LIST = [BUNDLETOOL_PATH, APKTOOL_PATH, KEYTOOL_PATH, JARSIGNER_PATH, ADB_PATH, AAPT2_PATH, JAVA_PATH]
 
     class Path:
         ###### 数据目录 ######
@@ -84,3 +91,8 @@ class Constant:
     class ErrorCode:
         CREATE_APK_LIST_INFO_FILE_FAILEURE = 10001
         PARSE_APK_FAILEURE = 40001
+        
+    class Signer:
+        USED_SIGNERS = "used_signers"
+        USENESS_SIGNERS = "useness_signers"
+        SIGNER_FILE_PATH = os.path.join(DATA_PATH, "signer.json")

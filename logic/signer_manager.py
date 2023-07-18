@@ -2,16 +2,12 @@
 
 import json
 import traceback
+from common.constant import Constant
 from utils.file_helper import FileHelper
 from utils.j_loger import JLoger
 from utils.other_util import currentTimeNumber
 from vo.signer import SignerConfig
 
-
-
-USED_SIGNERS = "used_signers"
-USENESS_SIGNERS = "useness_signers"
-SIGNER_FILE = "./data/signer.json"
 
 def json2obj(class_dict ,clazz):
     result = clazz()
@@ -66,7 +62,7 @@ class SignerManager():
         else:
             return False
 
-        return FileHelper.writeContent(SIGNER_FILE, json.dumps(signer_config_list))
+        return FileHelper.writeContent(Constant.Signer.SIGNER_FILE_PATH, json.dumps(signer_config_list))
 
     @classmethod
     def delSigner(cls, signer_id, progress_callback):
@@ -77,12 +73,12 @@ class SignerManager():
 
         """
         cls.loger.info("del signer by id:{0} ...".format(signer_id))
-        signer_data_list = json.loads(FileHelper.fileContent(SIGNER_FILE))
+        signer_data_list = json.loads(FileHelper.fileContent(Constant.Signer.SIGNER_FILE_PATH))
         for signer_str in signer_data_list:
             signer = json2obj(signer_str, SignerConfig)
             if signer.signer_id == signer_id:
                 signer_data_list.remove(signer_str)
-        return FileHelper.writeContent(SIGNER_FILE, json.dumps(signer_data_list))
+        return FileHelper.writeContent(Constant.Signer.SIGNER_FILE_PATH, json.dumps(signer_data_list))
 
     @classmethod
     def modifySigner(cls, curr_signer_config: SignerConfig, progress_callback):
@@ -101,7 +97,7 @@ class SignerManager():
             else:
                 all_signer_list.append(signer_config.__dict__)
         cls.loger.info("writeContent: {0}".format(all_signer_list))        
-        return FileHelper.writeContent(SIGNER_FILE, json.dumps(all_signer_list))
+        return FileHelper.writeContent(Constant.Signer.SIGNER_FILE_PATH, json.dumps(all_signer_list))
 
     @classmethod
     def allSigners(cls, progress_callback) -> list or None:
@@ -112,11 +108,11 @@ class SignerManager():
         cls.loger.info("get all signer ...")
         try:
             signer_list =[]
-            signer_data_list = json.loads(FileHelper.fileContent(SIGNER_FILE))
+            signer_data_list = json.loads(FileHelper.fileContent(Constant.Signer.SIGNER_FILE_PATH))
             for signer_str in signer_data_list:
                 signer_list.append(json2obj(signer_str, SignerConfig))
-
-            signer_list.sort(key=lambda x: x.sort, reverse=True)
+            signer_list = sorted(signer_list, key=lambda x: x.update_time, reverse=True)
+            signer_list = sorted(signer_list, key=lambda x: x.sort)
             return signer_list
         except Exception as e:
             cls.loger.warning(""+traceback.format_exc())
@@ -125,7 +121,7 @@ class SignerManager():
     @classmethod
     def getSigner(cls, signer_id, progress_callback) -> SignerConfig:
         cls.loger.info("get signer by id: {}...".format(signer_id))
-        signer_data_list = json.loads(FileHelper.fileContent(SIGNER_FILE))
+        signer_data_list = json.loads(FileHelper.fileContent(Constant.Signer.SIGNER_FILE_PATH))
         for signer_str in signer_data_list:
             signer_config = json2obj(signer_str, SignerConfig)
             if signer_config.signer_id == signer_id:
