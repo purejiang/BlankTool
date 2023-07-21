@@ -29,6 +29,8 @@ class ParseApkWidget(FunctionWidget):
     def __init__(self, main_window) -> None:
         super(ParseApkWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.apk_info:ApkInfo = None
+        self.__is_pass_dex =False
+        self.__is_only_res =False
 
     def _onPreShow(self):
         self.apk_viewmodel = ApkViewModel(self)
@@ -42,7 +44,15 @@ class ParseApkWidget(FunctionWidget):
         self._ui.btn_depack_dir_path.clicked.connect(self.__openDepackDirPath)
 
         self.apk_viewmodel.parse_apk_operation.setListener(self.__parseApkSuccess, self.__parseApkProgress, self.__parseApkFailure),
-    
+        self._ui.ckb_pass_dex.stateChanged.connect(self.__isPassDex)
+        self._ui.ckb_only_res.stateChanged.connect(self.__isOnlyRes)
+
+    def __isPassDex(self, checked):
+        self.__is_pass_dex = checked
+
+    def __isOnlyRes(self, checked):
+        self.__is_only_res = checked
+
     def _entry(self):
         pass
 
@@ -66,7 +76,7 @@ class ParseApkWidget(FunctionWidget):
         self._ui.btn_depack_dir_path.setVisible(False)
         # 禁止点击
         self._ui.widget_parse_apk_fuction_bar.setDisabled(True)
-        self.apk_viewmodel.parseApk(apk_path)
+        self.apk_viewmodel.parseApk(apk_path, self.__is_pass_dex, self.__is_only_res)
 
     def __parseApkSuccess(self, apk_info):
         self.apk_info = apk_info

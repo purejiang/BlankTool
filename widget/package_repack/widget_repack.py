@@ -27,6 +27,7 @@ class RepackApkWidget(FunctionWidget):
         super(RepackApkWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__initView()
         self.__signer_list=[]
+        self.__ckb_support_aapt2=False
 
     def __initView(self):
         pass
@@ -47,6 +48,10 @@ class RepackApkWidget(FunctionWidget):
         self._ui.btn_jump_to_repack_path.clicked.connect(self.__jumpToRepackPath)
         self.__signer_viewmodel.all_operation.setListener(self.__loadSignersSuccess, self.__loadSignersProgress, self.__loadSignersFailure)
         self.__apk_viewmodel.repack_apk_operation.setListener(self.__repackSuccess, self.__repackProgress, self.__repackFailure)
+        self._ui.ckb_support_aapt2.stateChanged.connect(self.__isSupportAapt2)
+
+    def __isSupportAapt2(self, checked):
+        self.__ckb_support_aapt2 = checked
 
     def __loadSignersSuccess(self, signer_list):
         self._ui.cb_signers.clear()
@@ -77,7 +82,7 @@ class RepackApkWidget(FunctionWidget):
             return
         # 获取用户选择的项的索引
         index = self._ui.cb_signers.currentIndex()
-        self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, True, self.__signer_list[index])
+        self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, self.__ckb_support_aapt2, self.__signer_list[index])
         # 禁止点击
         self._ui.widget_repack_fuction_bar.setDisabled(True)
         self._ui.btn_jump_to_repack_path.setVisible(False)

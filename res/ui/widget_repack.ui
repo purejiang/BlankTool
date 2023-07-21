@@ -76,12 +76,12 @@
              <number>16</number>
             </property>
             <property name="bottomMargin">
-             <number>20</number>
+             <number>10</number>
             </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_4" stretch="2,1">
               <property name="spacing">
-               <number>6</number>
+               <number>10</number>
               </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="4,1">
@@ -116,7 +116,7 @@
                  <number>24</number>
                 </property>
                 <item>
-                 <widget class="QCheckBox" name="checkBox">
+                 <widget class="QCheckBox" name="ckb_support_aapt2">
                   <property name="text">
                    <string>是否支持AAPT2</string>
                   </property>

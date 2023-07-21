@@ -36,10 +36,10 @@ class SettingWidget(FunctionWidget):
         self.__blank_viewmodel.get_chache_size_opreation.setListener(self.__getCacheSizeSuccess, self.__getCacheSizeProgress, self.__getCacheSizeFailure)
         self.__blank_viewmodel.clean_cache_opreation.setListener(self.__cleanCacheSuccess, self.__cleanCacheProgress, self.__cleanCacheFailure)
         self._ui.pb_clean_cache.clicked.connect(self.__showCacheDialog)
-        self._ui.ckb_is_output_log.stateChanged.connect(self.__IsOutputLog)
+        self._ui.ckb_is_output_log.stateChanged.connect(self.__isOutputLog)
         self.__refershCacheDialog()
 
-    def __IsOutputLog(self, checked):
+    def __isOutputLog(self, checked):
         if checked:
             self.__blank_viewmodel.setAppSetting({"is_output_log": True})
         else:
