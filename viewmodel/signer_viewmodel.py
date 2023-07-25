@@ -62,7 +62,7 @@ class AddSigner(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "添加失败")
+            self._failure_signal.emit(0, "添加失败", "")
 
 class DelSigner(BaseThread):
     """
@@ -78,7 +78,7 @@ class DelSigner(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "删除失败")
+            self._failure_signal.emit(0, "删除失败", "")
 
 class ModifySigner(BaseThread):
     """
@@ -94,7 +94,7 @@ class ModifySigner(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "修改失败")
+            self._failure_signal.emit(0, "修改失败", "")
         
 class GetSigner(BaseThread):
     """
@@ -111,7 +111,7 @@ class GetSigner(BaseThread):
         if result:
             self._success_signal.emit(ks_config)
         else:
-            self._failure_signal.emit(0, "获取失败")
+            self._failure_signal.emit(0, "获取失败", "")
             
 class AllSignerList(BaseThread):
     """
@@ -127,4 +127,4 @@ class AllSignerList(BaseThread):
         if signer_list!=None:
             self._success_signal.emit(signer_list)
         else:
-            self._failure_signal.emit(0, "获取失败")
+            self._failure_signal.emit(0, "获取失败", "")

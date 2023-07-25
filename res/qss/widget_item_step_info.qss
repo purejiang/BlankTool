@@ -2,10 +2,6 @@ QLabel#lb_step_icon {
   border-image:  url(./res/img/ic_step);
 }
 
-QLabel#lb_step_info_icon {
-  border-image:  url(./res/img/ic_step_info);
-}
-
 QLabel#lb_step_title{
   color: #FFFFFF;
   font-family: "Microsoft YaHei";

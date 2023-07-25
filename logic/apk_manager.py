@@ -31,9 +31,10 @@ class ApkManager():
         :param progress_callback: 执行进度
 
         """
-        progress_callback(10, "安装 apk：" + apk_path, "")
+        progress_callback(30, "开始安装 apk：" + apk_path, "", True)
         cmd_result = CMD.installApk(apk_path)
         cls.loger.info(cmd_result[1])
+        progress_callback(90, "执行完成" , cmd_result[1], cmd_result[0])
         return cmd_result[0]
 
     @classmethod
@@ -48,46 +49,49 @@ class ApkManager():
 
         """
         # 第一步，初始化解析工具
-        callback_progress(15, "初始化解析工具" , "")
+        callback_progress(5, "开始执行" , "", True)    
         md5 = FileHelper.md5(apk_path)
         md5_name = "{0}_{1}".format(FileHelper.filename(apk_path, False), md5)
         info_file = os.path.join(
             Constant.Path.AAPT_INFO_CACHE_PATH, "{0}.info".format(md5_name))
         depack_output_dir = os.path.join(
             Constant.Path.PARSE_CACHE_PATH, md5_name)
-        
+        callback_progress(15, "初始化解析工具" , "", True)    
+
         # 第二步，通过 aapt 生成解析文件
-        callback_progress(25, "AAPT 生成解析文件：" + info_file, "")
         aapt_info_result = cls.__aapt_apk_info(apk_path, info_file)
+        callback_progress(25, "AAPT 生成解析文件：" + info_file, aapt_info_result[1], aapt_info_result[0])
         if not aapt_info_result[0]:
-            return False, None
-        
+            return False, None   
+
         # 第三步，解析文件中 APK 信息
-        callback_progress(35, "读取解析文件：" + info_file, "")
         parse_apk_info_result = cls.__parse_apk_info(info_file, apk_path, depack_output_dir)
+        callback_progress(35, "读取解析文件：" + info_file, "", parse_apk_info_result!=None)
         if parse_apk_info_result==None:
             return False, None
         
         # 第四步，反编译 APK
-        callback_progress(55, "反编译 APK 到：" + depack_output_dir, "")
         depack_result = cls.__depackage(Constant.Re.APKTOOL_PATH, apk_path, depack_output_dir, is_pass_dex, is_only_res)
+        callback_progress(55, "反编译 APK 到：" + depack_output_dir, depack_result[1], depack_result[0])
         if not depack_result[0]:
             return False, None
         
         # 第五步，keytool 分析 APK
-        callback_progress(75, "keytool 分析 APK：" + apk_path, "")
+        signer_info_result = cls.__parseSignerInfo(Constant.Re.KEYTOOL_PATH, depack_output_dir)
+        if signer_info_result[0]:
+            parse_apk_info_result.signer_sha1 = signer_info_result[1]
+            parse_apk_info_result.signer_sha256 = signer_info_result[2]
 
-        sigenr_info_result= cls.__parseSignerInfo(Constant.Re.KEYTOOL_PATH, depack_output_dir)
-        if sigenr_info_result!=None:
-            parse_apk_info_result.signer_sha1 = sigenr_info_result[0]
-            parse_apk_info_result.signer_sha256 = sigenr_info_result[1]
-
-        sigenr_md5_result= cls.__parseSignermd5(Constant.Re.KEYTOOL_PATH, depack_output_dir)
-        if sigenr_md5_result!=None:
-            parse_apk_info_result.signer_md5 = sigenr_md5_result
+        signer_md5_result = cls.__parseSignermd5(Constant.Re.KEYTOOL_PATH, depack_output_dir)
+        if signer_md5_result[0]:
+            parse_apk_info_result.signer_md5 = signer_md5_result[1]
+        
+        callback_progress(75, "keytool 分析 APK：" + apk_path, "{0}\n{1}".format(signer_info_result[1], signer_md5_result[1]), True)
+        if not signer_info_result[0] and not signer_md5_result[0]:
+            return False, None
 
         # 第六步，生成 APK 分析结果
-        callback_progress(95, "生成 APK 分析结果", "")
+        callback_progress(95, "生成 APK 分析结果", "", True)
         parse_apk_info_result.icon = cls.__parse_icon(depack_output_dir)
         parse_apk_info_result.md5 = md5
         return True, parse_apk_info_result
@@ -95,18 +99,18 @@ class ApkManager():
     @classmethod
     def repack(cls, repack_dir_path, output_apk_path, is_support_aapt2, ks_config, callback_progress):
         tmp_apk_path = os.path.join(FileHelper.parentDir(output_apk_path), "tmp_"+FileHelper.filename(output_apk_path))
+        callback_progress(10, "开始执行重编译", "", True)
         # 第一步，重编译,生成未签名的 APK
-        callback_progress(30, "重编译，生成未签名 APK：" + output_apk_path, "")
         repack_tmp_apk_result = cls.__repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk_path, is_support_aapt2)
+        callback_progress(30, "重编译，生成未签名 APK：" + output_apk_path, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
         if not repack_tmp_apk_result[0]:
             cls.loger.info(repack_tmp_apk_result[1])
             return False
+        
         # 第二步，重签名 APK
-        callback_progress(60, "重签名 APK：" + output_apk_path, "")
         sign_result = cls.__sign(Constant.Re.JARSIGNER_PATH, tmp_apk_path, output_apk_path, ks_config)
-        if not sign_result[0]:
-            return False
-        return True
+        callback_progress(60, "重签名 APK：" + output_apk_path, sign_result[1], sign_result[0])
+        return sign_result[0]
         
     @classmethod
     def parseApkListInfo(cls, info_file):
@@ -121,26 +125,28 @@ class ApkManager():
     
     @classmethod
     def __parseSignermd5(cls, keytool_path, depack_path):
+        msg=""
         signer_dir = os.path.join(depack_path, "original"+os.path.sep+"META-INF")
         md5_str = ""
         for file in FileHelper.getChild(signer_dir):
             if file.endswith(".RSA"):
                 result = cls.__getSignerMd5(keytool_path, os.path.join(signer_dir, file))
+                msg+="{}/n".format(result[1])
                 if result[0]:
                     md5_str = result[1].split("(stdin)= ")[1]
-                    return md5_str
-                else:
-                    return None
-        return None 
+                    return True, md5_str
+        return False, msg
     
     @classmethod
     def __parseSignerInfo(cls, keytool_path, depack_path):
+        msg=""
         signer_dir = os.path.join(depack_path, "original"+os.path.sep+"META-INF")
         sha1_str = ""
         sha256_str = ""
         for file in FileHelper.getChild(signer_dir):
             if file.endswith(".RSA"):
                 result = cls.__getSignerInfo(keytool_path, os.path.join(signer_dir, file))
+                msg+="{}/n".format(result[1])
                 if result[0]:
                     sha1_list = re.findall("SHA1: (.*?)\n", result[1])
                     for sha1 in sha1_list:
@@ -150,10 +156,8 @@ class ApkManager():
                     for sha256 in sha256_list:
                         if sha256!=None:
                             sha256_str+= "{}\n".format(sha256)
-                    return (sha1_str, sha256_str)
-                else:
-                    return None
-        return None
+                    return (False, sha1_str, sha256_str)
+        return (False, msg, "")
 
     @classmethod
     def __getSignerInfo(cls, keytool_path, rsa_path)->Union[bool, str]:

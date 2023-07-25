@@ -72,6 +72,7 @@ class BlankManager():
             if not FileHelper.fileExist(tool_dir):
                 cls.loger.info("重建: {}".format(tool_dir))
                 FileHelper.createDir(tool_dir)
+        return True
     
     @classmethod
     def __checkRe(cls):
@@ -91,25 +92,26 @@ class BlankManager():
         """
         初始化程序
         """
-        callback_progress(20, "初始化环境变量", "")
-        if not cls.__initRe():
+        init_result = cls.__initRe()
+        callback_progress(20, "初始化环境变量", "", init_result)
+        if not init_result:
             return False
-
-        callback_progress(40, "检查运行环境", "")
-        if not cls.__checkRe():
+        check_re_result = cls.__checkRe()
+        callback_progress(40, "检查运行环境", "", check_re_result)
+        if not check_re_result:
             return False
-
-        callback_progress(60, "加载 .rcc", "")
-        if not cls.__loadRcc() and Constant.AppInfo.MODE==cls.REALEASE_MODE:
+        load_result = cls.__loadRcc()
+        callback_progress(60, "加载 .rcc", "", load_result)
+        if not load_result and Constant.AppInfo.MODE==cls.REALEASE_MODE:
             return False
-
-        callback_progress(80, "检查工具目录", "")
-        if not cls.__checkToolDir():
-            pass
-
-        callback_progress(90, "检查更新", "")
-        if not cls.checkUpdate():
-            pass
+        check_dir_result = cls.__checkToolDir()
+        callback_progress(80, "检查工具目录", "", check_dir_result)
+        if not check_dir_result:
+            return False
+        update_result = cls.checkUpdate()
+        callback_progress(90, "检查更新", "", update_result)
+        if not update_result:
+            return False
         return True
     
 
@@ -128,11 +130,11 @@ class BlankManager():
         try:
             for folder_path in Constant.Path.ALL_CACHE_PATH_LIST:
                 progress+=1
-                progress_callback(progress*100/cache_len, "分析：{0}".format(folder_path), "")
+                progress_callback(progress*100/cache_len, "分析：{0}".format(folder_path), "", True)
                 for file in FileHelper.getAllChild(folder_path, FileHelper.TYPE_FILE):
                     cls.cache_files.append(file)
                     total_size += FileHelper.fileSize(file)
-
+            cls.loger.info("分析缓存文件完成")
             if total_size <= 1024.0:
                 return "{:.2f} B".format(total_size)
             elif total_size <= 1024.0**2:
@@ -165,12 +167,12 @@ class BlankManager():
             for file in cls.cache_files:
                 del_file_counts+=1
                 try:
-                    file_str = "{0}...{1}".format(file.split(os.path.sep)[0:2], file.split(os.path.sep)[-3])
-                    progress_callback(del_file_counts*100/all_file_counts, "\n清理：\n{0}".format(file_str), "")
-                    FileHelper.delFile(file)
+                    file_str = "...{0}".format(file.split(os.path.sep)[-1])
+                    del_result = FileHelper.delFile(file)
+                    progress_callback(del_file_counts*100/all_file_counts, "\n清理：\n{0}".format(file_str), "", del_result) 
                 except Exception as e:
                     cls.loger.warning("清理文件失败："+traceback.format_exc())   
-            cls.loger.info("清理文件数：{0}".format(del_file_counts))
+            cls.loger.info("预清理文件数：{0}".format(del_file_counts))
             for dir in dir_list:
                 FileHelper.delFile(dir)
                 cls.loger.info("清理文件夹：" + dir)  
@@ -202,6 +204,7 @@ class BlankManager():
         检测更新
         """
         cls.loger.info("检测更新")
+        return True
 
     # @classmethod
     # def getFunctions(cls, progress_callback):

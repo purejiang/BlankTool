@@ -12,14 +12,14 @@ from PySide6.QtCore import QThread, Signal
 
 class BaseThread(QThread):
     _success_signal = Signal()
-    _progress_signal = Signal(int, str, str)
-    _failure_signal = Signal(int, str)
+    _progress_signal = Signal(int, str, str, bool)
+    _failure_signal = Signal(int, str, str)
 
     def __init__(self):
         super().__init__()
 
-    def _progressCallback(self, progress, msg, des):
-        self._progress_signal.emit(progress, msg, des)
+    def _progressCallback(self, progress, message, other_info, is_success):
+        self._progress_signal.emit(progress, message, other_info, is_success)
 
 class ViewModelSignal():
     """

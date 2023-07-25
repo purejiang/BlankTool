@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QListWidget,QListWidgetItem
 from widget.base.base_widget import BaseWidget
 
@@ -14,12 +14,16 @@ class StepInfoItemWidget(BaseWidget):
     """
     __UI_FILE = "./res/ui/widget_item_step_info.ui"
     __QSS_FILE = "./res/qss/widget_item_step_info.qss"
+    __SUCCESS_IMG = "./res/img/ic_step_success"
+    __FAILED_IMG = "./res/img/ic_step_failed"
+    __INFO_IMG = "./res/img/ic_step_info"
 
-    def __init__(self, main_window, title, time, des) -> None:
+    def __init__(self, main_window, time, message, other_info, is_success) -> None:
         super().__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
-        self.title = title
-        self.time = time
-        self.ds = des
+        self._message = message
+        self._time = time
+        self._other_info = other_info
+        self._is_success = is_success
         self.__initView()
         
 
@@ -27,8 +31,16 @@ class StepInfoItemWidget(BaseWidget):
         pass
 
     def __initView(self):
-        self._ui.lb_step_title.setText(self.title)
-        self._ui.lb_step_time.setText(self.time)
+        self._ui.lb_step_title.setText(self._message)
+        self._ui.lb_step_time.setText(self._time)
+        if self._is_success==None:
+            pixmap = QPixmap(self.__INFO_IMG)
+        elif self._is_success:
+            pixmap = QPixmap(self.__SUCCESS_IMG)
+        else:
+            pixmap = QPixmap(self.__FAILED_IMG)
+
+        self._ui.lb_step_info_icon.setPixmap(pixmap)
         
     
     def _setupListener(self):
@@ -52,11 +64,17 @@ class StepInfoWidget(QListWidget):
     def __initView(self):
         pass
 
-    def loadStep(self, title, date, des):
-        list_widget_item = QListWidgetItem()  # 创建QListWidgetItem对象
-        widget = StepInfoItemWidget(self, title, date, des)  # 调用上面的函数获取对应
-        self.addItem(list_widget_item)  # 添加item
-        self.setItemWidget(list_widget_item, widget)  # 为item设置widget
+    def loadStep(self, time, message, other_info, is_success):
+        # 创建QListWidgetItem对象
+        list_widget_item = QListWidgetItem()
+        # 调用上面的函数获取对应
+        widget = StepInfoItemWidget(self, message, time, other_info, is_success)
+        # 添加item
+        self.addItem(list_widget_item) 
+        # 为item设置widget
+        self.setItemWidget(list_widget_item, widget)  
+        # 滑动到底部
+        self.scrollToBottom()
     
     def _clear(self):
         self.clear()

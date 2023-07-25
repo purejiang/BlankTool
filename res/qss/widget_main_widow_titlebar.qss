@@ -7,6 +7,9 @@ QPushButton {
     font-size: 12px;
 }
 
+QLabel#lb_app_icon{
+  border-image: url(./res/img/app_icon_small);
+}
 QPushButton:default {
     background-color: transparent;
 }

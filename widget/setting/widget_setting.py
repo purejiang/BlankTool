@@ -72,20 +72,20 @@ class SettingWidget(FunctionWidget):
         self.__cleanCacheDialog.setConfirm("确认", self.__closeCacheDialog)
         self._entry()
 
-    def __cleanCacheProgress(self, progress, title, des):
-        self.__cleanCacheDialog.setMessage("{0}%:{1}".format(progress, title))
+    def __cleanCacheProgress(self, progress, message, other_info, is_success):
+        self.__cleanCacheDialog.setMessage("{0}%:{1}".format(progress, message))
  
-    def __cleanCacheFailure(self, code, msg):
-        self.__cleanCacheDialog.setMessage("清理失败")
+    def __cleanCacheFailure(self, code, message, other_info):
+        self.__cleanCacheDialog.setMessage("清理失败 code:{0}, message:{1}".format(code, message))
         self.__cleanCacheDialog.setConfirm("确认", self.__closeCacheDialog)
     
     def __getCacheSizeSuccess(self, size_str):
         self.__is_getsize_ing = False
         self._ui.lb_cache_totle_size.setText(size_str)
 
-    def __getCacheSizeProgress(self, progress, title, des):
+    def __getCacheSizeProgress(self, progress, message, other_info, is_success):
         pass
 
-    def __getCacheSizeFailure(self, code, msg):
+    def __getCacheSizeFailure(self, code, message, other_info):
         self.__is_getsize_ing = False
-        self._ui.lb_cache_totle_size.setText("error, code:{0} msg:{1}".format(code, msg))
+        self._ui.lb_cache_totle_size.setText("error code:{0}, message:{1}".format(code, message))

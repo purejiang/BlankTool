@@ -55,7 +55,7 @@ class SettingSetter(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "修改配置失败")
+            self._failure_signal.emit(0, "修改配置失败", "")
 
 class CleanCache(BaseThread):
     """
@@ -70,7 +70,7 @@ class CleanCache(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "清理缓存失败")
+            self._failure_signal.emit(0, "清理缓存失败", "")
 
 class GetCacheSize(BaseThread):
     """
@@ -86,7 +86,7 @@ class GetCacheSize(BaseThread):
         if result:
             self._success_signal.emit(result)
         else:
-            self._failure_signal.emit(0, "获取缓存失败")
+            self._failure_signal.emit(0, "获取缓存失败", "")
 
 class InitApp(BaseThread):
     """
@@ -101,6 +101,6 @@ class InitApp(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "初始化应用失败")
+            self._failure_signal.emit(0, "初始化应用失败", "")
 
             

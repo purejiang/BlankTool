@@ -81,7 +81,7 @@ class ParseApkWidget(FunctionWidget):
     def __parseApkSuccess(self, apk_info):
         self.apk_info = apk_info
         ApkViewModel._parse_apk_info = apk_info
-        self.__widget_parse_step_info.loadStep("分析成功", currentTime(), "")
+        self.__widget_parse_step_info.loadStep("分析成功", currentTime(), "", True)
         # 恢复点击
         self._ui.widget_parse_apk_fuction_bar.setDisabled(False)
         # 隐藏进度条
@@ -89,12 +89,12 @@ class ParseApkWidget(FunctionWidget):
         self._ui.pb_depack_progress.setVisible(False)
         self._ui.btn_depack_dir_path.setVisible(True)
 
-    def __parseApkProgress(self, progress, title, des):
+    def __parseApkProgress(self, progress, message, other_info, is_success):
         self._ui.pb_depack_progress.setValue(progress)
-        self.__widget_parse_step_info.loadStep(title, currentTime(), des)
+        self.__widget_parse_step_info.loadStep(currentTime(), message, other_info, is_success)
 
-    def __parseApkFailure(self, code, msg):
-        self.__widget_parse_step_info.loadStep("code:{0}, msg:{1}".format(code, msg), currentTime(), "")
+    def __parseApkFailure(self, code, message, other_info):
+        self.__widget_parse_step_info.loadStep(currentTime(), "code:{0}, message:{1}".format(code, message), other_info, False)
         # 恢复点击
         self._ui.widget_parse_apk_fuction_bar.setDisabled(False)
         # 隐藏进度条

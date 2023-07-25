@@ -106,22 +106,22 @@ class FunctionTabBarWidget(QToolBox, BaseUi):
         apk_parse_function = Function("APK/AAB 解析", "", ParseApkWidget(self))
         apk_parse_result_function = Function("APK 解析结果", "", ApkInfoWidget(self))
         list1 = [apk_parse_function, apk_parse_result_function]
-        self.__android_analysis = FunctionType("安卓分析", "./res/img/app_icon_small.png", list1)
+        self.__android_analysis = FunctionType("安卓分析", "./res/img/analyse_img.png", list1)
 
         install_function = Function("APK/AAB 安装", "", InstallWidget(self))
         pull_apk_function = Function("APK 拉取", "", PullApksWidget(self))
         list2 = [install_function, pull_apk_function]
-        self.__package_fc = FunctionType("包体功能", "./res/img/app_icon_small.png", list2)
+        self.__package_fc = FunctionType("包体功能", "./res/img/package_img.png", list2)
 
         reapck_apk_function = Function("APK 重编", "", RepackApkWidget(self))
         apk2aab_function = Function("APK 转 AAB", "", Apk2AabWidget(self))
         list3 = [reapck_apk_function, apk2aab_function]
-        self.__package_repack = FunctionType("包体重编", "./res/img/app_icon_small.png", list3)
+        self.__package_repack = FunctionType("包体重编", "./res/img/android_img.png", list3)
 
         signer_config_function = Function("签名配置", "", SignerConfigWidget(self))
         setting_function = Function("应用设置", "", SettingWidget(self))
         list4 = [signer_config_function, setting_function]
-        self.__other = FunctionType("其他", "./res/img/app_icon_small.png", list4)
+        self.__other = FunctionType("其他", "./res/img/other_img.png", list4)
 
         for function_type in [self.__android_analysis, self.__package_fc, self.__package_repack, self.__other]:
             functions_list_widget = FuctionListWidget(function_type.fucntion_list, self.__itemClickCallback)

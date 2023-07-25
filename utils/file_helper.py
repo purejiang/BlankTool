@@ -180,10 +180,12 @@ class FileHelper():
         if cls.fileExist(file_path):
             if cls.isFile(file_path):
                 os.remove(file_path)
+                return True
             else:
                 shutil.rmtree(file_path)
+                return True
         else:
-            raise FileExistsError(file_path+" is not exist.")
+            return False
 
     @classmethod
     def rename(cls, file_path, new_name):

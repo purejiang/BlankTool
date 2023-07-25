@@ -60,34 +60,34 @@ class InstallWidget(FunctionWidget):
         self._ui.btn_install.setEnabled(False)
 
     def __apkInstallSuccess(self):
-        self.__widget_install_step_info.loadStep("安装 APK 成功", currentTime(), "")
+        self.__widget_install_step_info.loadStep(currentTime(), "安装 APK 成功", "", True)
         # 允许点击
         self._ui.btn_select_install.setEnabled(True)
         self._ui.btn_install.setEnabled(True)
 
-    def __apkInstallFailure(self, code, msg):
-        self.__widget_install_step_info.loadStep("code:{0}, msg:{1}".format(code, msg), currentTime(), "")
+    def __apkInstallFailure(self, code, message, other_info):
+        self.__widget_install_step_info.loadStep(currentTime(), "code:{0}, message:{1}".format(code, message), other_info, False)
         # 允许点击
         self._ui.btn_select_install.setEnabled(True)
         self._ui.btn_install.setEnabled(True)
 
-    def __apkInstallPrgress(self, progress, title, des):
-        self.__widget_install_step_info.loadStep(title, currentTime(), des)
+    def __apkInstallPrgress(self, progress, message, other_info, is_success):
+        self.__widget_install_step_info.loadStep(currentTime(), message, other_info, is_success)
 
     def __aabInstallSuccess(self):
-        self.__widget_install_step_info.loadStep("安装 AAB 成功", currentTime(), "")
+        self.__widget_install_step_info.loadStep(currentTime(), "安装 AAB 成功", "", True)
         # 允许点击
         self._ui.btn_select_install.setEnabled(True)
         self._ui.btn_install.setEnabled(True)
 
-    def __aabInstallFailure(self, code, msg):
-        self.__widget_install_step_info.loadStep("code:{0}, msg:{1}".format(code, msg), currentTime(), "")
+    def __aabInstallFailure(self, code, message, other_info):
+        self.__widget_install_step_info.loadStep(currentTime(), "code:{0}, message:{1}".format(code, message), other_info, False)
         # 允许点击
         self._ui.btn_select_install.setEnabled(True)
         self._ui.btn_install.setEnabled(True)
 
-    def __aabInstallPrgress(self, progress, title, des):
-        self.__widget_install_step_info.loadStep(title, currentTime(), des)
+    def __aabInstallPrgress(self, progress, message, other_info, is_success):
+        self.__widget_install_step_info.loadStep(currentTime(), message, other_info, is_success)
 
     def _entry(self):
         return super()._entry()

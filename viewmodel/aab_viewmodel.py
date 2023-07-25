@@ -41,5 +41,5 @@ class InstallAAB(BaseThread):
         if result:
             self._success_signal.emit()
         else:
-            self._failure_signal.emit(0, "安装失败")
+            self._failure_signal.emit(0, "安装失败", "")
 

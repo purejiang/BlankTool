@@ -62,10 +62,10 @@ class RepackApkWidget(FunctionWidget):
                     self.__signer_list.append(signer)
                     self._ui.cb_signers.addItem(signer.signer_name, signer)
 
-    def __loadSignersProgress(self, progress, title, des):
+    def __loadSignersProgress(self, progress, message, other_info,  is_success):
         pass
 
-    def __loadSignersFailure(self, code, msg):
+    def __loadSignersFailure(self, code, message, other_info):
         pass
 
     def __chooseFile(self):
@@ -93,16 +93,16 @@ class RepackApkWidget(FunctionWidget):
 
     def __repackSuccess(self, apk_info):
         self.apk_info = apk_info
-        self.__widget_repack_step_info.loadStep("重编成功", currentTime(), "")
+        self.__widget_repack_step_info.loadStep(currentTime(), "重编成功", "", True)
         # 恢复点击
         self._ui.widget_repack_fuction_bar.setDisabled(False)
         self._ui.btn_jump_to_repack_path.setVisible(True)
 
-    def __repackProgress(self, progress, title, des):
-        self.__widget_repack_step_info.loadStep(title, currentTime(), "")
+    def __repackProgress(self, progress, message, other_info, is_success):
+        self.__widget_repack_step_info.loadStep(currentTime(), message, other_info, is_success)
 
-    def __repackFailure(self, code, msg):
-        self.__widget_repack_step_info.loadStep("code:{0}, msg:{1}".format(code, msg), currentTime(), "")
+    def __repackFailure(self, code, message, other_info):
+        self.__widget_repack_step_info.loadStep(currentTime(), "code:{0}, message:{1}".format(code, message), other_info, False)
         # 恢复点击
         self._ui.widget_repack_fuction_bar.setDisabled(False)
         

@@ -17,7 +17,7 @@ class MainWindow(BaseWindow):
     """
     __UI_FILE = "./res/ui/window_main.ui"
     __QSS_FILE = "./res/qss/window_main.qss"
-    __ICON = "./res/img/app_icon_small.png"
+    __ICON = "./res/img/app_icon_small"
     __TITLE = Constant.AppInfo.APP_NAME
 
     def __init__(self, application) -> None:

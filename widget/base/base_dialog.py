@@ -37,7 +37,7 @@ class BaseDialog(QDialog, BaseUi):
         if qss_file is not None:
             qss_str = "{0}\n{1}".format(super()._loadQss(self._BASE_QSS_FILE), super()._loadQss(qss_file))
             self.setStyleSheet(qss_str)
-        if self._icon is None:
+        if self._icon is not None:
             self.setWindowIcon(QIcon(self._icon))
     
     def _moveCenter(self):    
