@@ -1,8 +1,4 @@
-QWidget#widget_parse_apk {
-  background-color: #828282;
-}
-
-QWidget#widget_pull_apks_fuction_bar {
+QWidget#widget_pull_apps_fuction_bar {
   border-radius: 5px;
   background-color: #595959;
 }
@@ -33,11 +29,31 @@ QLineEdit {
   color: #3D3D3D;
 }
 
+
 QListWidget {
-    border-radius: 5px;
-    border: 0px;
-    outline: 0px;
-    background-color: #595959;
+  border-radius: 5px;
+  border: 0px;
+  outline: 0px;
+  background-color: #595959;
+}
+
+QListWidget::Item {
+  background: transparent;
+  color: transparent;
+  min-width: 700px;
+  min-height: 50px;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+QListWidget::Item:hover {
+  background: #646464;
+}
+
+QListWidget::Item:selected {
+  background: #4e4e4e;
 }
 
 

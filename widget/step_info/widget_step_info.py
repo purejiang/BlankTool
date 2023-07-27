@@ -47,7 +47,7 @@ class StepInfoItemWidget(BaseWidget):
         pass
 
 
-class StepInfoWidget(QListWidget):
+class StepInfoListWidget(QListWidget):
     """
 
     @author: purejiang
@@ -57,7 +57,7 @@ class StepInfoWidget(QListWidget):
     """
 
     def __init__(self) -> None:
-        super(StepInfoWidget, self).__init__()
+        super(StepInfoListWidget, self).__init__()
         self.__initView()
         self._setupListener()
         

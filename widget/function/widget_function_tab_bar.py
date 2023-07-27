@@ -10,7 +10,7 @@ from widget.function.widget_function import FunctionWidget
 from widget.package_func.widget_install import InstallWidget
 from widget.package_parse.widget_parse_apk import ParseApkWidget
 from widget.package_parse.widget_apk_info import ApkInfoWidget
-from widget.package_func.widget_pull_apks import PullApksWidget
+from widget.package_func.widget_pull_apps import PullAppsWidget
 from widget.package_repack.widget_apk2aab import Apk2AabWidget
 from widget.package_repack.widget_repack import RepackApkWidget
 from widget.setting.widget_setting import SettingWidget
@@ -109,7 +109,7 @@ class FunctionTabBarWidget(QToolBox, BaseUi):
         self.__android_analysis = FunctionType("安卓分析", "./res/img/analyse_img.png", list1)
 
         install_function = Function("APK/AAB 安装", "", InstallWidget(self))
-        pull_apk_function = Function("APK 拉取", "", PullApksWidget(self))
+        pull_apk_function = Function("APK 拉取", "", PullAppsWidget(self))
         list2 = [install_function, pull_apk_function]
         self.__package_fc = FunctionType("包体功能", "./res/img/package_img.png", list2)
 

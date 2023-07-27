@@ -12,7 +12,7 @@ from vo.apk_info import ApkInfo
 
 from widget.custom.toast import Toast
 from widget.function.widget_function import FunctionWidget
-from widget.step_info.widget_step_info import StepInfoWidget
+from widget.step_info.widget_step_info import StepInfoListWidget
 
 
 class ParseApkWidget(FunctionWidget):
@@ -35,7 +35,7 @@ class ParseApkWidget(FunctionWidget):
     def _onPreShow(self):
         self.apk_viewmodel = ApkViewModel(self)
         self._ui.pb_depack_progress.setVisible(False)
-        self.__widget_parse_step_info = StepInfoWidget()
+        self.__widget_parse_step_info = StepInfoListWidget()
         self.layout_parse_step_info.addWidget(self.__widget_parse_step_info)
     
     def _setupListener(self):

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>widget_pull_apks</class>
- <widget class="QWidget" name="widget_pull_apks">
+ <class>widget_pull_apps</class>
+ <widget class="QWidget" name="widget_pull_apps">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -19,7 +19,7 @@
      <x>0</x>
      <y>0</y>
      <width>771</width>
-     <height>581</height>
+     <height>571</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
@@ -31,6 +31,9 @@
     </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1">
+      <property name="spacing">
+       <number>12</number>
+      </property>
       <property name="leftMargin">
        <number>24</number>
       </property>
@@ -44,7 +47,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QWidget" name="widget_pull_apks_fuction_bar" native="true">
+       <widget class="QWidget" name="widget_pull_apps_fuction_bar" native="true">
         <widget class="QWidget" name="horizontalLayoutWidget">
          <property name="geometry">
           <rect>
@@ -54,7 +57,7 @@
            <height>93</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="4,1">
+         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="6,1">
           <property name="spacing">
            <number>6</number>
           </property>
@@ -71,9 +74,9 @@
            <number>20</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="3,1">
+           <layout class="QHBoxLayout" name="layout_pull_searcher" stretch="3,1">
             <item>
-             <widget class="QLineEdit" name="edt_searcher_pull_apk">
+             <widget class="QLineEdit" name="edt_search_pull_app">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -83,7 +86,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="btn_searcher_in_pull_apk">
+             <widget class="QPushButton" name="btn_search_app">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -98,7 +101,7 @@
            </layout>
           </item>
           <item>
-           <widget class="QPushButton" name="btn_pull_apks">
+           <widget class="QPushButton" name="btn_get_apps">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
               <horstretch>0</horstretch>
@@ -106,7 +109,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>拉取</string>
+             <string>连接设备</string>
             </property>
            </widget>
           </item>
@@ -117,7 +120,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="layout_pull_app_content">
       <property name="spacing">
        <number>0</number>
       </property>

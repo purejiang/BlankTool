@@ -38,7 +38,7 @@ class ApkManager():
         return cmd_result[0]
 
     @classmethod
-    def parseApk(cls, apk_path, is_pass_dex, is_only_res, callback_progress)->Union[bool, None or ApkInfo]:
+    def parseApk(cls, apk_path, is_pass_dex, is_only_res, progress_callback)->Union[bool, None or ApkInfo]:
         """
         解析并反编译 APK 全流程
 
@@ -49,30 +49,30 @@ class ApkManager():
 
         """
         # 第一步，初始化解析工具
-        callback_progress(5, "开始执行" , "", True)    
+        progress_callback(5, "开始执行" , "", True)    
         md5 = FileHelper.md5(apk_path)
         md5_name = "{0}_{1}".format(FileHelper.filename(apk_path, False), md5)
         info_file = os.path.join(
             Constant.Path.AAPT_INFO_CACHE_PATH, "{0}.info".format(md5_name))
         depack_output_dir = os.path.join(
             Constant.Path.PARSE_CACHE_PATH, md5_name)
-        callback_progress(15, "初始化解析工具" , "", True)    
+        progress_callback(15, "初始化解析工具" , "", True)    
 
         # 第二步，通过 aapt 生成解析文件
-        aapt_info_result = cls.__aapt_apk_info(apk_path, info_file)
-        callback_progress(25, "AAPT 生成解析文件：" + info_file, aapt_info_result[1], aapt_info_result[0])
+        aapt_info_result = cls.__aaptApkInfo(apk_path, info_file)
+        progress_callback(25, "AAPT 生成解析文件：" + info_file, aapt_info_result[1], aapt_info_result[0])
         if not aapt_info_result[0]:
             return False, None   
 
         # 第三步，解析文件中 APK 信息
         parse_apk_info_result = cls.__parse_apk_info(info_file, apk_path, depack_output_dir)
-        callback_progress(35, "读取解析文件：" + info_file, "", parse_apk_info_result!=None)
+        progress_callback(35, "读取解析文件：" + info_file, "", parse_apk_info_result!=None)
         if parse_apk_info_result==None:
             return False, None
         
         # 第四步，反编译 APK
         depack_result = cls.__depackage(Constant.Re.APKTOOL_PATH, apk_path, depack_output_dir, is_pass_dex, is_only_res)
-        callback_progress(55, "反编译 APK 到：" + depack_output_dir, depack_result[1], depack_result[0])
+        progress_callback(55, "反编译 APK 到：" + depack_output_dir, depack_result[1], depack_result[0])
         if not depack_result[0]:
             return False, None
         
@@ -86,38 +86,37 @@ class ApkManager():
         if signer_md5_result[0]:
             parse_apk_info_result.signer_md5 = signer_md5_result[1]
         
-        callback_progress(75, "keytool 分析 APK：" + apk_path, "{0}\n{1}".format(signer_info_result[1], signer_md5_result[1]), True)
+        progress_callback(75, "keytool 分析 APK：" + apk_path, "{0}\n{1}".format(signer_info_result[1], signer_md5_result[1]), True)
         if not signer_info_result[0] and not signer_md5_result[0]:
             return False, None
 
         # 第六步，生成 APK 分析结果
-        callback_progress(95, "生成 APK 分析结果", "", True)
-        parse_apk_info_result.icon = cls.__parse_icon(depack_output_dir)
+        progress_callback(95, "生成 APK 分析结果", "", True)
+        parse_apk_info_result.icon = cls.__parseIcon(depack_output_dir)
         parse_apk_info_result.md5 = md5
         return True, parse_apk_info_result
     
     @classmethod
-    def repack(cls, repack_dir_path, output_apk_path, is_support_aapt2, ks_config, callback_progress):
+    def repack(cls, repack_dir_path, output_apk_path, is_support_aapt2, ks_config, progress_callback):
         tmp_apk_path = os.path.join(FileHelper.parentDir(output_apk_path), "tmp_"+FileHelper.filename(output_apk_path))
-        callback_progress(10, "开始执行重编译", "", True)
+        progress_callback(10, "开始执行重编译", "", True)
         # 第一步，重编译,生成未签名的 APK
         repack_tmp_apk_result = cls.__repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk_path, is_support_aapt2)
-        callback_progress(30, "重编译，生成未签名 APK：" + output_apk_path, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
+        progress_callback(30, "重编译，生成未签名 APK：" + output_apk_path, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
         if not repack_tmp_apk_result[0]:
             cls.loger.info(repack_tmp_apk_result[1])
             return False
         
         # 第二步，重签名 APK
         sign_result = cls.__sign(Constant.Re.JARSIGNER_PATH, tmp_apk_path, output_apk_path, ks_config)
-        callback_progress(60, "重签名 APK：" + output_apk_path, sign_result[1], sign_result[0])
+        progress_callback(60, "重签名 APK：" + output_apk_path, sign_result[1], sign_result[0])
         return sign_result[0]
         
     @classmethod
-    def parseApkListInfo(cls, info_file):
+    def __parseApkListInfo(cls, info_file):
         content = FileHelper.fileContent(info_file)
         apk_list = []
-        pack_infos = content.strip("package:").replace(
-            "\n", "").split("package:")
+        pack_infos = content.strip("package:").replace("\n", "").split("package:")
         for pack_info in pack_infos:
             apk_list.append(
                 (pack_info.split(".apk=")[1], pack_info.split(".apk=")[0]+".apk"))
@@ -156,7 +155,7 @@ class ApkManager():
                     for sha256 in sha256_list:
                         if sha256!=None:
                             sha256_str+= "{}\n".format(sha256)
-                    return (False, sha1_str, sha256_str)
+                    return (True, sha1_str, sha256_str)
         return (False, msg, "")
 
     @classmethod
@@ -203,7 +202,7 @@ class ApkManager():
         return cmd_result
 
     @classmethod
-    def __aapt_apk_info(cls, apk_path, info_file_path)->Union[bool, str]:
+    def __aaptApkInfo(cls, apk_path, info_file_path)->Union[bool, str]:
         """
         获取本地的 apk 信息
 
@@ -231,7 +230,7 @@ class ApkManager():
         return cmd_result
 
     @classmethod
-    def getApkListInfo(cls, info_file_path, is_sys):
+    def getApkListInfo(cls, info_file_path, is_sys, progress_callback):
         """
         获取手机上的 apk 列表
 
@@ -239,9 +238,17 @@ class ApkManager():
         :param is_sys: 是否只输出系统的应用
 
         """
+        # 第一步，导出所有应用信息
+        progress_callback(10, "开始执行", "", True)
         cls.loger.info("get all apks in phone...")
         cmd_result = CMD.inPhoneApkList(info_file_path, False, True, is_sys)
-        return cmd_result
+        progress_callback(50, "获取手机应用信息", cmd_result[1], cmd_result[0])
+        if not cmd_result[0]:
+            return False, None
+        # 第二步，解析应用信息
+        app_list = cls.__parseApkListInfo(info_file_path)
+        progress_callback(80, "解析手机应用信息", "", True)
+        return True, app_list
 
     @classmethod
     def getInphonePath(cls, package_name, info_file_path):
@@ -257,7 +264,7 @@ class ApkManager():
         return cmd_result
 
     @classmethod
-    def pullApk(cls, in_phone_path, target_path):
+    def pullApk(cls, in_phone_path, target_path, progress_callback):
         """
         通过 adb 命令将指定路径下的 apk 拉到 pc
 
@@ -265,7 +272,9 @@ class ApkManager():
 
         """
         cls.loger.info("pull apk ...")
+        progress_callback(10, "开始执行", "", True)
         cmd_result = CMD.pullApk(in_phone_path, target_path)
+        progress_callback(80, "导出完成", "", True)
         return cmd_result
 
     @classmethod
@@ -315,7 +324,7 @@ class ApkManager():
 
         
     @classmethod
-    def __parse_icon(cls, depack_path):
+    def __parseIcon(cls, depack_path):
         content = FileHelper.fileContent(
             os.path.join(depack_path, "AndroidManifest.xml"))
         # 非贪婪模式，取第一个

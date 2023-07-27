@@ -8,7 +8,7 @@ from viewmodel.signer_viewmodel import SignerViewModel
 from widget.base.base_widget import BaseWidget
 from widget.custom.toast import Toast
 from widget.function.widget_function import FunctionWidget
-from widget.step_info.widget_step_info import StepInfoWidget
+from widget.step_info.widget_step_info import StepInfoListWidget
 
 
 
@@ -38,8 +38,8 @@ class RepackApkWidget(FunctionWidget):
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
         self.__signer_viewmodel = SignerViewModel(self)
-        self.__widget_repack_step_info = StepInfoWidget()
-        self.layout_repack_step_info.addWidget(self.__widget_repack_step_info)
+        self.__widget_repack_step_info = StepInfoListWidget()
+        self._ui.layout_repack_step_info.addWidget(self.__widget_repack_step_info)
         self._ui.btn_jump_to_repack_path.setVisible(False)
         
     def _setupListener(self):

@@ -7,7 +7,7 @@ from viewmodel.apk_viewmodel import ApkViewModel
 
 from widget.custom.toast import Toast
 from widget.function.widget_function import FunctionWidget
-from widget.step_info.widget_step_info import StepInfoWidget
+from widget.step_info.widget_step_info import StepInfoListWidget
 
 
 class InstallWidget(FunctionWidget):
@@ -27,7 +27,7 @@ class InstallWidget(FunctionWidget):
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
         self.__aab_viewmodel = AabViewModel(self)
-        self.__widget_install_step_info = StepInfoWidget()
+        self.__widget_install_step_info = StepInfoListWidget()
         self.layout_install_step_info.addWidget(self.__widget_install_step_info)
         
     def _setupListener(self):
@@ -53,7 +53,7 @@ class InstallWidget(FunctionWidget):
         if FileHelper.getSuffix(file_path) == ".aab":
             self.__aab_viewmodel.install(file_path, None)
         else:
-             self.__apk_viewmodel.install(file_path)
+            self.__apk_viewmodel.install(file_path)
        
         # 禁止点击
         self._ui.btn_select_install.setEnabled(False)

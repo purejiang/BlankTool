@@ -1,8 +1,9 @@
 # -*- coding:utf-8 -*-
 
-from PySide6.QtWidgets import QTableWidgetItem,QHeaderView
+from PySide6.QtWidgets import QTableWidgetItem,QHeaderView,QLabel
 from viewmodel.apk_viewmodel import ApkViewModel
-
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPixmap
 
 from vo.apk_info import ApkInfo
 
@@ -41,11 +42,11 @@ class ApkInfoWidget(FunctionWidget):
 
     def __showApkInfo(self, apk_info:ApkInfo):
         table = self._ui.tw_apk_info_table
+        data_set = self.__apkinfo2data(apk_info)
         columb_count=2
-        row_count=15
+        row_count=len(data_set)
         table.setRowCount(row_count)
         table.setColumnCount(columb_count)
-        data_set = self.__apkinfo2data(apk_info)
         table.setHorizontalHeaderLabels(["属性", "值"])
         # 宽度
         table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch) # 将第二列的 ResizeMode 设置为 Stretch
@@ -53,23 +54,20 @@ class ApkInfoWidget(FunctionWidget):
 
         # 隐藏行号
         table.verticalHeader().setHidden(True)
-        table.setRowCount(len(data_set))
-        table.setColumnCount(len(data_set[0]))
+        table.verticalHeader().resizeSection(0, 60)
+        for row in range(table.rowCount()):
+            for col in range(table.columnCount()):
+                if row == 0 and col == 1:
+                    image = QPixmap(apk_info.icon)
+                    label = QLabel()
+                    label.setPixmap(image)
+                    label.setScaledContents(True)
+                    label.setMaximumSize(48, 48)  # 设置最大尺寸为50*50
+                    table.setCellWidget(row, col, label)
+                else:
+                    tableItem = QTableWidgetItem(data_set[row][col])
+                    table.setItem(row, col, tableItem)
 
-        for i, row in enumerate(data_set):
-            for j, item in enumerate(row):
-                tableItem = QTableWidgetItem(str(item))
-                table.setItem(i, j, tableItem)
-
-        # image = QPixmap(apk_info.icon)
-        # item = QTableWidgetItem()
-        # item.setData(0, image)
-        # label = QLabel()
-        # label.setPixmap(image.scaled(label.size(), aspectMode=QtCore.Qt.KeepAspectRatio))
-        # table.setItem(0, 0, item)
-        # table.setCellWidget(0, 1, label)
-        # item.setIcon(QIcon(image))
-        # table.resizeColumnsToContents()
 
     def __apkinfo2data(self, apkinfo:ApkInfo):
         dataset = []

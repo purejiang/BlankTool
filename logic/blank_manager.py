@@ -88,28 +88,28 @@ class BlankManager():
         return True
 
     @classmethod
-    def initApplication(cls, callback_progress)->bool:
+    def initApplication(cls, progress_callback)->bool:
         """
         初始化程序
         """
         init_result = cls.__initRe()
-        callback_progress(20, "初始化环境变量", "", init_result)
+        progress_callback(20, "初始化环境变量", "", init_result)
         if not init_result:
             return False
         check_re_result = cls.__checkRe()
-        callback_progress(40, "检查运行环境", "", check_re_result)
+        progress_callback(40, "检查运行环境", "", check_re_result)
         if not check_re_result:
             return False
         load_result = cls.__loadRcc()
-        callback_progress(60, "加载 .rcc", "", load_result)
+        progress_callback(60, "加载 .rcc", "", load_result)
         if not load_result and Constant.AppInfo.MODE==cls.REALEASE_MODE:
             return False
         check_dir_result = cls.__checkToolDir()
-        callback_progress(80, "检查工具目录", "", check_dir_result)
+        progress_callback(80, "检查工具目录", "", check_dir_result)
         if not check_dir_result:
             return False
         update_result = cls.checkUpdate()
-        callback_progress(90, "检查更新", "", update_result)
+        progress_callback(90, "检查更新", "", update_result)
         if not update_result:
             return False
         return True

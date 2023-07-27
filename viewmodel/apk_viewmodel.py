@@ -25,7 +25,6 @@ class ApkViewModel():
         self.parent = parent
         
         self.install_apk_operation = Operation()            # 安装 apk
-        self.generate_info_operation = Operation()          # 生成 apk 信息文件
         self.depack_apk_operation = Operation()             # 反编译 apk
         self.generate_list_operation= Operation()           # 获取手机内 apk 列表
         self.pull_apk_operation = Operation()               # 导出手机内 apk
@@ -96,17 +95,17 @@ class GenerateApksList(BaseThread):
     """
     生成手机内 apk 列表信息文件
     """
-    _success_signal = Signal(str)
+    _success_signal = Signal(list)
 
     def __init__(self, is_sys:bool):
-        super().__init__(self)
-        self.is_sys = is_sys
+        super().__init__()
+        self._is_sys = is_sys
 
     def run(self):
         info_file = os.path.join(Constant.Path.ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
-        result = ApkManager.getApkListInfo(info_file, self.is_sys, self._progressCallback)
+        result, app_list = ApkManager.getApkListInfo(info_file, self._is_sys, self._progressCallback)
         if result:
-            self._success_signal.emit(info_file)
+            self._success_signal.emit(app_list)
         else:
             self._failure_signal.emit(0, "生成 apk list 信息文件失败", "")
             
@@ -117,13 +116,13 @@ class PullApk(BaseThread):
     _success_signal = Signal(str)
 
     def __init__(self, package_name:str, in_phone_path:str):
-        super().__init__(self)
+        super().__init__()
         self.in_phone_path = in_phone_path
         self.package_name = package_name
 
     def run(self):
         target_file = os.path.join(Constant.Path.PULL_APK_CACHE_PATH, "{0}.apk".format(self.package_name))
-        result = ApkManager.pull_apk(self.in_phone_path, target_file)
+        result = ApkManager.pullApk(self.in_phone_path, target_file)
         if result:
             self._success_signal.emit(target_file)
         else:
