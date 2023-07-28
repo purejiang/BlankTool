@@ -6,7 +6,7 @@ import os
 import traceback
 from common.constant import APP_PATH, Config, Constant
 from utils.file_helper import FileHelper
-from utils.j_loger import JLoger
+from utils.jloger import JLogger
 from PySide6.QtCore import QResource
 
 
@@ -14,7 +14,7 @@ from PySide6.QtCore import QResource
 class BlankManager():
     DEBUG_MODE= "DEBUG"
     REALEASE_MODE="RELEASE"
-    loger = JLoger()
+    loger = JLogger()
     cache_files=[]
     """
 
@@ -102,7 +102,7 @@ class BlankManager():
             return False
         load_result = cls.__loadRcc()
         progress_callback(60, "加载 .rcc", "", load_result)
-        if not load_result and Constant.AppInfo.MODE==cls.REALEASE_MODE:
+        if not load_result and Constant.Setting.MODE==cls.REALEASE_MODE:
             return False
         check_dir_result = cls.__checkToolDir()
         progress_callback(80, "检查工具目录", "", check_dir_result)

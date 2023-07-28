@@ -8,7 +8,7 @@ import traceback
 from typing import Union
 from logic.signer_manager import SignerConfig
 
-from utils.j_loger import JLoger
+from utils.jloger import JLogger
 
 
 class CMD():
@@ -470,7 +470,7 @@ def cmdBySystem(win_cmd, linux_cmd, mac_cmd)->Union[bool, str]:
     :param mac_cmd: mac 上的命令行
 
     """
-    loger = JLoger()
+    loger = JLogger()
     try:
         if platform.system() == "Windows":
             cmd = win_cmd

@@ -7,7 +7,7 @@ from typing import Union
 from common.cmd import CMD
 from common.constant import Constant
 from utils.file_helper import FileHelper
-from utils.j_loger import JLoger
+from utils.jloger import JLogger
 from vo.apk_info import ApkInfo
 
 
@@ -20,7 +20,7 @@ class ApkManager():
     .apk 相关的功能管理
 
     """
-    loger = JLoger()
+    loger = JLogger()
 
     @classmethod
     def installApk(cls, apk_path, progress_callback):

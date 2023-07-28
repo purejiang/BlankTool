@@ -18,7 +18,7 @@ def Singleton(cls):
 
 
 @Singleton
-class JLoger():
+class JLogger():
     """
 
     @author: purejiang

@@ -4,7 +4,7 @@ import json
 import traceback
 from common.constant import Constant
 from utils.file_helper import FileHelper
-from utils.j_loger import JLoger
+from utils.jloger import JLogger
 from utils.other_util import currentTimeNumber
 from vo.signer import SignerConfig
 
@@ -28,7 +28,7 @@ class SignerManager():
     签名相关的功能管理
 
     """
-    loger = JLoger()
+    loger = JLogger()
 
     @classmethod
     def addKeystore(cls, curr_signer_config, progress_callback):
