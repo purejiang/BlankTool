@@ -16,3 +16,17 @@ QPushButton#pb_clean_cache:default {
 QPushButton#pb_clean_cache:hover{
   color: #d1e9ff;
 }
+
+QPushButton#pb_restart_adb {
+  background-color: transparent;
+  color: #46A6FD;
+  font-family: "Microsoft YaHei";
+  font-size: 12px;
+  font-weight: bold;
+}
+QPushButton#pb_restart_adb:default {
+  color: #46A6FD;
+}
+QPushButton#pb_restart_adb:hover{
+  color: #d1e9ff;
+}

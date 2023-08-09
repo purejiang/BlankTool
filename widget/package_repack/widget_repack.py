@@ -5,7 +5,6 @@ from utils.other_util import currentTime
 from utils.ui_utils import chooseDir
 from viewmodel.apk_viewmodel import ApkViewModel
 from viewmodel.signer_viewmodel import SignerViewModel
-from widget.base.base_widget import BaseWidget
 from widget.custom.toast import Toast
 from widget.function.widget_function import FunctionWidget
 from widget.step_info.widget_step_info import StepInfoListWidget
@@ -26,14 +25,26 @@ class RepackApkWidget(FunctionWidget):
     def __init__(self, main_window) -> None:
         super(RepackApkWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__initView()
-        self.__signer_list=[]
+        self.__used_signer_list =[]
         self.__ckb_support_aapt2=False
 
     def __initView(self):
         pass
 
     def _entry(self):
-        self.__signer_viewmodel.allSigners()
+        all_signer_list = SignerViewModel._signer_list
+        if all_signer_list!=None:
+            self._showSign(all_signer_list)
+        else:
+            self.__signer_viewmodel.allSigners()
+    
+    def _showSign(self, all_signer_list):
+        self._ui.cb_signers.clear()
+        self.__used_signer_list=[]
+        for signer in all_signer_list:
+            if signer.is_used == True:
+                self.__used_signer_list.append(signer)
+                self._ui.cb_signers.addItem(signer.signer_name, signer)
 
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
@@ -46,27 +57,21 @@ class RepackApkWidget(FunctionWidget):
         self._ui.btn_select_repack_apk.clicked.connect(self.__chooseFile)
         self._ui.btn_repack_apk.clicked.connect(self.__startRepack)
         self._ui.btn_jump_to_repack_path.clicked.connect(self.__jumpToRepackPath)
-        self.__signer_viewmodel.all_operation.setListener(self.__loadSignersSuccess, self.__loadSignersProgress, self.__loadSignersFailure)
-        self.__apk_viewmodel.repack_apk_operation.setListener(self.__repackSuccess, self.__repackProgress, self.__repackFailure)
         self._ui.ckb_support_aapt2.stateChanged.connect(self.__isSupportAapt2)
-
-    def __isSupportAapt2(self, checked):
-        self.__ckb_support_aapt2 = checked
-
+        self.__apk_viewmodel.repack_apk_operation.setListener(self.__repackSuccess, self.__repackProgress, self.__repackFailure)
+        self.__signer_viewmodel.all_operation.setListener(self.__loadSignersSuccess, self.__loadSignersProgress, self.__loadSignersFailure)
+       
     def __loadSignersSuccess(self, signer_list):
-        self._ui.cb_signers.clear()
-        self.__signer_list = []
-        if signer_list!=None:
-            for signer in signer_list:
-                if signer.is_used == True:
-                    self.__signer_list.append(signer)
-                    self._ui.cb_signers.addItem(signer.signer_name, signer)
+        self._showSign(signer_list)
 
     def __loadSignersProgress(self, progress, message, other_info,  is_success):
         pass
 
     def __loadSignersFailure(self, code, message, other_info):
         pass
+
+    def __isSupportAapt2(self, checked):
+        self.__ckb_support_aapt2 = checked
 
     def __chooseFile(self):
         repack_dir_path = chooseDir(self, "需要重编的目录")
@@ -82,7 +87,7 @@ class RepackApkWidget(FunctionWidget):
             return
         # 获取用户选择的项的索引
         index = self._ui.cb_signers.currentIndex()
-        self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, self.__ckb_support_aapt2, self.__signer_list[index])
+        self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, self.__ckb_support_aapt2, self.__used_signer_list[index])
         # 禁止点击
         self._ui.widget_repack_fuction_bar.setDisabled(True)
         self._ui.btn_jump_to_repack_path.setVisible(False)

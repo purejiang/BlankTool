@@ -73,5 +73,5 @@ class PullAppsWidget(FunctionWidget):
     def __generateListProgress(self, progress, message, other_info, is_success):
         self._ui.btn_get_apps.setText("加载应用中，{0}%...".format(progress))
 
-    def __generateListFailure(self, message, other_info):
+    def __generateListFailure(self, code, message, other_info):
         self._ui.btn_get_apps.setText("加载失败,重试")

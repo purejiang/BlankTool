@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import json
 import os
-
+import sys
 from utils.file_helper import FileHelper
 """
 
@@ -11,7 +11,7 @@ from utils.file_helper import FileHelper
 常量
 
 """
-APP_PATH = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+APP_PATH = os.path.abspath(os.path.dirname(sys.argv[0]))
 DATA_PATH = os.path.join(APP_PATH, "data")
 CONFIG_PATH = os.path.join(APP_PATH, "config")
 class Config:

@@ -111,7 +111,9 @@ class ExeHelper(object):
         res_dirs = [os.path.join(res_dir, tag) for tag in tags]
         if not self.__res_helper.res2rcc(res_dirs, qrc_file, rcc_file):
             return
-        ####### step 4：命令行使用 pyinstaller 打包，使用配置文件 main.spec #######
+        ####### step 4：写入程序信息文件 #######
+
+        ####### step 5：命令行使用 pyinstaller 打包，使用配置文件 main.spec #######
         self._createExe(release_project, release_zip)
 
     def _createExe(self, project_path, release_zip=None):

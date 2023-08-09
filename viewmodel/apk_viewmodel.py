@@ -122,7 +122,7 @@ class PullApk(BaseThread):
 
     def run(self):
         target_file = os.path.join(Constant.Path.PULL_APK_CACHE_PATH, "{0}.apk".format(self.package_name))
-        result = ApkManager.pullApk(self.in_phone_path, target_file)
+        result = ApkManager.pullApk(self.in_phone_path, target_file, self._progressCallback)
         if result:
             self._success_signal.emit(target_file)
         else:

@@ -3,6 +3,7 @@
 from viewmodel.signer_viewmodel import SignerViewModel
 from widget.base.base_widget import BaseWidget
 from widget.function.widget_function import FunctionWidget
+from widget.package_repack.widget_repack import RepackApkWidget
 from widget.signer.dialog_signer_config import SignerConfigDialog
 from widget.signer.listwidget_signer import SignerListWidget
 
@@ -40,6 +41,7 @@ class SignerConfigWidget(FunctionWidget):
         self.signer_viewmodel.allSigners()
 
     def __allSignerSuccess(self, signer_list):
+        SignerViewModel._signer_list = signer_list
         self.__listwidget_signers.loadList(signer_list)
 
     def __allSignerProgress(self, progress, title, des):

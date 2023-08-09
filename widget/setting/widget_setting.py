@@ -35,7 +35,9 @@ class SettingWidget(FunctionWidget):
     def _setupListener(self):
         self.__blank_viewmodel.get_chache_size_opreation.setListener(self.__getCacheSizeSuccess, self.__getCacheSizeProgress, self.__getCacheSizeFailure)
         self.__blank_viewmodel.clean_cache_opreation.setListener(self.__cleanCacheSuccess, self.__cleanCacheProgress, self.__cleanCacheFailure)
+        self.__blank_viewmodel.adb_restart_opreation.setListener(self.__adbRestartSuccess, self.__adbRestartProgress, self.__adbRestartFailure)
         self._ui.pb_clean_cache.clicked.connect(self.__showCacheDialog)
+        self._ui.pb_restart_adb.clicked.connect(self.__restartAdb)
         self._ui.ckb_is_output_log.stateChanged.connect(self.__isOutputLog)
         self.__refershCacheDialog()
 
@@ -54,7 +56,10 @@ class SettingWidget(FunctionWidget):
             self.__blank_viewmodel.getCacheSize()
             self._ui.lb_cache_totle_size.setText("缓存分析中")
             self.__is_getsize_ing = True
-    
+
+    def __restartAdb(self):
+        self.__blank_viewmodel.adbRestart()
+  
     def __showCacheDialog(self):
         self.__refershCacheDialog()
         self.__cleanCacheDialog.show()
@@ -89,3 +94,16 @@ class SettingWidget(FunctionWidget):
     def __getCacheSizeFailure(self, code, message, other_info):
         self.__is_getsize_ing = False
         self._ui.lb_cache_totle_size.setText("error code:{0}, message:{1}".format(code, message))
+    
+    def __adbRestartSuccess(self):
+        self._ui.lb_restart_adb_status.setText("重连完成")
+
+    def __adbRestartProgress(self, progress, message, other_info, is_success):
+        self._ui.lb_restart_adb_status.setText("重连中：{0}%".format(progress))
+
+    def __adbRestartFailure(self, code, message, other_info):
+        self._ui.lb_restart_adb_status.setText("重连失败")
+
+
+
+

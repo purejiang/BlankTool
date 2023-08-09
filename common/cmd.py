@@ -427,7 +427,30 @@ class CMD():
         all_cmd = "java -jar \"{0}\" build-bundle --modules \"{1}\" --output=\"{2}\"".format(
             bundle_tool_path, base_zip, output_aab)
         return cmdBySystem(all_cmd, all_cmd, all_cmd)
+    
+    ########################### ADB命令 ###############################################
+    @classmethod
+    def adbKillServer(cls):
+        """
+        adb关闭
 
+        adb kill-server
+        """
+        win_cmd ="adb kill-server"
+        linux_cmd = ""
+        mac_cmd = ""
+        return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
+    
+    @classmethod
+    def adbStartServer(cls):
+        """
+        adb连接
+        adb start-server
+        """
+        win_cmd ="adb start-server"
+        linux_cmd = ""
+        mac_cmd = ""
+        return cmdBySystem(win_cmd, linux_cmd, mac_cmd)
 
     ########################### 打包命令 ###############################################
 

@@ -4,6 +4,7 @@
 import json
 import os
 import traceback
+from common.cmd import CMD
 from common.constant import APP_PATH, Config, Constant
 from utils.file_helper import FileHelper
 from utils.jloger import JLogger
@@ -214,3 +215,14 @@ class BlankManager():
     #     progress_callback("获取功能列表")
     #     apk_function = Function("Apk 分析", "./res/img/app_icon_small", ["Apk 解析", "Apk 解析结果"])
     #     return []
+
+    @classmethod
+    def reStartAdb(cls, progress_callback):
+        """
+        adb重连
+        """
+        cls.loger.info("开始adb重连")
+        result = CMD.adbKillServer()
+        if not result[0]:
+            return False
+        return CMD.adbStartServer()[0]
