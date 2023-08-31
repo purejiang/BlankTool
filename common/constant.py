@@ -51,6 +51,7 @@ class Constant:
         APKTOOL_PATH = os.path.abspath(__RE["apktool_path"])
         KEYTOOL_PATH = os.path.abspath(__RE["keytool_path"])
         JARSIGNER_PATH = os.path.abspath(__RE["jarsigner_path"])
+        APKSIGNER_PATH = os.path.abspath(__RE["apksigner_path"])
         ADB_PATH = os.path.abspath(__RE["adb_path"])
         AAPT2_PATH = os.path.abspath(__RE["aapt_path"])
         JAVA_PATH = os.path.abspath(__RE["java_path"])

@@ -9,7 +9,7 @@
 """
 import os
 import re
-from common.cmd import CMD
+from cmd_util.app_cmd import AppCMD
 
 from utils.file_helper import FileHelper
 from utils.jloger import JLogger
@@ -65,7 +65,7 @@ class ResHelper():
         """
         将 .qrc 文件的映射转换为二进制的 .rcc 文件（.qrc 中所有映射的资源文件都会打包进 .rcc 文件）
         """
-        cmd_result = CMD.qrc2Rcc(rcc_exe, qrc_file, rcc_file)
+        cmd_result = AppCMD.qrc2Rcc(rcc_exe, qrc_file, rcc_file)
         self.__logger.info("转换为二进制的 .rcc 文件:{0} is {1}".format(rcc_file, str(cmd_result[0])))
         return cmd_result[0]
 
@@ -123,7 +123,7 @@ class ExeHelper(object):
         os.chdir(project_path)
         # 命令行使用 pyinstaller 打包，使用配置文件 main.spec
         main_spec = os.path.join(project_path, "main.spec")
-        cmd_result = CMD.pyinstallerExe(self.__pyinstaller_exe, main_spec)
+        cmd_result = AppCMD.pyinstallerExe(self.__pyinstaller_exe, main_spec)
         self.__logger.info("生成 .exe is {0}".format(cmd_result[0]))
         if cmd_result[0]:
             if release_zip!=None:

@@ -4,15 +4,14 @@
 import json
 import os
 import traceback
-from common.cmd import CMD
+from cmd_util.app_cmd import AppCMD
 from common.constant import APP_PATH, Config, Constant
 from utils.file_helper import FileHelper
 from utils.jloger import JLogger
 from PySide6.QtCore import QResource
 
 
-
-class BlankManager():
+class AppManager():
     DEBUG_MODE= "DEBUG"
     REALEASE_MODE="RELEASE"
     loger = JLogger()
@@ -41,7 +40,7 @@ class BlankManager():
         cls.loger.info("设置临时的环境变量: {0}".format(tmp_path))
         os.environ['PATH'] = tmp_path+os.environ['PATH']
         cls.loger.info("最终环境变量: {0}".format(os.environ['PATH']))
-        # CMD.setPath(tmp_path)
+        # AppCMD.setPath(tmp_path)
         # os.chdir(sys.path[0]) 
         return True
 
@@ -222,7 +221,8 @@ class BlankManager():
         adb重连
         """
         cls.loger.info("开始adb重连")
-        result = CMD.adbKillServer()
+        progress_callback(50, "重连中...", "", True)
+        result = AppCMD.adbKillServer()
         if not result[0]:
             return False
-        return CMD.adbStartServer()[0]
+        return AppCMD.adbStartServer()[0]

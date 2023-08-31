@@ -1,10 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import base64
-from time import sleep
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QIcon
-from viewmodel.blank_viewmodel import BlankViewModel
+from viewmodel.app_viewmodel import AppViewModel
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QProgressBar
 from widget.base.base_window import BaseWindow
 from widget.window_main import MainWindow
@@ -80,12 +79,12 @@ class InitWindow(BaseWindow):
         self.setWindowIcon(QIcon(pixmap))
 
     def _onPreShow(self, data):
-        self.blank_viewmodel = BlankViewModel(self)
+        self.app_viewmodel = AppViewModel(self)
 
     def _setupListener(self):
-        self.blank_viewmodel.init_app_opreation.setListener(
+        self.app_viewmodel.init_app_opreation.setListener(
             self.__initAppSuccess, self.__initAppProgress, self.__initAppFailure)
-        self.blank_viewmodel.initApp()
+        self.app_viewmodel.initApp()
 
     def __initAppSuccess(self):
         self.__label.setText("初始化完成")

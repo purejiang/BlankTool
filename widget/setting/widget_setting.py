@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from common.constant import Constant
-from viewmodel.blank_viewmodel import BlankViewModel
+from viewmodel.app_viewmodel import AppViewModel
 from widget.custom.dialog_normal import NormalDialog
 from widget.function.widget_function import FunctionWidget
 
@@ -22,7 +22,7 @@ class SettingWidget(FunctionWidget):
         self.__is_getsize_ing = False
 
     def _onPreShow(self):
-        self.__blank_viewmodel = BlankViewModel(self)
+        self.__app_viewmodel = AppViewModel(self)
         self.__cleanCacheDialog = NormalDialog(self, "提示", "是否清理应用缓存")
         self._ui.lb_app_vesion_name.setText(Constant.AppInfo.VERSION_NAME)
         self._ui.lb_app_vesion_code.setText(Constant.AppInfo.VERSION_CODE)
@@ -33,9 +33,9 @@ class SettingWidget(FunctionWidget):
         self._ui.lb_app_web_url.setText(Constant.AppInfo.WEB_URL)
 
     def _setupListener(self):
-        self.__blank_viewmodel.get_chache_size_opreation.setListener(self.__getCacheSizeSuccess, self.__getCacheSizeProgress, self.__getCacheSizeFailure)
-        self.__blank_viewmodel.clean_cache_opreation.setListener(self.__cleanCacheSuccess, self.__cleanCacheProgress, self.__cleanCacheFailure)
-        self.__blank_viewmodel.adb_restart_opreation.setListener(self.__adbRestartSuccess, self.__adbRestartProgress, self.__adbRestartFailure)
+        self.__app_viewmodel.get_chache_size_opreation.setListener(self.__getCacheSizeSuccess, self.__getCacheSizeProgress, self.__getCacheSizeFailure)
+        self.__app_viewmodel.clean_cache_opreation.setListener(self.__cleanCacheSuccess, self.__cleanCacheProgress, self.__cleanCacheFailure)
+        self.__app_viewmodel.adb_restart_opreation.setListener(self.__adbRestartSuccess, self.__adbRestartProgress, self.__adbRestartFailure)
         self._ui.pb_clean_cache.clicked.connect(self.__showCacheDialog)
         self._ui.pb_restart_adb.clicked.connect(self.__restartAdb)
         self._ui.ckb_is_output_log.stateChanged.connect(self.__isOutputLog)
@@ -43,9 +43,9 @@ class SettingWidget(FunctionWidget):
 
     def __isOutputLog(self, checked):
         if checked:
-            self.__blank_viewmodel.setAppSetting({"is_output_log": True})
+            self.__app_viewmodel.setAppSetting({"is_output_log": True})
         else:
-            self.__blank_viewmodel.setAppSetting({"is_output_log": False})
+            self.__app_viewmodel.setAppSetting({"is_output_log": False})
 
     def __refershCacheDialog(self):
         self.__cleanCacheDialog.setConfirm("清理", self.__cleanCache)
@@ -53,12 +53,12 @@ class SettingWidget(FunctionWidget):
         
     def _entry(self):
         if not self.__is_getsize_ing:
-            self.__blank_viewmodel.getCacheSize()
+            self.__app_viewmodel.getCacheSize()
             self._ui.lb_cache_totle_size.setText("缓存分析中")
             self.__is_getsize_ing = True
 
     def __restartAdb(self):
-        self.__blank_viewmodel.adbRestart()
+        self.__app_viewmodel.adbRestart()
   
     def __showCacheDialog(self):
         self.__refershCacheDialog()
@@ -70,7 +70,7 @@ class SettingWidget(FunctionWidget):
     def __cleanCache(self):
         self.__cleanCacheDialog.setConfirm("", None)
         self.__cleanCacheDialog.setCancel("", None)
-        self.__blank_viewmodel.cleanCache()
+        self.__app_viewmodel.cleanCache()
 
     def __cleanCacheSuccess(self):
         self.__cleanCacheDialog.setMessage("清理完成")

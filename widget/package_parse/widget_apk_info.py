@@ -2,7 +2,6 @@
 
 from PySide6.QtWidgets import QTableWidgetItem,QHeaderView,QLabel
 from viewmodel.apk_viewmodel import ApkViewModel
-from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap
 
 from vo.apk_info import ApkInfo

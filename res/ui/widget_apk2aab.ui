@@ -35,16 +35,6 @@
     <property name="bottomMargin">
      <number>12</number>
     </property>
-    <item>
-     <widget class="QLabel" name="lb_not_open">
-      <property name="text">
-       <string>功能暂未开放</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
  </widget>

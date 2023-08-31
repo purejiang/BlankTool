@@ -4,6 +4,7 @@
             "bundletool_path": "./re/bundletool/bundletool-all-1.11.0.jar",
             "apktool_path": "./re/apktool/apktool_2.8.1.jar",
             "jarsigner_path": "./re/jre/bin/jarsigner.exe",
+            "apksigner_path":"./re/android/apksigner.jar",
             "keytool_path": "./re/jre/bin/keytool.exe",
             "adb_path": "./re/adb",
             "aapt_path": "./re/aapt",

@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
 
 from viewmodel.signer_viewmodel import SignerViewModel
-from widget.base.base_widget import BaseWidget
 from widget.function.widget_function import FunctionWidget
-from widget.package_repack.widget_repack import RepackApkWidget
 from widget.signer.dialog_signer_config import SignerConfigDialog
 from widget.signer.listwidget_signer import SignerListWidget
 

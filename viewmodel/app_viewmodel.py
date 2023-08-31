@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 from PySide6.QtCore import Signal
-from logic.blank_manager import BlankManager
+from logic.app_manager import AppManager
 from viewmodel.base_viewmodel import BaseThread, Operation
 
-class BlankViewModel():
+class AppViewModel():
     """
     程序的相关操作
 
@@ -55,7 +55,7 @@ class ADBRestart(BaseThread):
         super().__init__()
 
     def run(self):
-        result = BlankManager.reStartAdb(self._progressCallback)
+        result = AppManager.reStartAdb(self._progressCallback)
         if result:
             self._success_signal.emit()
         else:
@@ -71,7 +71,7 @@ class SettingSetter(BaseThread):
         self._config = config
 
     def run(self):
-        result = BlankManager.setSetting(self._config, self._progressCallback)
+        result = AppManager.setSetting(self._config, self._progressCallback)
         if result:
             self._success_signal.emit()
         else:
@@ -86,7 +86,7 @@ class CleanCache(BaseThread):
         super().__init__()
 
     def run(self):
-        result = BlankManager.cleanCache(self._progressCallback)
+        result = AppManager.cleanCache(self._progressCallback)
         if result:
             self._success_signal.emit()
         else:
@@ -102,7 +102,7 @@ class GetCacheSize(BaseThread):
         super().__init__()
 
     def run(self):
-        result = BlankManager.getChache(self._progressCallback)
+        result = AppManager.getChache(self._progressCallback)
         if result:
             self._success_signal.emit(result)
         else:
@@ -117,7 +117,7 @@ class InitApp(BaseThread):
         super().__init__()
 
     def run(self):
-        result = BlankManager.initApplication(self._progressCallback)
+        result = AppManager.initApplication(self._progressCallback)
         if result:
             self._success_signal.emit()
         else:

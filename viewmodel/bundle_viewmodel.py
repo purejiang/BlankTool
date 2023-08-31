@@ -4,26 +4,31 @@ from logic.bundle_manager import BundleManager
 
 from viewmodel.base_viewmodel import BaseThread, Operation
 
-class AabViewModel():
+class BundleViewModel():
     """
-    apk 相关操作
+    aab 相关操作
 
     @author: purejiang
     @created: 2022/7/29
 
     """
     def __init__(self, parent) -> None:
-        super(AabViewModel, self).__init__()
+        super(BundleViewModel, self).__init__()
         self.parent = parent
         self.install_aab_operation = Operation()            # 安装 aab
+        self.install_apks_operation = Operation()            # 安装 apks
         self.apk2aab_operation = Operation()                # apk 转 aab
 
 
-    def install(self, aab_path, signer_config):
-        install_aab_thread = InstallAAB(aab_path, signer_config)
+    def install(self, aab_path):
+        install_aab_thread = InstallAAB(aab_path)
         self.install_aab_operation.loadThread(install_aab_thread)
         self.install_aab_operation.start()
     
+    def installApks(self, apks_file):
+        install_apks_thread = InstallApks(apks_file)
+        self.install_apks_operation.loadThread(install_apks_thread)
+        self.install_apks_operation.start()
         
 
 class InstallAAB(BaseThread):
@@ -38,6 +43,22 @@ class InstallAAB(BaseThread):
 
     def run(self):
         result = BundleManager.install_aab(self.aab_path, self.signer_config, self._progressCallback)
+        if result:
+            self._success_signal.emit()
+        else:
+            self._failure_signal.emit(0, "安装失败", "")
+
+class InstallApks(BaseThread):
+    """
+    安装 apks
+    """
+
+    def __init__(self, apks_file):
+        super().__init__()
+        self.apks_file = apks_file
+
+    def run(self):
+        result = BundleManager.install_apks(self.apks_file, self._progressCallback)
         if result:
             self._success_signal.emit()
         else:
