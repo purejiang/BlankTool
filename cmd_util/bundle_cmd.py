@@ -6,12 +6,28 @@ from .base_cmd import BaseCMD
 class BundleCMD(BaseCMD):
 
     @classmethod
-    def linkRes(cls, zip_path, base_apk_path, android_jar, manifest_file, min_ver, target_ver, ver_code, ver_name):
+    def compileZip(cls, res_dir, output_zip):
+        """
+        aapt2 编译资源目录到zip
+
+        :param aapt2: aapt2
+        :param res_dir: 资源目录，res
+        :param output_zip: 输出的zip文件
+
+        [ aapt2 文件] compile --dir [ res 路径] -o [生成资源的 zip ]
+        """
+        win_cmd = "aapt2 compile --dir {0} -o {1}".format(res_dir, output_zip)
+        linux_cmd=""
+        mac_cmd=""
+        return cls.run(win_cmd, linux_cmd, mac_cmd)
+    
+    @classmethod
+    def linkRes(cls, zip_path, android_jar, manifest_file, min_ver, target_ver, compile_ver, ver_code, ver_name, output_base_apk):
         """
         链接资源(AAPT2 会将各种编译后的资源链接到一个 APK 中)
 
         :param zip_path: 资源的 .zip
-        :param base_apk_path: 输出的 base.apk 路径
+        :param output_base_apk: 输出的 base.apk 路径
         :param android_jar: android.jar 文件
         :param manifest_file: manifest 文件
         :param min_ver: 最小版本
@@ -19,15 +35,47 @@ class BundleCMD(BaseCMD):
         :param ver_code: 版本号
         :param ver_name: 版本名
 
-        [ aapt2 文件] link --proto-format [资源的 zip ] -o [输出的 base.apk] -I [ android.jar 文件] --manifest [ manifest 文件] --min-sdk-version [最小版本] --target-sdk-version [目标版本] --version-code [版本号] --compile-sdk-version-name [版本名]
+        [ aapt2 文件] link --proto-format [资源的 zip ] -o [输出的 base.apk] -I [ android.jar 文件] --manifest [ manifest 文件] --min-sdk-version [最小版本] --target-sdk-version [目标版本] --version-code [版本号] --version-name [版本名]
         """
-        all_cmd = "aapt2 link --proto-format \"{0}\" -o \"{1}\" -I \"{2}\" --manifest \"{3}\" --min-sdk-version {4} --target-sdk-version {5} --version-code {6} --compile-sdk-version-name {7}".format(
-             zip_path, base_apk_path, android_jar, manifest_file, min_ver, target_ver, ver_code, ver_name)
-
-        return cls.run(all_cmd, all_cmd, all_cmd)
+        win_cmd = "aapt2 link --proto-format \"{0}\" -o \"{1}\" -I \"{2}\" --manifest \"{3}\" --min-sdk-version {4} --target-sdk-version {5} --version-code {6} --version-name {7}".format( 
+             zip_path, output_base_apk, android_jar, manifest_file, min_ver, target_ver, ver_code, ver_name)
+        linux_cmd = ""
+        mac_cmd = ""
+        return cls.run(win_cmd, linux_cmd, mac_cmd)
 
     @classmethod
-    def smali2dex(cls, smali_jar_path, dex_path, smali_dir):
+    def linkResByDir(cls, android_jar, manifest_file, output_base_apk):
+        """
+        链接资源(AAPT2 会将各种编译后的资源链接到一个 APK 中)
+        :param aapt2: aapt2
+        :param output_base_apk: 输出的 base.apk
+        :param manifest_file: 文件
+        :param android_jar: android.jar
+
+        [ aapt2 文件] link --proto-format [资源的 dir ] -o [输出的 base.apk] -I [ android.jar 文件] --auto-add-overlay
+        """
+        win_cmd = "aapt2 link --proto-format -o {0} -I {1} --manifest {2} --auto-add-overlay".format(
+             output_base_apk, android_jar, manifest_file)
+        linux_cmd=""
+        mac_cmd=""
+        return cls.run(win_cmd, linux_cmd, mac_cmd)
+
+    @classmethod
+    def signBundle(cls, signer_tool, aab_file, keystore, store_password, key_password, alias):
+        """
+        签名aab
+
+        jarsigner -digestalg SHA1 -sigalg SHA1withRSA -keystore [keystore 文件] -storepass [store password] -keypass [key password] [aab 文件] [store alias]
+        """
+        win_cmd = "{0} -digestalg SHA1 -sigalg SHA1withRSA -keystore {1} -storepass {2} -keypass {3} {4} {5}".format(
+            signer_tool, keystore, store_password, key_password, aab_file, alias)
+        linux_cmd=""
+        mac_cmd=""
+        return cls.run(win_cmd, linux_cmd, mac_cmd)
+
+
+    @classmethod
+    def smali2dex(cls, smali_jar_path, smali_dir, dex_path):
         """
         smali 文件夹转 .dex 文件
 
@@ -117,6 +165,8 @@ class BundleCMD(BaseCMD):
 
         [ aapt2 文件] compile --dir [ res 路径] -o [生成资源的 .zip ]
         """
-        all_cmd = "aapt2 compile --dir \"{0}\" -o \"{1}\"".format(
+        win_cmd = "aapt2 compile --dir \"{0}\" -o \"{1}\"".format(
              res_path, output_zip_path)
-        return cls.run(all_cmd, all_cmd, all_cmd)
+        linux_cmd = ""
+        mac_cmd = ""
+        return cls.run(win_cmd, linux_cmd, mac_cmd)

@@ -23,6 +23,9 @@ class InstallWidget(FunctionWidget):
 
     def __init__(self, main_window) -> None:
         super(InstallWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
+        self.__supported_file_types=["apk", "apks", "aab"]
+        self.__initView()
+    
 
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
@@ -38,8 +41,17 @@ class InstallWidget(FunctionWidget):
         self.__aab_viewmodel.install_aab_operation.setListener(self.__aabInstallSuccess, self.__aabInstallPrgress, self.__aabInstallFailure)
         self.__aab_viewmodel.install_apks_operation.setListener(self.__apksInstallSuccess, self.__apksInstallPrgress, self.__apksInstallFailure)
     
+    def __initView(self):
+        title = ""
+        for file_type in self.__supported_file_types:
+            title+=".{0} ".format(file_type)
+        self._ui.lb_supported_file_types.setText(title)
+
     def __chooseFile(self):
-        file_path = chooseFile(self, "选取 Apk/Aab/Apks", "安卓应用文件 (*.aab *.apk *.apks)")
+        file_types = ""
+        for file_type in self.__supported_file_types:
+            file_types+="*{} ".format(file_type)
+        file_path = chooseFile(self, title = "选择文件", type = "安卓应用文件 ({0})".format(file_types))
         self._ui.edt_install_path.setText(file_path)
 
     def __install(self):
@@ -105,7 +117,6 @@ class InstallWidget(FunctionWidget):
 
     def __apksInstallPrgress(self, progress, message, other_info, is_success):
         self.__widget_install_step_info.loadStep(currentTime(), message, other_info, is_success)
-
 
     def _entry(self):
         return super()._entry()

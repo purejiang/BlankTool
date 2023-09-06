@@ -53,7 +53,9 @@ class Constant:
         JARSIGNER_PATH = os.path.abspath(__RE["jarsigner_path"])
         APKSIGNER_PATH = os.path.abspath(__RE["apksigner_path"])
         ADB_PATH = os.path.abspath(__RE["adb_path"])
-        AAPT2_PATH = os.path.abspath(__RE["aapt_path"])
+        AAPT2_PATH = os.path.abspath(__RE["aapt2_path"])
+        ANDROID_JAR_PATH = os.path.abspath(__RE["android_jar_path"])
+        SMALI_JAR_PATH = os.path.abspath(__RE["smali_jar_path"])
         JAVA_PATH = os.path.abspath(__RE["java_path"])
         ALL_RE_PATH_LIST = [BUNDLETOOL_PATH, APKTOOL_PATH, KEYTOOL_PATH, JARSIGNER_PATH, ADB_PATH, AAPT2_PATH, JAVA_PATH]
 
@@ -97,3 +99,6 @@ class Constant:
         USED_SIGNERS = "used_signers"
         USENESS_SIGNERS = "useness_signers"
         SIGNER_FILE_PATH = os.path.join(DATA_PATH, "signer.json")
+
+    class Aab:
+        ASSETS_RES_MANIFEST = os.path.join(DATA_PATH, "assets_res_default_AndroidManifest.xml")

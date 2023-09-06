@@ -29,6 +29,11 @@ class BundleViewModel():
         install_apks_thread = InstallApks(apks_file)
         self.install_apks_operation.loadThread(install_apks_thread)
         self.install_apks_operation.start()
+
+    def apk2aab(self, apk_file, ver_config, signer_config):
+        apk2aab_thread = Apk2aab(apk_file, ver_config, signer_config)
+        self.apk2aab_operation.loadThread(apk2aab_thread)
+        self.apk2aab_operation.start()
         
 
 class InstallAAB(BaseThread):
@@ -63,4 +68,22 @@ class InstallApks(BaseThread):
             self._success_signal.emit()
         else:
             self._failure_signal.emit(0, "安装失败", "")
+
+class Apk2aab(BaseThread):
+    """
+    apk 转 aab
+    """
+
+    def __init__(self, apk_file, ver_config, signer_config):
+        super().__init__()
+        self.apk_file = apk_file
+        self.ver_config = ver_config
+        self.signer_config = signer_config
+
+    def run(self):
+        result = BundleManager.apk2aab(self.apk_file, self.ver_config, self.signer_config, self._progressCallback)
+        if result:
+            self._success_signal.emit()
+        else:
+            self._failure_signal.emit(0, "apk 转 aab失败", "")
 

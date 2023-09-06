@@ -3,6 +3,7 @@
 
 import json
 import os
+import sys
 import traceback
 from cmd_util.app_cmd import AppCMD
 from common.constant import APP_PATH, Config, Constant

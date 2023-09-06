@@ -24,27 +24,34 @@ class RepackApkWidget(FunctionWidget):
 
     def __init__(self, main_window) -> None:
         super(RepackApkWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
+        self.__used_signer_config_list = []
+        self.__used_signer_version_list = ["v1", "v2"]
+        self.__ckb_support_aapt2 = False
         self.__initView()
-        self.__used_signer_list =[]
-        self.__ckb_support_aapt2=False
 
     def __initView(self):
         pass
 
     def _entry(self):
+        self.__showSignerVersions(self.__used_signer_version_list)
         all_signer_list = SignerViewModel._signer_list
         if all_signer_list!=None:
-            self._showSign(all_signer_list)
+            self.__showSignerConfigs(all_signer_list)
         else:
             self.__signer_viewmodel.allSigners()
     
-    def _showSign(self, all_signer_list):
-        self._ui.cb_signers.clear()
-        self.__used_signer_list=[]
-        for signer in all_signer_list:
-            if signer.is_used == True:
-                self.__used_signer_list.append(signer)
-                self._ui.cb_signers.addItem(signer.signer_name, signer)
+    def __showSignerConfigs(self, all_signerconfig_list):
+        self._ui.cb_choose_signer_config.clear()
+        self.__used_signer_config_list.clear()
+        for signer_config in all_signerconfig_list:
+            if signer_config.is_used == True:
+                self.__used_signer_config_list.append(signer_config)
+                self._ui.cb_choose_signer_config.addItem(signer_config.signer_name, signer_config)
+
+    def __showSignerVersions(self, all_signer_version_list):
+        self._ui.cb_choose_signer_version.clear()
+        for signer_version in all_signer_version_list:
+            self._ui.cb_choose_signer_version.addItem(signer_version)
 
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
@@ -62,7 +69,7 @@ class RepackApkWidget(FunctionWidget):
         self.__signer_viewmodel.all_operation.setListener(self.__loadSignersSuccess, self.__loadSignersProgress, self.__loadSignersFailure)
        
     def __loadSignersSuccess(self, signer_list):
-        self._showSign(signer_list)
+        self.__showSignerConfigs(signer_list)
 
     def __loadSignersProgress(self, progress, message, other_info,  is_success):
         pass
@@ -86,8 +93,9 @@ class RepackApkWidget(FunctionWidget):
             toast.make_text("请输入正确的路径", Toast.toast_left(self), Toast.toast_top(self), times=3)
             return
         # 获取用户选择的项的索引
-        index = self._ui.cb_signers.currentIndex()
-        self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, self.__ckb_support_aapt2, self.__used_signer_list[index])
+        signer_index = self._ui.cb_choose_signer_config.currentIndex()
+        version_index = self._ui.cb_choose_signer_version.currentIndex()
+        self.__apk_viewmodel.repack(repack_dir_path, self.__ouput_apk_path, self.__ckb_support_aapt2, self.__used_signer_version_list[version_index], self.__used_signer_config_list[signer_index])
         # 禁止点击
         self._ui.widget_repack_fuction_bar.setDisabled(True)
         self._ui.btn_jump_to_repack_path.setVisible(False)

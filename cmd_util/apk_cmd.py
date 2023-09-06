@@ -183,7 +183,7 @@ class ApkCMD(BaseCMD):
         return cls.run(win_cmd, linux_cmd, mac_cmd)
     
     @classmethod
-    def signV2(cls, apksigner, origin_apk, output_apk, signer_file_path, signer_pwd, signer_key_pwd, signer_alias):
+    def signV2(cls, apksigner, origin_apk, output_apk, signer_config):
         """
         apksigner 签名
 
@@ -193,7 +193,7 @@ class ApkCMD(BaseCMD):
 
         """
         win_cmd = "java -jar \"{0}\" sign -v --out \"{1}\" --ks \"{2}\" --ks-pass pass:\"{3}\" --key-pass pass:\"{4}\" --ks-key-alias \"{5}\" \"{6}\"".format(
-            apksigner, output_apk, signer_file_path, signer_pwd, signer_key_pwd, signer_alias, origin_apk)
+            apksigner, output_apk, signer_config["signer_file_path"], signer_config["signer_pwd"], signer_config["signer_key_pwd"], signer_config["signer_alias"], origin_apk)
         linux_cmd = ""
         mac_cmd = ""
         return cls.run(win_cmd, linux_cmd, mac_cmd)

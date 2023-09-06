@@ -51,8 +51,8 @@ class ApkViewModel():
         self.pull_apk_operation.loadThread(pull_apk_thread)
         self.pull_apk_operation.start()
 
-    def repack(self, repackage_path, output_apk_path, is_support_aapt2, signer_config:SignerConfig):
-        repack_thread = RepackageAndSign(repackage_path, output_apk_path, is_support_aapt2, signer_config)
+    def repack(self, repackage_path, output_apk_path, is_support_aapt2, signer_version, signer_config):
+        repack_thread = RepackageAndSign(repackage_path, output_apk_path, is_support_aapt2, signer_version, signer_config)
         self.repack_apk_operation.loadThread(repack_thread)
         self.repack_apk_operation.start()
 
@@ -133,15 +133,16 @@ class RepackageAndSign(BaseThread):
     重编译 apk
     """
     _success_signal = Signal(str)
-    def __init__(self, repackage_path:str, output_apk_path:str, is_support_aapt2:bool, ks_config:dict):
+    def __init__(self, repackage_path:str, output_apk_path:str, is_support_aapt2:bool, signer_version:str, signer_config):
         super().__init__()
         self.repackage_path = repackage_path
         self.output_apk_path = output_apk_path
         self.is_support_aapt2 = is_support_aapt2
-        self.ks_config = ks_config
+        self.signer_version = signer_version
+        self.signer_config = signer_config
 
     def run(self):
-        result = ApkManager.repack(self.repackage_path, self.output_apk_path, self.is_support_aapt2, self.ks_config, self._progressCallback)
+        result = ApkManager.repack(self.repackage_path, self.output_apk_path, self.is_support_aapt2, self.signer_version, self.signer_config, self._progressCallback)
         if result:
             self._success_signal.emit(self.output_apk_path)
         else:

@@ -6,8 +6,10 @@
             "jarsigner_path": "./re/jre/bin/jarsigner.exe",
             "apksigner_path":"./re/android/apksigner.jar",
             "keytool_path": "./re/jre/bin/keytool.exe",
+            "android_jar_path":"./re/android/android.jar",
+            "smali_jar_path":"./re/android/smali-2.5.2.jar",
             "adb_path": "./re/adb",
-            "aapt_path": "./re/aapt",
+            "aapt2_path": "./re/aapt",
             "java_path": "./re/jre/bin"
         },
         "cache": {

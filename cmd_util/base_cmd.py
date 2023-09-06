@@ -6,8 +6,6 @@ import subprocess
 import traceback
 from typing import Union
 
-from utils.jloger import JLogger
-
 
 class BaseCMD(object):
     """
@@ -29,7 +27,6 @@ class BaseCMD(object):
         :param mac_cmd: mac 上的命令行
 
         """
-        loger = JLogger()
         try:
             if platform.system() == "Windows":
                 cmd = win_cmd
@@ -38,15 +35,14 @@ class BaseCMD(object):
             elif platform.system() == 'Darwin':
                 cmd = mac_cmd
             else:
-                loger.warning("cmd not support this system")
-                return False
+                return False, "Cmd not support this System.", cmd
             process = subprocess.check_output(cmd, shell=True)
             # 不指定utf-8，在windows上会有gbk转utf-8的问题
             cmd_result = process.decode(encoding=locale.getpreferredencoding())
-            return True, cmd_result
+            return True, cmd_result, cmd
         except Exception as e:
             e_msg = traceback.format_exc()
-            return False, "exce:\n{0}".format(e_msg)
+            return False, "exce:\n{0}".format(e_msg), cmd
 
 
 if __name__ == "__main__":

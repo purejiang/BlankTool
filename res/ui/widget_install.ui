@@ -22,7 +22,7 @@
      <height>571</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="1,5">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,8">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -51,16 +51,16 @@
       </property>
       <item>
        <widget class="QWidget" name="widget_install_fuction_bar" native="true">
-        <widget class="QWidget" name="horizontalLayoutWidget">
+        <widget class="QWidget" name="verticalLayoutWidget_2">
          <property name="geometry">
           <rect>
            <x>0</x>
            <y>0</y>
            <width>721</width>
-           <height>93</height>
+           <height>124</height>
           </rect>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,1,1">
+         <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,1">
           <property name="leftMargin">
            <number>16</number>
           </property>
@@ -74,40 +74,80 @@
            <number>20</number>
           </property>
           <item>
-           <widget class="QLineEdit" name="edt_install_path">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="3,1,1">
+            <property name="leftMargin">
+             <number>0</number>
             </property>
-           </widget>
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLineEdit" name="edt_install_path">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_select_install">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>选择</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="btn_install">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>安装</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
-           <widget class="QPushButton" name="btn_select_install">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>选择</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="btn_install">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>安装</string>
-            </property>
-           </widget>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>* 支持的文件：</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="lb_supported_file_types">
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>

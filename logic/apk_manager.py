@@ -9,6 +9,7 @@ from common.constant import Constant
 from utils.file_helper import FileHelper
 from utils.jloger import JLogger
 from vo.apk_info import ApkInfo
+from vo.signer import SignerConfig
 
 
 class ApkManager():
@@ -56,7 +57,7 @@ class ApkManager():
             Constant.Path.AAPT_INFO_CACHE_PATH, "{0}.info".format(md5_name))
         depack_output_dir = os.path.join(
             Constant.Path.PARSE_CACHE_PATH, md5_name)
-        progress_callback(15, "初始化解析工具" , "", True)    
+        progress_callback(15, "初始化解析工具完成" , "", True)    
 
         # 第二步，通过 aapt 生成解析文件
         aapt_info_result = ApkCMD.aaptApkInfo(apk_path, info_file)
@@ -97,7 +98,7 @@ class ApkManager():
         return True, parse_apk_info_result
     
     @classmethod
-    def repack(cls, repack_dir_path, output_apk_path, is_v2, is_support_aapt2, ks_config, progress_callback):
+    def repack(cls, repack_dir_path, output_apk_path, is_support_aapt2, signer_version, signer_config:SignerConfig, progress_callback):
         tmp_apk_path = os.path.join(FileHelper.parentDir(output_apk_path), "tmp_"+FileHelper.filename(output_apk_path))
         # 第一步，清理工作空间
         progress_callback(0, "清理工作空间", "", True)
@@ -116,10 +117,15 @@ class ApkManager():
             return False
         
         # 第三步，重签名 APK
-        if is_v2:
-            sign_result = ApkCMD.signV2(Constant.Re.APKSIGNER_PATH, tmp_apk_path, output_apk_path, ks_config)
-        else:
-            sign_result = ApkCMD.signV1(Constant.Re.JARSIGNER_PATH, tmp_apk_path, output_apk_path, ks_config)
+        signer_config_dict={}
+        signer_config_dict["signer_file_path"]=signer_config.signer_file_path
+        signer_config_dict["signer_pwd"]=signer_config.signer_pwd
+        signer_config_dict["signer_key_pwd"]=signer_config.signer_key_pwd
+        signer_config_dict["signer_alias"]=signer_config.signer_alias
+        if signer_version=="v2":
+            sign_result = ApkCMD.signV2(Constant.Re.APKSIGNER_PATH, tmp_apk_path, output_apk_path, signer_config_dict)
+        elif signer_version=="v1":
+            sign_result = ApkCMD.signV1(Constant.Re.JARSIGNER_PATH, tmp_apk_path, output_apk_path, signer_config_dict)
         progress_callback(70, "重签名 APK：" + output_apk_path, sign_result[1], sign_result[0])
         return sign_result[0]
 
