@@ -133,6 +133,7 @@ class RepackageAndSign(BaseThread):
     重编译 apk
     """
     _success_signal = Signal(str)
+    
     def __init__(self, repackage_path:str, output_apk_path:str, is_support_aapt2:bool, signer_version:str, signer_config):
         super().__init__()
         self.repackage_path = repackage_path

@@ -8,8 +8,8 @@ from widget.window_init import InitWindow
 
 if __name__ == '__main__':
 
-        app = MyApplication(sys.argv)
+    app = MyApplication(sys.argv)
 
-        MyApplication.showClazz(app, InitWindow)
+    MyApplication.showClazz(app, InitWindow)
 
-        sys.exit(app.exec())
+    sys.exit(app.exec())

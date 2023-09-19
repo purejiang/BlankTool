@@ -64,7 +64,7 @@ class ParseApkWidget(FunctionWidget):
         ApkViewModel._parse_apk_info = None
         self.apk_info = None
         # 清除list中的item
-        self.__widget_parse_step_info._clear()
+        self.__widget_parse_step_info.clearAll()
         apk_path = self._ui.edt_parse_apk_path.text()
         if not FileHelper.fileExist(apk_path) or apk_path=="":
             toast = Toast(self)

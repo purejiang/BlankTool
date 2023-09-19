@@ -18,7 +18,7 @@ class BaseCMD(object):
     """
 
     @classmethod
-    def run(cls, win_cmd, linux_cmd, mac_cmd)->Union[bool, str]:
+    def run(cls, win_cmd, linux_cmd, mac_cmd)->Union[bool, str, str]:
         """
         执行 CMD 命令
 

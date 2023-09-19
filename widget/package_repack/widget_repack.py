@@ -85,7 +85,7 @@ class RepackApkWidget(FunctionWidget):
         self._ui.edt_repack_dir_path.setText(repack_dir_path)
     
     def __startRepack(self):
-        self.__widget_repack_step_info._clear()
+        self.__widget_repack_step_info.clearAll()
         repack_dir_path = self._ui.edt_repack_dir_path.text()
         self.__ouput_apk_path = os.path.join(FileHelper.parentDir(repack_dir_path), FileHelper.filename(repack_dir_path)+".apk")
         if not FileHelper.fileExist(repack_dir_path) or repack_dir_path=="":

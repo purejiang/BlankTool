@@ -76,7 +76,7 @@ class StepInfoListWidget(QListWidget):
         # 滑动到底部
         self.scrollToBottom()
     
-    def _clear(self):
+    def clearAll(self):
         self.clear()
 
     def _setupListener(self):

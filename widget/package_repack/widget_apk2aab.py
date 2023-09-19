@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from utils.file_helper import FileHelper
 from utils.other_util import currentTime
 from utils.ui_utils import chooseFile
 from viewmodel.bundle_viewmodel import BundleViewModel
@@ -26,8 +27,6 @@ class Apk2AabWidget(FunctionWidget):
         self.__initView()
 
     def _entry(self):
-        
-
         self.__showVersions(self.__min_sdk_version, self.__max_sdk_version)
         all_signer_list = SignerViewModel._signer_list
         if all_signer_list!=None:
@@ -57,25 +56,37 @@ class Apk2AabWidget(FunctionWidget):
         self.__signer_viewmodel = SignerViewModel(self)
         self.__widget_apk2aab_step_info = StepInfoListWidget()
         self._ui.layout_apk2aab_step_info.addWidget(self.__widget_apk2aab_step_info)
+        self._ui.btn_jump_to_aab_path.setVisible(False)
 
     def _setupListener(self):
         self._ui.btn_select_apk2aab_aab.clicked.connect(self.__chooseFile)
         self._ui.btn_apk2aab.clicked.connect(self.__startApk2aab)
+        self._ui.btn_jump_to_aab_path.clicked.connect(self.__jumpToAabPath)
         self.__aab_viewmodel.apk2aab_operation.setListener(self.__apk2aabSuccess, self.__apk2aabProgress, self.__apk2aabFailure)
         self.__signer_viewmodel.all_operation.setListener(self.__loadSignersSuccess, self.__loadSignersProgress, self.__loadSignersFailure)
     
+    def __jumpToAabPath(self):
+        if self.__aab_path!=None:
+            FileHelper.showInExplorer(self.__aab_path)
+            
     def __chooseFile(self):
         file_path = chooseFile(self, "选取 Apk", "安卓应用文件 (*.apk)")
         self._ui.edt_apk2aab_apk_path.setText(file_path)
 
     def __startApk2aab(self):
+        self.__aab_path = None
+        # 隐藏跳转按钮
+        self._ui.btn_jump_to_aab_path.setVisible(False)
+        # 清除list中的item
+        self.__widget_apk2aab_step_info.clearAll()
         # 禁止点击
         self._ui.widget_apk2aab_fuction_bar.setDisabled(True)
+
         apk_file = self._ui.edt_apk2aab_apk_path.text()
         signer_index = self._ui.cb_apk2aab_choose_signer_config.currentIndex()
         target_version = self._ui.cb_choose_target_version.currentText()
         min_version = self._ui.cb_choose_min_version.currentText()
-        compile_version = self._ui.cb_choose_min_version.currentText()
+        compile_version = self._ui.cb_choose_compile_version.currentText()
         version_code = self._ui.edt_apk2aab_version_code.text()
         version_name = self._ui.edt_apk2aab_version_name.text()
         ver_config={}
@@ -95,10 +106,12 @@ class Apk2AabWidget(FunctionWidget):
     def __loadSignersFailure(self, code, message, other_info):
         pass
 
-    def __apk2aabSuccess(self, apk_info):
+    def __apk2aabSuccess(self, aab_path):
+        self.__aab_path = aab_path
         self.__widget_apk2aab_step_info.loadStep(currentTime(), "apk 转 aab 成功", "", True)
         # 恢复点击
         self._ui.widget_apk2aab_fuction_bar.setDisabled(False)
+        self._ui.btn_jump_to_aab_path.setVisible(True)
 
     def __apk2aabProgress(self, progress, message, other_info, is_success):
         self.__widget_apk2aab_step_info.loadStep(currentTime(), message, other_info, is_success)

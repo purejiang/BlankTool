@@ -56,6 +56,7 @@ class SettingWidget(FunctionWidget):
             self.__app_viewmodel.getCacheSize()
             self._ui.lb_cache_totle_size.setText("缓存分析中")
             self.__is_getsize_ing = True
+            self._ui.pb_clean_cache.setDisabled(True)
 
     def __restartAdb(self):
         self.__app_viewmodel.adbRestart()
@@ -87,6 +88,7 @@ class SettingWidget(FunctionWidget):
     def __getCacheSizeSuccess(self, size_str):
         self.__is_getsize_ing = False
         self._ui.lb_cache_totle_size.setText(size_str)
+        self._ui.pb_clean_cache.setDisabled(False)
 
     def __getCacheSizeProgress(self, progress, message, other_info, is_success):
         pass

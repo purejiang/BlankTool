@@ -63,9 +63,13 @@ class BundleManager():
     @classmethod
     def apk2aab(cls, apk_file, ver_config, signer_config, progress_callback):
         loger = JLogger(log_name="apk2aab_{0}.log".format(currentTimeNumber()), save_file=True)
+        
         progress_callback(5, "开始初始化转换工具" , "", True)
+        if not FileHelper.fileExist(apk_file):
+            progress_callback(5, "初始化失败，apk不存在" , "", False)
+            return False, None
         md5_name = "{0}_{1}".format(FileHelper.filename(apk_file, False), FileHelper.md5(apk_file))
-        output_aab_file = os.path.join(Constant.Path.AAB_CACHE_PATH, "{0}_{1}_{2}.aab".format(md5_name, ver_config["ver_name"], currentTimeNumber()))
+        output_aab_file = os.path.join(Constant.Path.AAB_CACHE_PATH, "{0}_{1}.aab".format(md5_name, ver_config["ver_name"]))
         work_space_dir = os.path.join(Constant.Path.AAB_CACHE_PATH, md5_name)
         depack_dir = os.path.join(work_space_dir, "depackage")
         other_dir = os.path.join(work_space_dir, "other")
@@ -96,50 +100,50 @@ class BundleManager():
         depack_result = cls.__depackageApk(apk_file, depack_dir, loger)
         progress_callback(25, "反编 apk完成", depack_result[1], depack_result[0])
         if not depack_result[0]:
-            return
+            return False, None
         # 获取包名
         package_name = cls.__parsePackage(depack_dir, loger)
         if package_name is None:
             progress_callback(30, "解析包名失败", package_name, False)
-            return
+            return False, None
         progress_callback(30, "解析包名完成", package_name, True)
 
         # 编译资源
         compile_result = cls.__compileZip(depack_dir, compile_zip, loger)
         progress_callback(40, "编译资源完成", compile_result[1], compile_result[0])
         if not compile_result[0]:
-            return
+            return False, None
         
         # 链接资源
         link_result = cls.__linkRes(Constant.Re.ANDROID_JAR_PATH, compile_zip, depack_dir, ver_config, base_apk, loger)
         progress_callback(50, "链接资源完成", link_result[1], link_result[0])
         if not link_result[0]:
-            return
+            return False, None
         
         # 整理 base 模块
         arrange_apk_result = cls.__arrangeBaseApk(Constant.Re.SMALI_JAR_PATH, base_apk, aab_base_dir, depack_dir, loger)
         progress_callback(60, "整理 base 模块完成", arrange_apk_result[1], arrange_apk_result[0])
         if not arrange_apk_result[0]:
-            return
+            return False, None
         
         # 整理 assets 模块
         arrange_assets_result = cls.__arrangeAssets(Constant.Re.ANDROID_JAR_PATH, package_name, apk_file, other_dir, aab_base_dir, aab_assets_res_dir, Constant.Aab.ASSETS_RES_MANIFEST, loger)
         progress_callback(60, "整理 assets 模块完成", arrange_assets_result[1], arrange_assets_result[0])
         if not arrange_assets_result[0]:
-            return
+            return False, None
         
         # aab 构建
         build_bundle_result = cls.__bundleBuild(Constant.Re.BUNDLETOOL_PATH, aab_base_dir, aab_base_zip, aab_assets_res_dir, aab_assets_res_zip, output_aab_file, loger)
         progress_callback(70, "aab 构建完成", build_bundle_result[1], build_bundle_result[0])
         if not build_bundle_result[0]:
-            return
+            return False, None
         
         # aab 签名
         sign_bundle_result = cls.__signerAab(Constant.Re.JARSIGNER_PATH, output_aab_file, signer_config, loger)
         progress_callback(80, "aab 签名完成", sign_bundle_result[1], sign_bundle_result[0])
         if not sign_bundle_result[0]:
-            return
-        return True
+            return False, None
+        return True, output_aab_file
         
     @classmethod      
     def __depackageApk(cls, apk_file, depack_dir, loger):

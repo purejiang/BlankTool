@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from PySide6.QtCore import Signal
 from logic.bundle_manager import BundleManager
 
 from viewmodel.base_viewmodel import BaseThread, Operation
@@ -73,6 +74,7 @@ class Apk2aab(BaseThread):
     """
     apk 转 aab
     """
+    _success_signal = Signal(str)
 
     def __init__(self, apk_file, ver_config, signer_config):
         super().__init__()
@@ -81,9 +83,9 @@ class Apk2aab(BaseThread):
         self.signer_config = signer_config
 
     def run(self):
-        result = BundleManager.apk2aab(self.apk_file, self.ver_config, self.signer_config, self._progressCallback)
+        result, aab_path = BundleManager.apk2aab(self.apk_file, self.ver_config, self.signer_config, self._progressCallback)
         if result:
-            self._success_signal.emit()
+            self._success_signal.emit(aab_path)
         else:
             self._failure_signal.emit(0, "apk 转 aab失败", "")
 

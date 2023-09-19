@@ -35,10 +35,12 @@ class BundleCMD(BaseCMD):
         :param ver_code: 版本号
         :param ver_name: 版本名
 
-        [ aapt2 文件] link --proto-format [资源的 zip ] -o [输出的 base.apk] -I [ android.jar 文件] --manifest [ manifest 文件] --min-sdk-version [最小版本] --target-sdk-version [目标版本] --version-code [版本号] --version-name [版本名]
+        [ aapt2 文件] link --proto-format [资源的 zip ] -o [输出的 base.apk] -I [ android.jar 文件] --manifest [ manifest 文件] --min-sdk-version [最小版本] --target-sdk-version [目标版本] --version-code [版本号] --version-name [版本名] --auto-add-overlay --replace-version
+        
+        2023/09/14 新增 --replace-version ：如果指定了 --version-code、--version-name 或 --revision-code，这些值将替换清单中已有的任何值。默认情况下，如果清单已经定义这些属性，则不会有任何变化。
         """
-        win_cmd = "aapt2 link --proto-format \"{0}\" -o \"{1}\" -I \"{2}\" --manifest \"{3}\" --min-sdk-version {4} --target-sdk-version {5} --version-code {6} --version-name {7}".format( 
-             zip_path, output_base_apk, android_jar, manifest_file, min_ver, target_ver, ver_code, ver_name)
+        win_cmd = "aapt2 link --proto-format \"{0}\" -o \"{1}\" -I \"{2}\" --manifest \"{3}\" --min-sdk-version {4} --target-sdk-version {5} --version-code {6} --version-name {7} --compile-sdk-version-name {8} --auto-add-overlay --replace-version".format( 
+             zip_path, output_base_apk, android_jar, manifest_file, min_ver, target_ver, ver_code, ver_name, compile_ver)
         linux_cmd = ""
         mac_cmd = ""
         return cls.run(win_cmd, linux_cmd, mac_cmd)

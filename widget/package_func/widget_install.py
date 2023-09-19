@@ -56,7 +56,7 @@ class InstallWidget(FunctionWidget):
 
     def __install(self):
         # 清除list中的item
-        self.__widget_install_step_info._clear()
+        self.__widget_install_step_info.clearAll()
 
         file_path = self._ui.edt_install_path.text()
         if not FileHelper.fileExist(file_path) or file_path=="":
