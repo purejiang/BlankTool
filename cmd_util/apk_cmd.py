@@ -73,7 +73,7 @@ class ApkCMD(BaseCMD):
         :param is_pass_dex: 是否忽略错误的 .dex, 默认不忽略
         :param is_only_res: 是否只反编译资源文件, 默认编译所有
 
-        java -jar [ apktool 文件] [-s (可选)] d [--only -main-classes (可选)] [需要反编的 .apk 文件] -o [反编后输出的目录]
+        java -jar [ apktool 文件] [-s (可选)] d [--only-main-classes (可选)] [需要反编的 .apk 文件] -o [反编后输出的目录]
         """
         pass_dex = ""
         if is_pass_dex:
