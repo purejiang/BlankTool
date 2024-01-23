@@ -96,15 +96,19 @@ class SettingWidget(FunctionWidget):
     def __getCacheSizeFailure(self, code, message, other_info):
         self.__is_getsize_ing = False
         self._ui.lb_cache_totle_size.setText("error code:{0}, message:{1}".format(code, message))
+        self._ui.pb_clean_cache.setDisabled(False)
     
     def __adbRestartSuccess(self):
         self._ui.lb_restart_adb_status.setText("重连完成")
+        self._ui.pb_restart_adb.setDisabled(False)
 
     def __adbRestartProgress(self, progress, message, other_info, is_success):
         self._ui.lb_restart_adb_status.setText("重连中：{0}%".format(progress))
+        self._ui.pb_restart_adb.setDisabled(True)
 
     def __adbRestartFailure(self, code, message, other_info):
         self._ui.lb_restart_adb_status.setText("重连失败")
+        self._ui.pb_restart_adb.setDisabled(False)
 
 
 

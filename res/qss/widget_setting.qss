@@ -16,6 +16,9 @@ QPushButton#pb_clean_cache:default {
 QPushButton#pb_clean_cache:hover{
   color: #d1e9ff;
 }
+QPushButton#pb_clean_cache:disabled{
+  color: #C3C3C3;
+}
 
 QPushButton#pb_restart_adb {
   background-color: transparent;
@@ -29,4 +32,7 @@ QPushButton#pb_restart_adb:default {
 }
 QPushButton#pb_restart_adb:hover{
   color: #d1e9ff;
+}
+QPushButton#pb_restart_adb:disabled{
+  color: #C3C3C3;
 }
