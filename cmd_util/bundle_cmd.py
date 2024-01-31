@@ -119,7 +119,7 @@ class BundleCMD(BaseCMD):
         return cls.run(all_cmd, all_cmd, all_cmd)
 
     @classmethod
-    def aab2Apks(cls, bundletool_path, aab_path, output_apks_path, keystore_config=None):
+    def aab2Apks(cls, bundletool_path, aab_path, output_apks_path, keystore_config):
         """
         .aab 转 .apks
 

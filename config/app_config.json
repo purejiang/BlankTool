@@ -1,1 +1,13 @@
-{"app_info": {"app_name": "BlankTool", "version_name": "0.5.0.dev", "version_code": "230105", "create_time": "202307251726", "web_url": "https://purejiang.github.io/"}, "setting": {"is_output_log": false, "mode": "DEBUG"}}
+{
+    "app_info": {
+        "app_name": "BlankTool",
+        "version_name": "0.5.0.dev",
+        "version_code": "230105",
+        "create_time": "202307251726",
+        "web_url": "https://purejiang.github.io/"
+    },
+    "setting": {
+        "is_output_log": false,
+        "mode": "DEBUG"
+    }
+}

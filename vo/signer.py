@@ -23,6 +23,7 @@ class SignerConfig:
         :param udpate_time: 更新时间
         :param sort: 排序的优先级
         :param is_used: 是否在使用列表中
+        :param ext: 额外信息
         """
         self.signer_id = 0
         self.file_md5 = ""
@@ -35,6 +36,7 @@ class SignerConfig:
         self.update_time = 0
         self.sort = 0
         self.is_used = False
+        self.ext = ""
 
     def __str__(self):
         return str(json.dumps(self.__dict__))

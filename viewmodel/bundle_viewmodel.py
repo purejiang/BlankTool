@@ -21,8 +21,8 @@ class BundleViewModel():
         self.apk2aab_operation = Operation()                # apk 转 aab
 
 
-    def install(self, aab_path):
-        install_aab_thread = InstallAAB(aab_path)
+    def install(self, aab_path, signer_config):
+        install_aab_thread = InstallAAB(aab_path, signer_config)
         self.install_aab_operation.loadThread(install_aab_thread)
         self.install_aab_operation.start()
     

@@ -158,6 +158,20 @@ class ApkManager():
         return True, app_list
     
     @classmethod
+    def pullApk(cls, in_phone_path, target_path, progress_callback):
+        """
+        通过 adb 命令将指定路径下的 apk 拉到 pc
+
+        :param package_name: 包名
+
+        """
+        cls.loger.info("pull apk ...")
+        progress_callback(10, "开始执行", "", True)
+        cmd_result = ApkCMD.pullApk(in_phone_path, target_path)
+        progress_callback(80, "导出完成", "", True)
+        return cmd_result
+    
+    @classmethod
     def parseApkListInfo(cls, info_file):
         content = FileHelper.fileContent(info_file)
         apk_list = []

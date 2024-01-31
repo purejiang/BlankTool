@@ -22,8 +22,9 @@ class BundleManager():
 
     @classmethod
     def install_aab(cls, aab_path, signer_config, progress_callback):
+        loger = JLogger(log_name="install_aab_{0}.log".format(currentTimeNumber()), save_file=True)
         apks_path = os.path.join(Constant.Path.INSTALL_CACHE_PATH, "{0}.apks".format(FileHelper.filename(aab_path, False)))
-        cls.loger.info("开始安装 aab，时间："+ currentTime())
+        loger.info("开始安装 aab，时间："+ currentTime())
         try:
             if FileHelper.fileExist(apks_path):
                 FileHelper.delFile(apks_path)
@@ -42,12 +43,12 @@ class BundleManager():
                 return False
             return True
         except Exception as e:
-            cls.loger.warning(""+traceback.format_exc())
+            loger.warning(""+traceback.format_exc())
             return False
         
     @classmethod
-    def install_apks(cls, apks_file, progress_callback):
-        cls.loger.info("开始安装 apks，时间："+ currentTime())
+    def install_apks(cls, apks_file, progress_callback, loger):
+        loger.info("开始安装 apks，时间："+ currentTime())
         try:
             progress_callback(30, "安装 apks...", "", True)
             install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_file)
@@ -56,7 +57,7 @@ class BundleManager():
                 return False
             return True
         except Exception as e:
-            cls.loger.warning(""+traceback.format_exc())
+            loger.warning(""+traceback.format_exc())
             return False
         
     
