@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from widget.base.base_widget import BaseWidget
+from widget.custom.dialog_custom_small import SmallCustomDialog
+from widget.custom.widget_small_dialog_msg_set import WidgetSmallDialogMsgSet
 
 class MainTitilBar(BaseWidget):
     """
@@ -18,23 +20,37 @@ class MainTitilBar(BaseWidget):
         super(MainTitilBar, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
 
     def _onPreShow(self):
-        pass
+
+        self.__close_app_dialog = SmallCustomDialog(self._parent)
+        self.__close_app_dialog.title = "提示"
 
     def _setupListener(self):
-        self._ui.btn_close_window.clicked.connect(self.__onWindowClose)
+        self._ui.btn_close_window.clicked.connect(self.__onShowCloseDialog)
         self._ui.btn_tool_setting.clicked.connect(self.__onOpenSetting)
         self._ui.btn_min_window.clicked.connect(self.__onWindowMin)
 
+        self.__close_app_dialog.setConfirmListener("关闭应用", self.__onCloseWindow)
+        self.__close_app_dialog.setCancelListener("取消", self.__onCancelWindow)
+        self.__close_app_dialog.setCloseListener(self.__onCancelWindow)
+
     def setTitle(self, title):
         self._ui.lb_main_widow_titlebar.setText(title)
-
     
-    def __onWindowClose(self):
-        """
-        关闭程序
-        """
-        self._win.close()
+    def __onCloseWindow(self):
+        self.__close_app_dialog.close()
+        self._parent.close()
+    
+    def __onCancelWindow(self):
+        self.__close_app_dialog.close()
 
+    def __onShowCloseDialog(self):
+        """
+        显示关闭程序的dialog
+        """
+        self._close_message_widget = WidgetSmallDialogMsgSet(self._parent)
+        self._close_message_widget.message = "是否关闭应用"
+        self.__close_app_dialog.content_widget = self._close_message_widget
+        self.__close_app_dialog.show()    
 
     def __onOpenSetting(self):
         """
@@ -46,4 +62,4 @@ class MainTitilBar(BaseWidget):
         """
         最小化窗口
         """
-        self._win.showMinimized()
+        self._parent.showMinimized()

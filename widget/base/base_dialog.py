@@ -2,11 +2,12 @@
 # -*- coding:utf-8 -*-
 
 from PySide6.QtCore import Qt
-from widget.base.base_ui import BaseUi
+from widget.base.base_ui import BaseUi, MyUiLoad
 from abc import abstractmethod
 from PySide6.QtCore import Signal
-from PySide6.QtGui import QMouseEvent,QIcon,QGuiApplication
+from PySide6.QtGui import QMouseEvent,QGuiApplication
 from PySide6.QtWidgets import QDialog
+from PySide6.QtCore import QFile, QIODevice, QMetaObject
 
 class BaseDialog(QDialog, BaseUi):
     """
@@ -19,10 +20,11 @@ class BaseDialog(QDialog, BaseUi):
     """
     pressed = Signal([QDialog, QMouseEvent])
 
-    def __init__(self, main_window, ui_file, qss_file, icon):
+    _BASE_QSS_FILE = "./res/qss/widget_base.qss"
+
+    def __init__(self, parent, ui_file, qss_file):
         super(BaseDialog, self).__init__()
-        self._win = main_window
-        self._icon = icon
+        self._parent = parent
         self._initView(ui_file, qss_file)
         self._onPreShow()
         self._setupListener()
@@ -31,14 +33,12 @@ class BaseDialog(QDialog, BaseUi):
     def _initView(self, ui_file, qss_file):
         # 禁止其他界面响应
         self.setWindowModality(Qt.ApplicationModal)
-        self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.FramelessWindowHint| self.windowFlags() | Qt.Tool)
         if ui_file is not None:
             self._loadUi(ui_file)
         if qss_file is not None:
             qss_str = "{0}\n{1}".format(super()._loadQss(self._BASE_QSS_FILE), super()._loadQss(qss_file))
             self.setStyleSheet(qss_str)
-        if self._icon is not None:
-            self.setWindowIcon(QIcon(self._icon))
     
     def _moveCenter(self):    
         # 获得窗口

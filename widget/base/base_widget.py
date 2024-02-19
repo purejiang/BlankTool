@@ -20,8 +20,8 @@ class BaseWidget(QWidget, BaseUi):
     """
     __PRESSED = Signal([QWidget, QMouseEvent])
 
-    def __init__(self, main_window, ui_file, qss_file):
-        self._win = main_window
+    def __init__(self, parent, ui_file, qss_file):
+        self._parent = parent
         super(BaseWidget, self).__init__()
         self._initView(ui_file, qss_file)
         self._onPreShow()

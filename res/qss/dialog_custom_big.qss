@@ -1,0 +1,29 @@
+QDialog{
+    border-radius: 5px;
+    background-color: #3D3D3D;
+}
+QLabel{
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+}
+
+QPushButton#btn_big_dialog_close {
+    /* 可以去掉按下的下沉效果 */
+    border-radius: 1px;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    background-image: url(./res/img/btn_bg_close_window);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-origin:padding;
+}
+QPushButton#btn_big_dialog_close:default {
+    background-color: transparent;
+}
+
+QPushButton#btn_big_dialog_close:hover {
+    background-color: #e0f74848;
+}

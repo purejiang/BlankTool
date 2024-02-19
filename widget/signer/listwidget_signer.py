@@ -5,7 +5,8 @@ from viewmodel.signer_viewmodel import SignerViewModel
 from PySide6.QtWidgets import QListWidget, QMenu, QListWidgetItem, QStyledItemDelegate
 from PySide6.QtCore import Qt, QSize
 from vo.signer import SignerConfig
-from widget.signer.dialog_signer_config import SignerConfigDialog
+from widget.custom.dialog_custom_big import BigCustomDialog
+from widget.signer.widget_signer_config_set import SignerConfigSetWidget
 
 
 class CustomDelegate(QStyledItemDelegate):
@@ -97,12 +98,25 @@ class SignerListWidget(QListWidget):
         pass
 
     def __modifyItem(self, item):
-        self._add_signer_dialog = SignerConfigDialog(
-            self, self.__changedListener, item.signer)
-        self._add_signer_dialog.show()
+        self._modify_signer_dialog = BigCustomDialog(self)
+        self._modify_signer_dialog.title = "修改签名"
 
-    def __changedListener(self, signer):
-        self.signer_viewmodel.modifySigner(signer)
+        self._modify_widget_signer_config_set = SignerConfigSetWidget(self, item.signer)
+        self._modify_signer_dialog.content_widget = self._modify_widget_signer_config_set
+        
+        self._modify_signer_dialog.setConfirmListener("修改", self.__onConfirm)
+        self._modify_signer_dialog.setCancelListener("取消", self.__onClose)
+        self._modify_signer_dialog.setCloseListener(self.__onClose)
+
+        self._modify_signer_dialog.show()
+
+    def __onConfirm(self):
+        modifyed_signer = self._modify_widget_signer_config_set.getSigner()
+        self.signer_viewmodel.modifySigner(modifyed_signer)
+        self._modify_signer_dialog.close()
+
+    def __onClose(self):
+        self._modify_signer_dialog.close()
 
     def __show_context_menu(self, point):
         current_item = self.currentItem()

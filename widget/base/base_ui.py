@@ -14,7 +14,7 @@ class BaseUi():
     """
     _BASE_QSS_FILE = "./res/qss/widget_base.qss"
 
-    def __init__(self):
+    def __init__(self, parent= None):
         self._ui = None
 
     def _loadQss(self, qss_file):

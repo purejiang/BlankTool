@@ -1,51 +1,53 @@
 # -*- coding:utf-8 -*-
 
+
 from utils.file_helper import FileHelper
 from utils.ui_utils import chooseFile
 from vo.signer import SignerConfig
-from widget.base.base_dialog import BaseDialog
+from widget.base.base_widget import BaseWidget
+
 from widget.custom.toast import Toast
 
 
 
-class SignerConfigDialog(BaseDialog):
+class SignerConfigSetWidget(BaseWidget):
     """
 
     @author: purejiang
-    @created: 2022/3/24
+    @created: 2024/2/1
 
-    签名配置弹窗
+    签名配置的功能UI
 
 
     """
-    __UI_FILE = "./res/ui/dialog_signer_config.ui"
-    __QSS_FILE = "./res/qss/dialog_signer_config.qss"
-    __ICON = "./res/img/app_icon_small"
+    __UI_FILE = "./res/ui/widget_signer_config_set.ui"
+    __QSS_FILE = "./res/qss/widget_signer_config_set.qss"
 
-    def __init__(self, main_window, changed_listener, signer=None) -> None:
-        super(SignerConfigDialog, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE, self.__ICON)
-        self.__changed_listener = changed_listener
+    def __init__(self, main_window, signer=None) -> None:
+        super().__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__signer = signer
         self.__initView()
 
     def _onPreShow(self):
-        self._moveCenter()
+        pass
     
     def __initView(self):
-        if self.__signer!=None:
-            self._ui.edt_signer_name.setText(self.__signer.signer_name)
-            self._ui.edt_signer_file_path.setText(self.__signer.signer_file_path)
-            self._ui.edt_signer_pwd.setText(self.__signer.signer_pwd)
-            self._ui.edt_signer_key_pwd.setText(self.__signer.signer_key_pwd)
-            self._ui.edt_signer_key_alias.setText(self.__signer.signer_alias)
-            self._ui.ckb_is_used_signer.setChecked(self.__signer.is_used)
+        if self.__signer is None:
+            return
+        self._ui.edt_signer_name.setText(self.__signer.signer_name)
+        self._ui.edt_signer_file_path.setText(self.__signer.signer_file_path)
+        self._ui.edt_signer_pwd.setText(self.__signer.signer_pwd)
+        self._ui.edt_signer_key_pwd.setText(self.__signer.signer_key_pwd)
+        self._ui.edt_signer_key_alias.setText(self.__signer.signer_alias)
+        self._ui.ckb_is_used_signer.setChecked(self.__signer.is_used)
+    
+    def setTitle(self, str):
+        self._ui.lb_signer_config_dilaog_title.setText(str)
 
     def _setupListener(self):
-        self._ui.btn_signer_confirm.clicked.connect(self.__comfirm)
-        self._ui.btn_signer_cancel.clicked.connect(self.__cancel)
-        self._ui.btn_signer_file.clicked.connect(self.__chooseFile)
+        self._ui.btn_signer_file.clicked.connect(self.__onChooseFile)
 
-    def __comfirm(self):
+    def getSigner(self):
         signer_name = self._ui.edt_signer_name.text()
         signer_file_path = self._ui.edt_signer_file_path.text()
         signer_pwd = self._ui.edt_signer_pwd.text()
@@ -73,12 +75,8 @@ class SignerConfigDialog(BaseDialog):
         signer.signer_key_pwd = signer_key_pwd
         signer.signer_alias = signer_alias
         signer.is_used = is_used
-        self.__changed_listener(signer)
-        self.close()
+        return signer
 
-    def __cancel(self):
-        self.close()
-    
-    def __chooseFile(self):    
+    def __onChooseFile(self):    
         file_path = chooseFile(self, "选取签名文件", "签名文件 (*.jks *.keystore)")
         self._ui.edt_signer_file_path.setText(file_path)

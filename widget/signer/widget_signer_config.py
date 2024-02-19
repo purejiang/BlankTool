@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 
 from viewmodel.signer_viewmodel import SignerViewModel
+from widget.custom.dialog_custom_big import BigCustomDialog
 from widget.function.widget_function import FunctionWidget
-from widget.signer.dialog_signer_config import SignerConfigDialog
 from widget.signer.listwidget_signer import SignerListWidget
+from widget.signer.widget_signer_config_set import SignerConfigSetWidget
 
 class SignerConfigWidget(FunctionWidget):
     """
@@ -25,14 +26,22 @@ class SignerConfigWidget(FunctionWidget):
         self.__listwidget_signers = SignerListWidget()
         self._ui.layout_signers.addWidget(self.__listwidget_signers)
 
+        self._add_signer_dialog = BigCustomDialog(self)
+        self._add_signer_dialog.title = "添加签名"
+
     def _setupListener(self):
-        self._ui.btn_add_signer.clicked.connect(self.__showAddSignerDialog)
+        self._ui.btn_add_signer.clicked.connect(self.__onShowAddSignerDialog)
 
         self.signer_viewmodel.all_operation.setListener(self.__allSignerSuccess, self.__allSignerProgress, self.__allSignerFailure)
         self.signer_viewmodel.add_operation.setListener(self.__addSignerSuccess, self.__addSignerProgress, self.__addSignerFailure)
 
-    def __showAddSignerDialog(self):
-        self._add_signer_dialog = SignerConfigDialog(self, self.__changedListener)
+        self._add_signer_dialog.setConfirmListener("添加", self.__onConfirm)
+        self._add_signer_dialog.setCancelListener("取消", self.__onClose)
+        self._add_signer_dialog.setCloseListener(self.__onClose)
+
+    def __onShowAddSignerDialog(self):
+        self._add_widget_signer_config_set = SignerConfigSetWidget(self)
+        self._add_signer_dialog.content_widget =  self._add_widget_signer_config_set
         self._add_signer_dialog.show()
     
     def _entry(self):
@@ -48,10 +57,14 @@ class SignerConfigWidget(FunctionWidget):
     def __allSignerFailure(self, code, msg):
         pass
 
-    def __changedListener(self, signer):
-        print(signer.__dict__)
-        self.signer_viewmodel.addSigner(signer)
-        
+    def __onConfirm(self):
+        new_signer = self._add_widget_signer_config_set.getSigner()
+        self.signer_viewmodel.addSigner(new_signer)
+        self._add_signer_dialog.close()
+    
+    def __onClose(self):
+        self._add_signer_dialog.close()
+
     def __addSignerSuccess(self):
         self.signer_viewmodel.allSigners()
 

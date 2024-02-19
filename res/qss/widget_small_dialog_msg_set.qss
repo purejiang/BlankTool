@@ -1,0 +1,8 @@
+QPushButton {
+    /* 可以去掉按下的下沉效果 */
+    border-radius: 1px;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+}

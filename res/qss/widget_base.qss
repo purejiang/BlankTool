@@ -25,7 +25,9 @@ QLineEdit:disabled{
     background-color: #C3C3C3;
 }
 
-/* 按钮风格1 */
+/* 按钮风格1：
+
+*/
 QPushButton {
     /* 可以去掉按下的下沉效果 */
     border-radius: 5px;
@@ -45,7 +47,7 @@ QPushButton:disabled{
     background-color: #C3C3C3;
 }
 /*
-按钮风格2
+按钮风格2：透明底+外框
 QPushButton{ 
     border-radius: 5px;
     border: 1px solid #FFFFFF;
@@ -60,6 +62,32 @@ QPushButton:default {
 
 QPushButton:hover{
     background-color: #64C8FE;
+}
+*/
+
+/*
+按钮风格3：全透明，png图片按钮 
+QPushButton {
+    /* 可以去掉按下的下沉效果 
+    border-radius: 1px;
+    background-color: transparent;
+    color: #FFFFFF;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+}
+QPushButton:default {
+    background-color: transparent;
+}
+
+QPushButton:hover {
+    background-color: #50AAAAAA;
+}
+
+QPushButton#xxxxxx {
+    background-image: url(./res/img/btn_bg_close_window);
+    background-repeat:no-repeat;
+    background-position:center;
+    background-origin:padding;
 }
 */
 

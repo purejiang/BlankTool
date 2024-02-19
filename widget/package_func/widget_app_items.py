@@ -31,10 +31,9 @@ class ApkItemWidget(BaseWidget):
     def __initView(self):
         self._package_name = self._app[0]
         self._in_phone_path = self._app[1]
-        pull_state = "未导出"
         
         self._ui.edt_pull_app_packagename.setText(self._package_name)
-        self._ui.lb_pull_state.setText(pull_state)
+        self._ui.lb_pull_state.setText("未导出")
         self._ui.lb_app_id.setText(str(self._id))
 
     def _setupListener(self):

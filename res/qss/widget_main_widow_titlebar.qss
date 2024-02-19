@@ -24,6 +24,9 @@ QPushButton#btn_close_window {
     background-position:center;
     background-origin:padding;
 }
+QPushButton#btn_close_window:hover {
+    background-color: #e0f74848;
+}
 
 QPushButton#btn_min_window {
     background-image: url(./res/img/btn_bg_min_window);
