@@ -27,9 +27,6 @@ class SettingWidget(FunctionWidget):
         self.__app_viewmodel = AppViewModel(self)
         self.__clean_cache_dialog = SmallCustomDialog(self)
         
-        
-        
-
         self._ui.lb_app_vesion_name.setText(Constant.AppInfo.VERSION_NAME)
         self._ui.lb_app_vesion_code.setText(Constant.AppInfo.VERSION_CODE)
         self._ui.lb_app_create_time.setText(Constant.AppInfo.CREATE_TIME)
@@ -96,6 +93,7 @@ class SettingWidget(FunctionWidget):
 
     def __onCleanProgress(self, progress, message, other_info, is_success):
         self._clean_cache_progress_widget.progress = progress
+        self._clean_cache_progress_widget.bottom_msg = message
  
     def __onCleanFailure(self, code, message, other_info):
         self._clean_cache_message_widget = WidgetSmallDialogMsgSet(self.__clean_cache_dialog)

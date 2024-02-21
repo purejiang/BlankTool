@@ -4,6 +4,7 @@
 import json
 import os
 import sys
+import time
 import traceback
 from cmd_util.app_cmd import AppCMD
 from common.constant import APP_PATH, Config, Constant
@@ -43,6 +44,7 @@ class AppManager():
         cls.loger.info("最终环境变量: {0}".format(os.environ['PATH']))
         # AppCMD.setPath(tmp_path)
         # os.chdir(sys.path[0]) 
+        time.sleep(1)
         return True
 
     @classmethod   
@@ -52,6 +54,7 @@ class AppManager():
 
         """
         cls.loger.info("加载 .rcc 资源")
+        time.sleep(1)
         try:
             for file in FileHelper.getChild(os.path.join(APP_PATH, Constant.Path.RESOURCE_PATH), FileHelper.TYPE_FILE):
                 if FileHelper.getSuffix(file) == ".rcc":
@@ -73,6 +76,7 @@ class AppManager():
             if not FileHelper.fileExist(tool_dir):
                 cls.loger.info("重建: {}".format(tool_dir))
                 FileHelper.createDir(tool_dir)
+        time.sleep(1)
         return True
     
     @classmethod
@@ -98,13 +102,16 @@ class AppManager():
         if not init_result:
             return False
         check_re_result = cls.__checkRe()
+        
         progress_callback(40, "检查运行环境", "", check_re_result)
         if not check_re_result:
             return False
         load_result = cls.__loadRcc()
+        
         progress_callback(60, "加载 .rcc", "", load_result)
         if not load_result and Constant.Setting.MODE==cls.REALEASE_MODE:
             return False
+        
         check_dir_result = cls.__checkToolDir()
         progress_callback(80, "检查工具目录", "", check_dir_result)
         if not check_dir_result:
@@ -170,7 +177,7 @@ class AppManager():
                 try:
                     file_str = "...{0}".format(file.split(os.path.sep)[-1])
                     del_result = FileHelper.delFile(file)
-                    progress_callback(del_file_counts*100/all_file_counts, "\n清理：\n{0}".format(file_str), "", del_result) 
+                    progress_callback(del_file_counts*100/all_file_counts, "{0}".format(file_str), "", del_result) 
                 except Exception as e:
                     cls.loger.warning("清理文件失败："+traceback.format_exc())   
             cls.loger.info("预清理文件数：{0}".format(del_file_counts))
@@ -205,6 +212,7 @@ class AppManager():
         检测更新
         """
         cls.loger.info("检测更新")
+        time.sleep(3)
         return True
 
     # @classmethod

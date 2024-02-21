@@ -26,7 +26,8 @@ class WidgetSmallDialogProgressSet(BaseWidget):
         self.__initView()
 
     def _onPreShow(self):
-        pass
+        self._ui.lb_small_progress_dialog_top_msg.setVisible(False)
+        self._ui.lb_small_progress_dialog_bottom_msg.setVisible(False)
 
     def __initView(self):
         pass
@@ -50,8 +51,8 @@ class WidgetSmallDialogProgressSet(BaseWidget):
     @top_msg.setter
     def top_msg(self, value):
         self.__top_msg = value
-        self._ui.lb_small_dialog_progress_top_msg.setVisible(True)
-        self._ui.lb_small_dialog_progress_top_msg.setText(value)
+        self._ui.lb_small_progress_dialog_top_msg.setVisible(True)
+        self._ui.lb_small_progress_dialog_top_msg.setText(value)
 
     @property
     def bottom_msg(self):
@@ -60,7 +61,7 @@ class WidgetSmallDialogProgressSet(BaseWidget):
     @bottom_msg.setter
     def bottom_msg(self, value):
         self.__bottom_msg = value
-        self._ui.lb_small_dialog_progress_bottom_msg.setVisible(True)
-        self._ui.lb_small_dialog_progress_bottom_msg.setValue(value)
+        self._ui.lb_small_progress_dialog_bottom_msg.setVisible(True)
+        self._ui.lb_small_progress_dialog_bottom_msg.setText(value)
 
 
