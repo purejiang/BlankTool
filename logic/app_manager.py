@@ -56,7 +56,7 @@ class AppManager():
         cls.loger.info("加载 .rcc 资源")
         time.sleep(1)
         try:
-            for file in FileHelper.getChild(os.path.join(APP_PATH, Constant.Path.RESOURCE_PATH), FileHelper.TYPE_FILE):
+            for file in FileHelper.getChild(Constant.Path.RESOURCE_PATH, FileHelper.TYPE_FILE):
                 if FileHelper.getSuffix(file) == ".rcc":
                     QResource.registerResource(file)
             return True
@@ -215,14 +215,14 @@ class AppManager():
         time.sleep(3)
         return True
 
-    # @classmethod
-    # def getFunctions(cls, progress_callback):
-    #     """
-    #     获取功能列表（暂为本地）
-    #     """
-    #     progress_callback("获取功能列表")
-    #     apk_function = Function("Apk 分析", "./res/img/app_icon_small", ["Apk 解析", "Apk 解析结果"])
-    #     return []
+    @classmethod
+    def getFunctions(cls, progress_callback):
+        """
+        获取功能列表（暂为本地）
+        """
+        # progress_callback("获取功能列表")
+        # apk_function = Function("Apk 分析", "./res/img/app_icon_small", ["Apk 解析", "Apk 解析结果"])
+        # return []
 
     @classmethod
     def reStartAdb(cls, progress_callback):

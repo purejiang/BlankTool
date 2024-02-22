@@ -102,39 +102,69 @@ class ApkManager():
         return True, parse_apk_info_result
     
     @classmethod
-    def repack(cls, repack_dir_path, output_apk_path, is_support_aapt2, signer_version, signer_config:SignerConfig, progress_callback):
+    def repack(cls, repack_dir_path, output_apk, is_support_aapt2, signer_version, signer_config:SignerConfig, progress_callback):
         loger = JLogger(log_name="repack_{0}.log".format(currentTimeNumber()), save_file=True)
-        tmp_apk_path = os.path.join(FileHelper.parentDir(output_apk_path), "tmp_"+FileHelper.filename(output_apk_path))
+        tmp_apk = os.path.join(FileHelper.parentDir(output_apk), "tmp_"+FileHelper.filename(output_apk))
         # 第一步，清理工作空间
         progress_callback(0, "清理工作空间", "", True)
-        if FileHelper.fileExist(tmp_apk_path):
-            FileHelper.delFile(tmp_apk_path)
-            cls.loger.info("del file:"+tmp_apk_path)
-        if FileHelper.fileExist(output_apk_path):
-            FileHelper.delFile(output_apk_path)
-            cls.loger.info("del file:"+output_apk_path)
+        if FileHelper.fileExist(tmp_apk):
+            FileHelper.delFile(tmp_apk)
+            cls.loger.info("del file:"+tmp_apk)
+        if FileHelper.fileExist(output_apk):
+            FileHelper.delFile(output_apk)
+            cls.loger.info("del file:"+output_apk)
 
        # 第二步，重编译,生成未签名的 APK     
-        repack_tmp_apk_result = ApkCMD.repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk_path, is_support_aapt2)
+        repack_tmp_apk_result = ApkCMD.repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk, is_support_aapt2)
         loger.info("cmd:"+repack_tmp_apk_result[2]+", result:"+repack_tmp_apk_result[1])
-        progress_callback(40, "重编译，生成未签名 APK：" + output_apk_path, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
+        progress_callback(40, "重编译，生成未签名 APK：" + output_apk, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
         if not repack_tmp_apk_result[0]:
             cls.loger.info(repack_tmp_apk_result[1])
             return False
         
         # 第三步，重签名 APK
+        sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version)
+        progress_callback(70, "重签名 APK：" + output_apk, sign_result[1], sign_result[0])
+        loger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1])
+        return sign_result[0]
+
+    
+    @classmethod
+    def signApk(cls, origin_apk, output_apk, signer_version, signer_config:SignerConfig, progress_callback):
+        loger = JLogger(log_name="repack_{0}.log".format(currentTimeNumber()), save_file=True)
+        tmp_apk = os.path.join(FileHelper.parentDir(output_apk), "tmp_"+FileHelper.filename(output_apk))
+        
+        # 第一步，清理工作空间
+        progress_callback(0, "清理工作空间", "", True)
+        if FileHelper.fileExist(tmp_apk):
+            FileHelper.delFile(tmp_apk)
+            cls.loger.info("del file:"+tmp_apk)
+        if FileHelper.fileExist(output_apk):
+            FileHelper.delFile(output_apk)
+            cls.loger.info("del file:"+output_apk)
+        
+        FileHelper.copyFile(origin_apk, tmp_apk, True)
+        
+        # 第二步，重签名 APK
+        sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version)
+        progress_callback(70, "重签名 APK：" + output_apk, sign_result[1], sign_result[0])
+        loger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1]+", bool:"+str(sign_result[0]))
+        return sign_result[0]
+
+
+
+    @classmethod
+    def __signApk(cls, origin_apk, output_apk, signer_config, signer_version):
         signer_config_dict={}
         signer_config_dict["signer_file_path"]=signer_config.signer_file_path
         signer_config_dict["signer_pwd"]=signer_config.signer_pwd
         signer_config_dict["signer_key_pwd"]=signer_config.signer_key_pwd
         signer_config_dict["signer_alias"]=signer_config.signer_alias
         if signer_version=="v2":
-            sign_result = ApkCMD.signV2(Constant.Re.APKSIGNER_PATH, tmp_apk_path, output_apk_path, signer_config_dict)
+            sign_result = ApkCMD.signV2(Constant.Re.APKSIGNER_PATH, origin_apk, output_apk, signer_config_dict)
         elif signer_version=="v1":
-            sign_result = ApkCMD.signV1(Constant.Re.JARSIGNER_PATH, tmp_apk_path, output_apk_path, signer_config_dict)
-        loger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1])
-        progress_callback(70, "重签名 APK：" + output_apk_path, sign_result[1], sign_result[0])
-        return sign_result[0]
+            sign_result = ApkCMD.signV1(Constant.Re.JARSIGNER_PATH, origin_apk, output_apk, signer_config_dict)
+        return sign_result
 
     @classmethod
     def getApkListInfo(cls, info_file_path, is_sys, progress_callback):

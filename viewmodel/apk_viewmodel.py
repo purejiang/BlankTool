@@ -28,7 +28,8 @@ class ApkViewModel():
         self.depack_apk_operation = Operation()             # 反编译 apk
         self.generate_list_operation= Operation()           # 获取手机内 apk 列表
         self.pull_apk_operation = Operation()               # 导出手机内 apk
-        self.repack_apk_operation = Operation()             # 重编译 apk
+        self.repack_dir_operation = Operation()             # 重编译目录
+        self.resign_apk_operation = Operation()             # 重签 apk
         self.parse_apk_operation = Operation()              # 解析并反编译 apk 
 
     def install(self, apk_path):
@@ -52,9 +53,14 @@ class ApkViewModel():
         self.pull_apk_operation.start()
 
     def repack(self, repackage_path, output_apk_path, is_support_aapt2, signer_version, signer_config):
-        repack_thread = RepackageAndSign(repackage_path, output_apk_path, is_support_aapt2, signer_version, signer_config)
-        self.repack_apk_operation.loadThread(repack_thread)
-        self.repack_apk_operation.start()
+        repack_thread = Repackage(repackage_path, output_apk_path, is_support_aapt2, signer_version, signer_config)
+        self.repack_dir_operation.loadThread(repack_thread)
+        self.repack_dir_operation.start()
+    
+    def reSign(self, origin_apk, output_apk, signer_version, signer_config):
+        resign_thread = ReSign(origin_apk, output_apk, signer_version, signer_config)
+        self.resign_apk_operation.loadThread(resign_thread)
+        self.resign_apk_operation.start()
 
 class InstallApk(BaseThread):
     """
@@ -128,23 +134,43 @@ class PullApk(BaseThread):
         else:
             self._failure_signal.emit(0, "导出 apk 失败", "")
 
-class RepackageAndSign(BaseThread):
+class Repackage(BaseThread):
     """
-    重编译 apk
+    重编译目录为 Apk
     """
     _success_signal = Signal(str)
     
-    def __init__(self, repackage_path:str, output_apk_path:str, is_support_aapt2:bool, signer_version:str, signer_config):
+    def __init__(self, repack_dir:str, output_apk:str, is_support_aapt2:bool, signer_version:str, signer_config):
         super().__init__()
-        self.repackage_path = repackage_path
-        self.output_apk_path = output_apk_path
+        self.repack_dir = repack_dir
+        self.output_apk = output_apk
         self.is_support_aapt2 = is_support_aapt2
         self.signer_version = signer_version
         self.signer_config = signer_config
 
     def run(self):
-        result = ApkManager.repack(self.repackage_path, self.output_apk_path, self.is_support_aapt2, self.signer_version, self.signer_config, self._progressCallback)
+        result = ApkManager.repack(self.repack_dir, self.output_apk, self.is_support_aapt2, self.signer_version, self.signer_config, self._progressCallback)
         if result:
-            self._success_signal.emit(self.output_apk_path)
+            self._success_signal.emit(self.output_apk)
         else:
             self._failure_signal.emit(0, "重编译 apk 失败", "")
+
+class ReSign(BaseThread):
+    """
+    重签 Apk
+    """
+    _success_signal = Signal(str)
+    
+    def __init__(self, origin_apk:str, output_apk:str, signer_version:str, signer_config):
+        super().__init__()
+        self.origin_apk = origin_apk
+        self.output_apk = output_apk
+        self.signer_version = signer_version
+        self.signer_config = signer_config
+
+    def run(self):
+        result = ApkManager.signApk(self.origin_apk, self.output_apk, self.signer_version, self.signer_config, self._progressCallback)
+        if result:
+            self._success_signal.emit(self.output_apk)
+        else:
+            self._failure_signal.emit(0, "重签 apk 失败", "")
