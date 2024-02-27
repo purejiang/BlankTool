@@ -1,21 +1,20 @@
-QWidget#widget_setting{
+QWidget#widget_adb{
     border-radius: 5px;
     background-color: #595959;
 }
-
-QPushButton#pb_clean_cache {
+QPushButton#pb_restart_adb {
   background-color: transparent;
   color: #46A6FD;
   font-family: "Microsoft YaHei";
   font-size: 12px;
   font-weight: bold;
 }
-QPushButton#pb_clean_cache:default {
+QPushButton#pb_restart_adb:default {
   color: #46A6FD;
 }
-QPushButton#pb_clean_cache:hover{
+QPushButton#pb_restart_adb:hover{
   color: #d1e9ff;
 }
-QPushButton#pb_clean_cache:disabled{
+QPushButton#pb_restart_adb:disabled{
   color: #C3C3C3;
 }
