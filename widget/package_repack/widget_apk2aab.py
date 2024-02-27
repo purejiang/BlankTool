@@ -24,16 +24,7 @@ class Apk2AabWidget(FunctionWidget):
         self.__used_signer_config_list = []
         self.__min_sdk_version = 11
         self.__max_sdk_version = 33
-        self.__initView()
 
-    def _entry(self):
-        self.__showVersions(self.__min_sdk_version, self.__max_sdk_version)
-        all_signer_list = SignerViewModel._signer_list
-        if all_signer_list!=None:
-            self.__showSignerConfigs(all_signer_list)
-        else:
-            self.__signer_viewmodel.allSigners()
-    
     def __showSignerConfigs(self, all_signerconfig_list):
         self._ui.cb_apk2aab_choose_signer_config.clear()
         self.__used_signer_config_list.clear()
@@ -48,8 +39,17 @@ class Apk2AabWidget(FunctionWidget):
             self._ui.cb_choose_target_version.addItem(str(version), version)
             self._ui.cb_choose_compile_version.addItem(str(version), version)
 
-    def __initView(self):
-        pass
+    def hideEvent(self, event):
+        print("Apk2AabWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("Apk2AabWidget:showEvent")
+        self.__showVersions(self.__min_sdk_version, self.__max_sdk_version)
+        all_signer_list = SignerViewModel._signer_list
+        if all_signer_list!=None:
+            self.__showSignerConfigs(all_signer_list)
+        else:
+            self.__signer_viewmodel.allSigners()
 
     def _onPreShow(self):
         self.__aab_viewmodel = BundleViewModel(self)

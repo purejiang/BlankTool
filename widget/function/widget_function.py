@@ -15,7 +15,3 @@ class FunctionWidget(BaseWidget):
 
     def __init__(self, main_window, ui_file, qss_file) -> None:
         super(FunctionWidget, self).__init__(main_window, ui_file, qss_file)
-
-    @abstractmethod
-    def _entry(self):
-        pass

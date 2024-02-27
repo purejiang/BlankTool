@@ -32,6 +32,12 @@ class ParseApkWidget(FunctionWidget):
         self.__is_pass_dex =False
         self.__is_only_res =False
 
+    def hideEvent(self, event):
+        print("ParseApkWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("ParseApkWidget:showEvent")
+        
     def _onPreShow(self):
         self.apk_viewmodel = ApkViewModel(self)
         self._ui.pb_depack_progress.setVisible(False)
@@ -52,9 +58,6 @@ class ParseApkWidget(FunctionWidget):
 
     def __isOnlyRes(self, checked):
         self.__is_only_res = checked
-
-    def _entry(self):
-        pass
 
     def __chooseFile(self):
         file_path = chooseFile(self, "选取 Apk", "安卓应用文件 (*.apk)")

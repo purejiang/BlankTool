@@ -4,7 +4,7 @@ from widget.base.base_widget import BaseWidget
 from widget.custom.dialog_custom_small import SmallCustomDialog
 from widget.custom.widget_small_dialog_msg_set import WidgetSmallDialogMsgSet
 
-class MainTitilBar(BaseWidget):
+class MainTitleBar(BaseWidget):
     """
 
     @author: purejiang
@@ -17,7 +17,7 @@ class MainTitilBar(BaseWidget):
     __QSS_FILE = "./res/qss/widget_main_widow_titlebar.qss"
 
     def __init__(self, main_window) -> None:
-        super(MainTitilBar, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
+        super(MainTitleBar, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
 
     def _onPreShow(self):
 

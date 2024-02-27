@@ -1,9 +1,8 @@
 # -*- coding:utf-8 -*-
 from common.constant import Constant
 from widget.base.base_window import BaseWindow
-from widget.function.widget_function import FunctionWidget
-from widget.function.widget_function_tab_bar import FunctionTabBarWidget
-from widget.widget_main_widow_titlebar import MainTitilBar
+from widget.function.widget_function_tab_bar import FuctionListItem, FunctionTabBarWidget
+from widget.widget_main_widow_titlebar import MainTitleBar
 
 
 class MainWindow(BaseWindow):
@@ -22,13 +21,15 @@ class MainWindow(BaseWindow):
 
     def __init__(self, application) -> None:
         super(MainWindow, self).__init__(application, self.__UI_FILE, self.__QSS_FILE, self.__ICON)
+        self.current_item = None
 
     def _onPreShow(self, data):
-        self._moveCenter()
+        super()._onPreShow(data)
         self.setWindowTitle(Constant.AppInfo.APP_NAME)
-        self.__title_bar = MainTitilBar(self)
+        self.__title_bar = MainTitleBar(self)
         self.__title_bar.setTitle(self.__TITLE)
-        self.__function_tab_bar = FunctionTabBarWidget(self.__itemClickCallback)
+        self.__function_tab_bar = FunctionTabBarWidget()
+        self.__function_tab_bar.setItemClickCallback(self.__itemClickCallback)
         self._ui.layout_main_window_title_bar.addWidget(self.__title_bar)
         self._ui.layout_function_bar.addWidget(self.__function_tab_bar)
 
@@ -36,11 +37,19 @@ class MainWindow(BaseWindow):
         pass
 
     def _onAfterShow(self, data):
-       pass
+        # 设置第一项为当前选定项，并模拟点击该项
+        self.__function_tab_bar.clickItem(0, 0)
 
-    def __itemClickCallback(self, content_widget:FunctionWidget):
+    def __itemClickCallback(self, item:FuctionListItem):
+        if item==self.current_item and item.func.function_widget.isVisible:
+            return
+        self.__hideContentWidget()
+        self.current_item = item
+        self._ui.layout_main_content.addWidget(item.func.function_widget)
+        item.func.function_widget.setVisible(True)
+    
+    def __hideContentWidget(self):
         for i in range(self._ui.layout_main_content.count()):
-            self._ui.layout_main_content.itemAt(i).widget().setVisible(False)
-        content_widget.setVisible(True)
-        content_widget._entry()
-        self._ui.layout_main_content.addWidget(content_widget)
+            item_widget = self._ui.layout_main_content.itemAt(i).widget()
+            if item_widget.isVisible():
+                self._ui.layout_main_content.itemAt(i).widget().setVisible(False)

@@ -27,7 +27,7 @@ class Function:
     def __str__(self):
         return str(self.__dict__)
     
-class FunctionType:
+class Functions:
     """
     @author: purejiang
     @created: 2023/4/20
@@ -35,15 +35,15 @@ class FunctionType:
     功能列表总类
 
     """
-    def __init__(self, name:str, icon:str, fucntion_list:list[Function]):
+    def __init__(self, name:str, icon:str, func_list:list[Function]):
         """
         :param name: 标题
         :param icon: icon
-        :param fucntion_list: 功能数组
+        :param func_list: 功能数组
         """
         self.name = name
         self.icon = icon
-        self.fucntion_list = fucntion_list
+        self.func_list = func_list
 
     def __str__(self):
         return str(self.__dict__)

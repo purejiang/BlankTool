@@ -26,8 +26,12 @@ class ApkInfoWidget(FunctionWidget):
 
     def _onPreShow(self):
         pass
-
-    def _entry(self):
+    
+    def hideEvent(self, event):
+        print("ApkInfoWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("ApkInfoWidget:showEvent")
         if ApkViewModel._parse_apk_info !=None:
             self._ui.lb_notic_please_update_apk.setVisible(False)
             self._ui.tw_apk_info_table.setVisible(True)
@@ -35,7 +39,7 @@ class ApkInfoWidget(FunctionWidget):
         else:
             self._ui.lb_notic_please_update_apk.setVisible(True)
             self._ui.tw_apk_info_table.setVisible(False)
-    
+
     def _setupListener(self):
         pass
 

@@ -25,7 +25,12 @@ class InstallWidget(FunctionWidget):
         super(InstallWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__supported_file_types=["apk", "apks", "aab"]
         self.__initView()
+
+    def hideEvent(self, event):
+        print("InstallWidget:hideEvent")
     
+    def showEvent(self, event):
+        print("InstallWidget:showEvent")
 
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
@@ -118,5 +123,3 @@ class InstallWidget(FunctionWidget):
     def __apksInstallPrgress(self, progress, message, other_info, is_success):
         self.__widget_install_step_info.loadStep(currentTime(), message, other_info, is_success)
 
-    def _entry(self):
-        return super()._entry()

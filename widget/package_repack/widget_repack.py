@@ -28,12 +28,15 @@ class RepackApkWidget(FunctionWidget):
         self.__used_signer_version_list = ["v1", "v2"]
         self.__is_support_aapt2 = False
         self.__is_resign_apk = False
-        self.__initView()
 
-    def __initView(self):
-        pass
+    def hideEvent(self, event):
+        print("RepackApkWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("RepackApkWidget:showEvent")
+        self.__getsignerList()
 
-    def _entry(self):
+    def __getsignerList(self):
         self.__showSignerVersions(self.__used_signer_version_list)
         all_signer_list = SignerViewModel._signer_list
         if all_signer_list!=None:

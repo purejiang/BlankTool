@@ -20,10 +20,13 @@ class PullAppsWidget(FunctionWidget):
     def __init__(self, main_window) -> None:
         super(PullAppsWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__app_list = None
-
-    def _entry(self):
-        pass
     
+    def hideEvent(self, event):
+        print("PullAppsWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("PullAppsWidget:showEvent")
+        
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
         self.__app_list_widget = AppListWidget()

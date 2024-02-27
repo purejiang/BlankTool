@@ -20,6 +20,13 @@ class SignerConfigWidget(FunctionWidget):
 
     def __init__(self, main_window) -> None:
         super(SignerConfigWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
+    
+    def hideEvent(self, event):
+        print("SignerConfigWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("SignerConfigWidget:showEvent")
+        self.signer_viewmodel.allSigners()
 
     def _onPreShow(self):
         self.signer_viewmodel = SignerViewModel(self)
@@ -43,9 +50,6 @@ class SignerConfigWidget(FunctionWidget):
         self._add_widget_signer_config_set = SignerConfigSetWidget(self)
         self._add_signer_dialog.content_widget =  self._add_widget_signer_config_set
         self._add_signer_dialog.show()
-    
-    def _entry(self):
-        self.signer_viewmodel.allSigners()
 
     def __allSignerSuccess(self, signer_list):
         SignerViewModel._signer_list = signer_list

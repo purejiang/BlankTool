@@ -38,9 +38,7 @@ class SettingWidget(FunctionWidget):
     def _setupListener(self):
         self.__app_viewmodel.get_chache_size_opreation.setListener(self.__onCacheSizeSuccess, self.__onCacheSizeProgress, self.__onCacheSizeFailure)
         self.__app_viewmodel.clean_cache_opreation.setListener(self.__onCleanSuccess, self.__onCleanProgress, self.__onCleanFailure)
-        self.__app_viewmodel.adb_restart_opreation.setListener(self.__onRestartAdbSuccess, self.__onRestartAdbProgress, self.__onRestartAdbFailure)
         self._ui.pb_clean_cache.clicked.connect(self.__onShowCacheDialog)
-        self._ui.pb_restart_adb.clicked.connect(self.__onRestartAdb)
         self._ui.ckb_is_output_log.stateChanged.connect(self.__onIsOutputLog)
     
         self.__clean_cache_dialog.setCloseListener(self.__onCloseCacheDialog)
@@ -50,17 +48,21 @@ class SettingWidget(FunctionWidget):
             self.__app_viewmodel.setAppSetting({"is_output_log": True})
         else:
             self.__app_viewmodel.setAppSetting({"is_output_log": False})
-        
-    def _entry(self):
+    
+    def hideEvent(self, event):
+        print("SettingWidget:hideEvent")
+    
+    def showEvent(self, event):
+        print("SettingWidget:showEvent")
+        self.__analysisCache()
+    
+    def __analysisCache(self):
         if not self.__is_getsize_ing:
             self.__app_viewmodel.getCacheSize()
             self._ui.lb_cache_totle_size.setText("缓存分析中")
             self.__is_getsize_ing = True
             self._ui.pb_clean_cache.setDisabled(True)
 
-    def __onRestartAdb(self):
-        self.__app_viewmodel.adbRestart()
-  
     def __onShowCacheDialog(self):
         # 要传dialog才行，不能用self当父布局
         self._clean_cache_message_widget = WidgetSmallDialogMsgSet(self.__clean_cache_dialog)
@@ -89,7 +91,7 @@ class SettingWidget(FunctionWidget):
         self._clean_cache_message_widget.message = "清理完成"
         self.__clean_cache_dialog.content_widget = self._clean_cache_message_widget
         self.__clean_cache_dialog.setConfirmListener("确认", self.__onCloseCacheDialog, True)
-        self._entry()
+        self.__analysisCache()
 
     def __onCleanProgress(self, progress, message, other_info, is_success):
         self._clean_cache_progress_widget.progress = progress
@@ -113,18 +115,6 @@ class SettingWidget(FunctionWidget):
         self.__is_getsize_ing = False
         self._ui.lb_cache_totle_size.setText("error code:{0}, message:{1}".format(code, message))
         self._ui.pb_clean_cache.setDisabled(False)
-    
-    def __onRestartAdbSuccess(self):
-        self._ui.lb_restart_adb_status.setText("重连完成")
-        self._ui.pb_restart_adb.setDisabled(False)
-
-    def __onRestartAdbProgress(self, progress, message, other_info, is_success):
-        self._ui.lb_restart_adb_status.setText("重连中：{0}%".format(progress))
-        self._ui.pb_restart_adb.setDisabled(True)
-
-    def __onRestartAdbFailure(self, code, message, other_info):
-        self._ui.lb_restart_adb_status.setText("重连失败")
-        self._ui.pb_restart_adb.setDisabled(False)
 
 
 
