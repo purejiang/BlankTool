@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 from abc import abstractmethod
 
-from PySide6.QtGui import QGuiApplication,Qt,QIcon
+from PySide6.QtGui import Qt,QGuiApplication,QIcon
 from PySide6.QtWidgets import QMainWindow
 from widget.base.base_ui import BaseUi
 
@@ -21,14 +21,8 @@ class BaseWindow(QMainWindow, BaseUi):
         self.__offset = None
         self._icon = icon
         self._initView(ui_file, qss_file)
-
-    def _onMin(self):
-        """
-        窗口最小化
-        """
-        self.setWindowState(Qt.WindowMinimized)
     
-    def _moveCenter(self):    
+    def __moveCenter(self):    
         # 获得窗口
         qr = self.frameGeometry()
         # 获得屏幕中心点
@@ -74,10 +68,15 @@ class BaseWindow(QMainWindow, BaseUi):
         if e.key() == Qt.Key_Escape:
             # self.close()
             pass
+
+    def _onMin(self):
+        """
+        窗口最小化
+        """
+        self.setWindowState(Qt.WindowMinimized)
     
-    @abstractmethod
     def _onPreShow(self, data):
-        pass
+        self.__moveCenter()
 
     @abstractmethod
     def _onAfterShow(self, data):

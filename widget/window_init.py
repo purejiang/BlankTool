@@ -25,22 +25,22 @@ class InitWindow(BaseWindow):
         self.__initView()
 
     def __initView(self):
-        self._moveCenter()
         # 创建一个进度条
         self.__progress_bar = QProgressBar()
 
         self.__progress_bar.setMaximum(100)
         self.__progress_bar.setMinimum(0)
+        self.__progress_bar.setTextVisible(False)
         self.__progress_bar.setStyleSheet("""
             QProgressBar {
-                border: 2px solid gray;
-                border-radius: 5px;
-                background-color: white;
+                background-color: rgba(255, 255, 255, 110);
+                border-radius: 0px;
                 text-align: center;
+                height: 15px;
             }
             QProgressBar::chunk {
-                background-color: #46A6FD;
-                border-radius: 5px;
+                border-radius: 0px;
+                background-color: white;
             }
         """)
         # 创建一个按钮
@@ -57,7 +57,7 @@ class InitWindow(BaseWindow):
         self.__progress_bar.setAlignment(Qt.AlignCenter)
         # 将进度条和按钮添加到主窗口中
         layout = QVBoxLayout()
-
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(self.__label)
         layout.addWidget(self.__progress_bar)
         central_widget = QWidget()
@@ -67,7 +67,6 @@ class InitWindow(BaseWindow):
         self.setCentralWidget(central_widget)
         self.setStyleSheet("""
             QWidget#init_widget {
-                border-radius: 2px;
                 min-width: 360px;
                 min-height: 240px;
                 background-color: #3D3D3D;
@@ -79,6 +78,7 @@ class InitWindow(BaseWindow):
         self.setWindowIcon(QIcon(pixmap))
 
     def _onPreShow(self, data):
+        super()._onPreShow(data)
         self.app_viewmodel = AppViewModel(self)
 
     def _setupListener(self):
