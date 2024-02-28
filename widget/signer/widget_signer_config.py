@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from common.context import Context
 from viewmodel.signer_viewmodel import SignerViewModel
 from widget.custom.dialog_custom_big import BigCustomDialog
 from widget.function.widget_function import FunctionWidget
@@ -21,11 +22,10 @@ class SignerConfigWidget(FunctionWidget):
     def __init__(self, main_window) -> None:
         super(SignerConfigWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
     
-    def hideEvent(self, event):
-        print("SignerConfigWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("SignerConfigWidget:showEvent")
+    def _onShow(self):
         self.signer_viewmodel.allSigners()
 
     def _onPreShow(self):
@@ -52,7 +52,7 @@ class SignerConfigWidget(FunctionWidget):
         self._add_signer_dialog.show()
 
     def __allSignerSuccess(self, signer_list):
-        SignerViewModel._signer_list = signer_list
+        Context.ALL_SIGNER_LIST = signer_list
         self.__listwidget_signers.loadList(signer_list)
 
     def __allSignerProgress(self, progress, title, des):

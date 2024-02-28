@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 import os
+from common.context import Context
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime
 from utils.ui_utils import chooseDir, chooseFile
@@ -29,18 +30,16 @@ class RepackApkWidget(FunctionWidget):
         self.__is_support_aapt2 = False
         self.__is_resign_apk = False
 
-    def hideEvent(self, event):
-        print("RepackApkWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("RepackApkWidget:showEvent")
+    def _onShow(self):
         self.__getsignerList()
 
     def __getsignerList(self):
         self.__showSignerVersions(self.__used_signer_version_list)
-        all_signer_list = SignerViewModel._signer_list
-        if all_signer_list!=None:
-            self.__showSignerConfigs(all_signer_list)
+        if Context.ALL_SIGNER_LIST!=None:
+            self.__showSignerConfigs(Context.ALL_SIGNER_LIST)
         else:
             self.__signer_viewmodel.allSigners()
     

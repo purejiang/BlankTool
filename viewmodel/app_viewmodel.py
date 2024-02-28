@@ -19,7 +19,6 @@ class AppViewModel():
         self.get_chache_size_opreation = Operation()    # 获取缓存大小
         self.clean_cache_opreation = Operation()        # 清理缓存
         self.set_setting_opreation = Operation()        # 修改配置
-        self.adb_restart_opreation = Operation()        # ADB重连
 
     def initApp(self):
         init_app_thread = InitApp()
@@ -41,25 +40,6 @@ class AppViewModel():
         self.set_setting_opreation.loadThread(set_setting_thread)
         self.set_setting_opreation.start()
 
-    def adbRestart(self):
-        adb_restart_thread = ADBRestart()
-        self.adb_restart_opreation.loadThread(adb_restart_thread)
-        self.adb_restart_opreation.start()
-
-class ADBRestart(BaseThread):
-    """
-    ADB重连
-    """
-
-    def __init__(self):
-        super().__init__()
-
-    def run(self):
-        result = AppManager.reStartAdb(self._progressCallback)
-        if result:
-            self._success_signal.emit()
-        else:
-            self._failure_signal.emit(0, "ADB重连失败", "")
 
 class SettingSetter(BaseThread):
     """

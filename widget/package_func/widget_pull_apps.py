@@ -21,11 +21,11 @@ class PullAppsWidget(FunctionWidget):
         super(PullAppsWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__app_list = None
     
-    def hideEvent(self, event):
-        print("PullAppsWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("PullAppsWidget:showEvent")
+    def _onShow(self):
+        pass
         
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)
@@ -36,7 +36,7 @@ class PullAppsWidget(FunctionWidget):
         self._ui.edt_search_pull_app.setDisabled(True)
     
     def _setupListener(self):
-        self.__apk_viewmodel.generate_list_operation.setListener(self.__generateListSuccess, self.__generateListProgress, self.__generateListFailure)
+        self.__apk_viewmodel.get_apps_operation.setListener(self.__getAppsSuccess, self.__getAppsProgress, self.__getAppsFailure)
         self._ui.btn_get_apps.clicked.connect(self.__getApps)
         self._ui.btn_search_app.clicked.connect(self.__search)
 
@@ -61,7 +61,7 @@ class PullAppsWidget(FunctionWidget):
             toast = Toast(self)
             toast.make_text("请连接手机", Toast.toast_left(self), Toast.toast_top(self), times=3)
 
-    def __generateListSuccess(self, app_list):
+    def __getAppsSuccess(self, app_list):
         # 开放点击
         self._ui.btn_search_app.setDisabled(False)
         self._ui.edt_search_pull_app.setDisabled(False)
@@ -73,8 +73,8 @@ class PullAppsWidget(FunctionWidget):
             index+=1
 
 
-    def __generateListProgress(self, progress, message, other_info, is_success):
+    def __getAppsProgress(self, progress, message, other_info, is_success):
         self._ui.btn_get_apps.setText("加载应用中，{0}%...".format(progress))
 
-    def __generateListFailure(self, code, message, other_info):
+    def __getAppsFailure(self, code, message, other_info):
         self._ui.btn_get_apps.setText("加载失败,重试")

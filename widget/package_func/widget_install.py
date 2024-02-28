@@ -26,11 +26,11 @@ class InstallWidget(FunctionWidget):
         self.__supported_file_types=["apk", "apks", "aab"]
         self.__initView()
 
-    def hideEvent(self, event):
-        print("InstallWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("InstallWidget:showEvent")
+    def _onShow(self):
+        pass
 
     def _onPreShow(self):
         self.__apk_viewmodel = ApkViewModel(self)

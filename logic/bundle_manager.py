@@ -7,6 +7,7 @@ import zipfile
 from cmd_util.apk_cmd import ApkCMD
 from cmd_util.bundle_cmd import BundleCMD
 from common.constant import Constant
+from common.context import Context
 from utils.file_helper import FileHelper
 from utils.jloger import JLogger
 from utils.other_util import currentTime, currentTimeNumber
@@ -37,7 +38,7 @@ class BundleManager():
                 return False
             
             
-            install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_path)
+            install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_path, Context.DEFAULT_ADB_DEVICE)
             progress_callback(70, "安装 apks...", install_apks_result[1], install_apks_result[0])
             if not install_apks_result[0]:
                 return False
@@ -51,7 +52,7 @@ class BundleManager():
         loger.info("开始安装 apks，时间："+ currentTime())
         try:
             progress_callback(30, "安装 apks...", "", True)
-            install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_file)
+            install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_file, Context.DEFAULT_ADB_DEVICE)
             progress_callback(70, "安装 apks完成", install_apks_result[1], install_apks_result[0])
             if not install_apks_result[0]:
                 return False

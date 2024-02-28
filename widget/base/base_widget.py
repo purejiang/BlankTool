@@ -22,6 +22,7 @@ class BaseWidget(QWidget, BaseUi):
 
     def __init__(self, parent, ui_file, qss_file):
         self._parent = parent
+        self._is_min = False
         super(BaseWidget, self).__init__()
         self._initView(ui_file, qss_file)
         self._onPreShow()
@@ -41,6 +42,37 @@ class BaseWidget(QWidget, BaseUi):
 
     def _mousePressEvent(self, event):
         self.__PRESSED.emit(self, event)
+
+    def hideEvent(self, event):
+        if self.isVisible():
+            self._is_min = True
+            self._onPause()
+        else:
+            self._is_min = False
+            self._onHide()
+    
+    def showEvent(self, event):
+        if self._is_min:
+            self._onResume()
+        else:
+            self._onShow()
+        self._is_min = False
+        
+    @abstractmethod  
+    def _onPause(self):
+        pass
+
+    @abstractmethod
+    def _onResume(self):
+        pass
+
+    @abstractmethod    
+    def _onHide(self):
+        pass
+
+    @abstractmethod
+    def _onShow(self):
+        pass
     
     @abstractmethod
     def _onPreShow(self):

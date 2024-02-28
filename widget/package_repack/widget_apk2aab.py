@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+from common.context import Context
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime
 from utils.ui_utils import chooseFile
@@ -22,8 +23,6 @@ class Apk2AabWidget(FunctionWidget):
     def __init__(self, main_window) -> None:
         super(Apk2AabWidget, self).__init__(main_window, self.__UI_FILE, self.__QSS_FILE)
         self.__used_signer_config_list = []
-        self.__min_sdk_version = 11
-        self.__max_sdk_version = 33
 
     def __showSignerConfigs(self, all_signerconfig_list):
         self._ui.cb_apk2aab_choose_signer_config.clear()
@@ -33,21 +32,20 @@ class Apk2AabWidget(FunctionWidget):
                 self.__used_signer_config_list.append(signer_config)
                 self._ui.cb_apk2aab_choose_signer_config.addItem(signer_config.signer_name, signer_config)
 
-    def __showVersions(self, min_sdk_version, max_sdk_version):
+    def __showDefaultParams(self):
+        min_sdk_version = 11
+        max_sdk_version = 33
         for version in range(min_sdk_version, max_sdk_version+1):
             self._ui.cb_choose_min_version.addItem(str(version), version)
             self._ui.cb_choose_target_version.addItem(str(version), version)
             self._ui.cb_choose_compile_version.addItem(str(version), version)
 
-    def hideEvent(self, event):
-        print("Apk2AabWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("Apk2AabWidget:showEvent")
-        self.__showVersions(self.__min_sdk_version, self.__max_sdk_version)
-        all_signer_list = SignerViewModel._signer_list
-        if all_signer_list!=None:
-            self.__showSignerConfigs(all_signer_list)
+    def _onShow(self):
+        if Context.ALL_SIGNER_LIST!=None:
+            self.__showSignerConfigs(Context.ALL_SIGNER_LIST)
         else:
             self.__signer_viewmodel.allSigners()
 
@@ -57,6 +55,8 @@ class Apk2AabWidget(FunctionWidget):
         self.__widget_apk2aab_step_info = StepInfoListWidget()
         self._ui.layout_apk2aab_step_info.addWidget(self.__widget_apk2aab_step_info)
         self._ui.btn_jump_to_aab_path.setVisible(False)
+
+        self.__showDefaultParams()
 
     def _setupListener(self):
         self._ui.btn_select_apk2aab_aab.clicked.connect(self.__chooseFile)

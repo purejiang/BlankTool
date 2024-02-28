@@ -6,12 +6,16 @@
 
 ## 说明：
 
-### 工具
-- apktool-2.7.0
+### 开发工具
+- android.jar
+- apksigner.jar
+- smali-2.5.2.jar
+- apktool-2.5.0~2.9.2.jar
 - bundletool-1.11.0
 - aapt2
 - adb
-### 环境
+
+### 开发环境
 - jre-11
 - python-3.9.12
 
@@ -19,12 +23,13 @@
 ### 功能
 - 已包含的功能
   - apk / aab 的安装
-  - apk 的解析、反编译、重编译、重签
-  - 全局的签名配置
-  - 缓存清理和日志开启设置
-  - 获取手机上已安装的 app 列表+提取+搜索
+  - apk 反编译，信息提取解析，重编译，重签
+  - 全局签名配置
+  - 缓存清理，日志开关
+  - 手机上已安装的 app 列表展示+搜索+提取
   - aab 的 assets 资源分割 :new: (2023/9/6 新增)
   - apk 转 aab :new: (2023/9/6 新增)
+  - adb设备选择 :new: (2024/2/28 新增)
 
 - 正在开发的功能：
 
@@ -55,12 +60,13 @@
 - [main.py](./main.py)（程序入口）
 - [main.spec](./main.spec)（打包配置）
 - [project2exe.py](./project2exe.py)（打包脚本，将项目打包成.exe）
+- [project2exe_v2.py](./project2exe.py)（新打包脚本，将项目打包成单个安装包.exe）开发中
 - [requirements.txt](./requirements.txt)（依赖项）
 
 
-.qss 文件作为风格配置。\
-.ui 为控件和 UI 的显示文件。\
-.py 加载 .ui + .qss 进行界面绘制，同时各个功能也都通过 .py 实现。
+.qss 文件作为控件风格配置。\
+.ui 为控件和 UI 界面。\
+.py 加载 ui + qss 进行界面绘制，功能通过python实现。
 
 
 

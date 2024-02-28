@@ -33,6 +33,7 @@ class BaseDialog(QDialog, BaseUi):
     def _initView(self, ui_file, qss_file):
         # 禁止其他界面响应
         self.setWindowModality(Qt.ApplicationModal)
+        # 设置这个不会在任务栏新建选项卡，而且能全屏拖动
         self.setWindowFlags(Qt.FramelessWindowHint| self.windowFlags() | Qt.Tool)
         if ui_file is not None:
             self._loadUi(ui_file)

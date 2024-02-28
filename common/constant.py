@@ -14,6 +14,7 @@ from utils.file_helper import FileHelper
 APP_PATH = os.path.abspath(os.path.dirname(sys.argv[0]))
 DATA_PATH = os.path.join(APP_PATH, "data")
 CONFIG_PATH = os.path.join(APP_PATH, "config")
+
 class Config:
     
     APP_CONFIG_PATH = os.path.join(CONFIG_PATH, "app_config.json")

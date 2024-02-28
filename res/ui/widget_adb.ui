@@ -100,7 +100,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0">
+         <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,1">
           <property name="spacing">
            <number>12</number>
           </property>
@@ -125,7 +125,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>ADB设备</string>
+             <string>ADB使用的设备：</string>
             </property>
            </widget>
           </item>

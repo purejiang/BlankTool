@@ -143,7 +143,7 @@ class BundleCMD(BaseCMD):
         return cls.run(all_cmd, all_cmd, all_cmd)
 
     @classmethod
-    def installApks(cls, bundletool_path, apks_path):
+    def installApks(cls, bundletool_path, apks_path, device_name):
         """
         安装 .apks
 
@@ -152,8 +152,11 @@ class BundleCMD(BaseCMD):
 
         java -jar [ bundletool 文件] install-apks --apks [ .apks 文件]  --adb= [ .adb 文件]
         """
-        all_cmd = "java -jar \"{0}\" install-apks --apks \"{1}\"".format(
-            bundletool_path, apks_path)
+        s = ""
+        if device_name!=None:
+            s = "--device-id={0} ".format(device_name)
+        all_cmd = "java -jar \"{0}\" install-apks {1}--apks \"{2}\"".format(
+            bundletool_path, s, apks_path)
         return cls.run(all_cmd, all_cmd, all_cmd)
 
     @classmethod

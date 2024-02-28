@@ -4,18 +4,6 @@ from typing import Union
 from .base_cmd import BaseCMD
 
 class ApkCMD(BaseCMD):
-
-    @classmethod
-    def installApk(cls, apk_file)->Union[bool, str]:        
-        """
-        安装 .apk
-
-        :param apk_file: 需要安装的 .apk 文件
-
-        adb install xxx.apk
-        """
-        all_cmd = "adb install \"{0}\"".format(apk_file)
-        return cls.run(all_cmd, all_cmd, all_cmd)
     
     @classmethod
     def aaptApkInfo(cls, apk_path, output_info_file)->Union[bool, str]:        
@@ -103,69 +91,6 @@ class ApkCMD(BaseCMD):
             aapt2 = " --use-aapt2"
         all_cmd = "java -jar \"{0}\" b{1} \"{2}\" -f -o \"{3}\"".format(
             apktool, aapt2, origin_dir, output_apk)
-        return cls.run(all_cmd, all_cmd, all_cmd)
-    
-    @classmethod
-    def getInphoneApkList(cls, info_file, is_install, is_path, is_sys):
-        """
-        adb 获取手机上的包名列表
-
-        :param info_file: 存储信息的文件
-
-        adb shell pm list packages [-i 可选，附加安装来源（会有报错）] [-f 可选，附加安装路径] [-s / -3 可选，输出系统包/输出第三方包]
-        """
-        val_cmd = ""
-        if is_install:
-            val_cmd+=" -i"
-        if is_path:
-            val_cmd+=" -f"
-        if is_sys:
-            val_cmd+=" -s"
-        win_cmd = "adb shell pm list packages{0} >> \"{1}\"".format(val_cmd, info_file)
-        linux_cmd = ""
-        mac_cmd = ""
-        return cls.run(win_cmd, linux_cmd, mac_cmd)
-    
-    @classmethod
-    def inPhonePackInfo(cls, info_file):
-        """
-        adb 获取手机上的包体信息
-
-        :param info_file: 存储信息的文件
-
-        adb shell dumpsys package [packages 可选，包体信息] 
-        """
-        win_cmd = "adb shell dumpsys package packages >> \"{0}\"".format(info_file)
-        linux_cmd = ""
-        mac_cmd = ""
-        return cls.run(win_cmd, linux_cmd, mac_cmd)
-
-    @classmethod
-    def getInphonePath(cls, package_name, info_file):
-        """
-        获取 apk 在手机上的安装目录
-
-
-        :param pakcage_name: 包名
-        :param info_file: 存储信息的文件路径
-
-        adb shell pm path [包名]
-        """
-        win_cmd = "adb shell pm path {0} >> \"{1}\"".format(package_name, info_file)
-        linux_cmd = ""
-        mac_cmd = ""
-        return cls.run(win_cmd, linux_cmd, mac_cmd)
-
-    @classmethod
-    def pullApk(cls, in_phone_file, target_dir):
-        """
-        通过 adb 命令将手机路径下的 apk 导出到指定路径
-
-        :param in_phone_path: .apk 在手机内的路径
-        :param target_dir: 导出的目录
-
-        """
-        all_cmd = "adb pull \"{0}\" \"{1}\"".format(in_phone_file, target_dir)
         return cls.run(all_cmd, all_cmd, all_cmd)
 
     @classmethod

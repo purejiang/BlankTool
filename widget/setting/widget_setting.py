@@ -49,11 +49,10 @@ class SettingWidget(FunctionWidget):
         else:
             self.__app_viewmodel.setAppSetting({"is_output_log": False})
     
-    def hideEvent(self, event):
-        print("SettingWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("SettingWidget:showEvent")
+    def _onShow(self):
         self.__analysisCache()
     
     def __analysisCache(self):

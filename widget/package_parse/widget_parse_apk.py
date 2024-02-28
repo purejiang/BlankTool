@@ -32,11 +32,11 @@ class ParseApkWidget(FunctionWidget):
         self.__is_pass_dex =False
         self.__is_only_res =False
 
-    def hideEvent(self, event):
-        print("ParseApkWidget:hideEvent")
+    def _onHide(self):
+        pass
     
-    def showEvent(self, event):
-        print("ParseApkWidget:showEvent")
+    def _onShow(self):
+        pass
         
     def _onPreShow(self):
         self.apk_viewmodel = ApkViewModel(self)

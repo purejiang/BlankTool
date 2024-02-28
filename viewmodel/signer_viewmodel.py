@@ -14,7 +14,6 @@ class SignerViewModel():
     @created: 2022/8/1
 
     """
-    _signer_list = None
 
     def __init__(self, parent) -> None:
         super().__init__()

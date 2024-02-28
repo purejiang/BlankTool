@@ -4,11 +4,13 @@ import os
 import re
 import traceback
 from typing import Union
+from cmd_util.adb_cmd import AdbCMD
 from cmd_util.apk_cmd import ApkCMD
 from common.constant import Constant
+from common.context import Context
 from utils.file_helper import FileHelper
 from utils.jloger import JLogger
-from utils.other_util import currentTimeNumber
+from utils.other_util import currentTimeMillis, currentTimeNumber
 from vo.apk_info import ApkInfo
 from vo.signer import SignerConfig
 
@@ -22,8 +24,6 @@ class ApkManager():
     .apk 相关的功能管理
 
     """
-    loger = JLogger()
-
     @classmethod
     def installApk(cls, apk_path, progress_callback):
         """
@@ -33,9 +33,10 @@ class ApkManager():
         :param progress_callback: 执行进度
 
         """
+        loger = JLogger(log_name="install_apk_{0}.log".format(currentTimeNumber()), save_file=True)
         progress_callback(30, "开始安装 apk：" + apk_path, "", True)
-        cmd_result = ApkCMD.installApk(apk_path)
-        cls.loger.info(cmd_result[1])
+        cmd_result = AdbCMD.adbInstallApk(apk_path, Context.DEFAULT_ADB_DEVICE)
+        loger.info(cmd_result[1])
         progress_callback(90, "执行完成" , cmd_result[1], cmd_result[0])
         return cmd_result[0]
 
@@ -97,7 +98,7 @@ class ApkManager():
 
         # 第六步，生成 APK 分析结果
         progress_callback(95, "生成 APK 分析结果", "", True)
-        parse_apk_info_result.icon = cls.getIcon(depack_output_dir)
+        parse_apk_info_result.icon = cls.getIcon(depack_output_dir, loger)
         parse_apk_info_result.md5 = md5
         return True, parse_apk_info_result
     
@@ -151,8 +152,6 @@ class ApkManager():
         loger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1]+", bool:"+str(sign_result[0]))
         return sign_result[0]
 
-
-
     @classmethod
     def __signApk(cls, origin_apk, output_apk, signer_config, signer_version):
         signer_config_dict={}
@@ -167,39 +166,47 @@ class ApkManager():
         return sign_result
 
     @classmethod
-    def getApkListInfo(cls, info_file_path, is_sys, progress_callback):
+    def getApps(cls, is_sys, progress_callback):
         """
-        获取手机上的 apk 列表
+        获取手机上的 app 列表
 
-        :param info_file_path: 输出信息的文件
-        :param is_sys: 是否只输出系统的应用
+        :param is_sys: 是否只包含系统应用
+        :param progress_callback: 进度回调
 
         """
+
+        loger = JLogger(log_name="get_apps_info_{0}.log".format(currentTimeNumber()), save_file=True)
+        # 输出信息的文件
+        info_file  = os.path.join(Constant.Path.ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
         # 第一步，导出所有应用信息
         progress_callback(10, "开始执行", "", True)
-        cls.loger.info("get all apks in phone...")
-        cmd_result = ApkCMD.getInphoneApkList(info_file_path, False, True, is_sys)
+        loger.info("get all apps in phone...")
+        cmd_result = AdbCMD.getAppsByAdb(info_file, False, True, is_sys)
         progress_callback(50, "获取手机应用信息", cmd_result[1], cmd_result[0])
         if not cmd_result[0]:
             return False, None
         # 第二步，解析应用信息
-        app_list = cls.parseApkListInfo(info_file_path)
+        app_list = cls.parseApkListInfo(info_file)
         progress_callback(80, "解析手机应用信息", "", True)
         return True, app_list
     
     @classmethod
-    def pullApk(cls, in_phone_path, target_path, progress_callback):
+    def pullApk(cls, package_name, in_phone_path, progress_callback):
         """
         通过 adb 命令将指定路径下的 apk 拉到 pc
 
         :param package_name: 包名
+        :param in_phone_path: 指定路径
 
         """
-        cls.loger.info("pull apk ...")
+        loger = JLogger(log_name="pull_apk_{0}.log".format(currentTimeNumber()), save_file=True)
+        target_file = os.path.join(Constant.Path.PULL_APK_CACHE_PATH, "{0}.apk".format(package_name))
+        loger.info("pull apk ...")
         progress_callback(10, "开始执行", "", True)
-        cmd_result = ApkCMD.pullApk(in_phone_path, target_path)
+        cmd_result = AdbCMD.pullApkByAdb(in_phone_path, target_file)
         progress_callback(80, "导出完成", "", True)
-        return cmd_result
+        
+        return cmd_result[0], target_file
     
     @classmethod
     def parseApkListInfo(cls, info_file):
@@ -255,7 +262,7 @@ class ApkManager():
             try:
                 return info_content.split(target_property)[1:][0].split("'")[1:2][0]
             except Exception as e:
-                cls.loger.warning("exce:\n{0}".format(traceback.format_exc()))
+                loger.warning("exce:\n{0}".format(traceback.format_exc()))
                 return ""
 
         def get_list(info_content, target_property, last_tag):
@@ -265,7 +272,7 @@ class ApkManager():
                     content = content.split(last_tag)[:1][0]
                 return content.replace("'", "").strip().replace(" ", ", ")
             except Exception as e:
-                cls.loger.warning("exce:\n{0}".format(traceback.format_exc()))
+                loger.warning("exce:\n{0}".format(traceback.format_exc()))
                 return ""
             
         content = FileHelper.fileContent(info_file)
@@ -282,7 +289,7 @@ class ApkManager():
 
         
     @classmethod
-    def getIcon(cls, depack_path):
+    def getIcon(cls, depack_path, loger):
         content = FileHelper.fileContent(
             os.path.join(depack_path, "AndroidManifest.xml"))
         # 非贪婪模式，取第一个

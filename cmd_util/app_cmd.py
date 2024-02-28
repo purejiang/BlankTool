@@ -24,29 +24,6 @@ class AppCMD(BaseCMD):
         linux_cmd = "export PATH=".format(path)
         mac_cmd = ""
         return cls.run(win_cmd, linux_cmd, mac_cmd)
-    ########################### ADB命令 ###############################################
-    @classmethod
-    def adbKillServer(cls):
-        """
-        adb关闭
-
-        adb kill-server
-        """
-        win_cmd ="adb kill-server"
-        linux_cmd = ""
-        mac_cmd = ""
-        return cls.run(win_cmd, linux_cmd, mac_cmd)
-    
-    @classmethod
-    def adbStartServer(cls):
-        """
-        adb连接
-        adb start-server
-        """
-        win_cmd ="adb start-server"
-        linux_cmd = ""
-        mac_cmd = ""
-        return cls.run(win_cmd, linux_cmd, mac_cmd)
     
     ########################### 打包命令 ###############################################
     @classmethod
