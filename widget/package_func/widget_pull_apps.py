@@ -42,7 +42,7 @@ class PullAppsWidget(FunctionWidget):
 
     def __getApps(self):
         self.__app_list_widget.clear()
-        self.__apk_viewmodel.generateApkList(False)
+        self.__apk_viewmodel.getApps(False)
 
     def __search(self):
         keyword = self._ui.edt_search_pull_app.text()
@@ -71,7 +71,6 @@ class PullAppsWidget(FunctionWidget):
         for app in app_list:
             self.__app_list_widget.loadApk(index, app)
             index+=1
-
 
     def __getAppsProgress(self, progress, message, other_info, is_success):
         self._ui.btn_get_apps.setText("加载应用中，{0}%...".format(progress))

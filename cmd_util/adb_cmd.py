@@ -56,11 +56,15 @@ class AdbCMD(BaseCMD):
         return cls.run(all_cmd, all_cmd, all_cmd)
     
     @classmethod
-    def getAppsByAdb(cls, info_file, is_install, is_path, is_sys, device_name=None):
+    def getAppsByAdb(cls, target_info_file, is_install, is_path, is_sys, device_name=None):
         """
         adb 获取手机上的包名列表
 
-        :param info_file: 存储信息的文件
+        :param target_info_file: 保存信息的目标文件
+        :param is_install: 是否附加安装来源
+        :param is_path: 是否附加安装路径
+        :param is_sys: 是否输出系统包
+        :param device_name: adb默认设备
 
         adb shell pm list packages [-i 可选，附加安装来源（会有报错）] [-f 可选，附加安装路径] [-s / -3 可选，输出系统包/输出第三方包]
         """
@@ -74,7 +78,7 @@ class AdbCMD(BaseCMD):
             val_cmd+=" -f"
         if is_sys:
             val_cmd+=" -s"
-        win_cmd = "adb {0}shell pm list packages{1} >> \"{2}\"".format(s, val_cmd, info_file)
+        win_cmd = "adb {0}shell pm list packages{1} >> \"{2}\"".format(s, val_cmd, target_info_file)
         linux_cmd = ""
         mac_cmd = ""
         return cls.run(win_cmd, linux_cmd, mac_cmd)

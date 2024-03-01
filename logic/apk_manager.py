@@ -177,16 +177,16 @@ class ApkManager():
 
         loger = JLogger(log_name="get_apps_info_{0}.log".format(currentTimeNumber()), save_file=True)
         # 输出信息的文件
-        info_file  = os.path.join(Constant.Path.ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
+        target_info_file  = os.path.join(Constant.Path.ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
         # 第一步，导出所有应用信息
         progress_callback(10, "开始执行", "", True)
         loger.info("get all apps in phone...")
-        cmd_result = AdbCMD.getAppsByAdb(info_file, False, True, is_sys)
+        cmd_result = AdbCMD.getAppsByAdb(target_info_file, False, True, is_sys, Context.DEFAULT_ADB_DEVICE)
         progress_callback(50, "获取手机应用信息", cmd_result[1], cmd_result[0])
         if not cmd_result[0]:
             return False, None
         # 第二步，解析应用信息
-        app_list = cls.parseApkListInfo(info_file)
+        app_list = cls.parseApkListInfo(target_info_file)
         progress_callback(80, "解析手机应用信息", "", True)
         return True, app_list
     
