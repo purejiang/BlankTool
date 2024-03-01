@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import re
+import traceback
 from cmd_util.adb_cmd import AdbCMD
 from common.context import Context
 from utils.jloger import JLogger
@@ -34,12 +35,16 @@ class AdbManager():
         """
         获取连接adb的设备
         """
-        loger = JLogger(log_name="devices_adb_{0}.log".format(currentTimeNumber()), save_file=True)
-        loger.info("开始获取连接adb的设备")
-        progress_callback(50, "获取中...", "", True)
-        result = AdbCMD.adbDevices()
-        if result[0]:
-            return True, cls.parseDevices(result[1], loger)
+        try:
+            loger = JLogger(log_name="devices_adb_{0}.log".format(currentTimeNumber()), save_file=True)
+            loger.info("开始获取连接adb的设备")
+            progress_callback(50, "获取中...", "", True)
+            result = AdbCMD.adbDevices()
+            if result[0]:
+                return True, cls.parseDevices(result[1], loger)
+        except Exception as e:
+            loger.warning("获取连接adb的设备失败："+traceback.format_exc())   
+            return False, None
         return result[0], None
     
 

@@ -49,6 +49,7 @@ class Operation(object):
         self.success = ViewModelSignal()
         self.progress = ViewModelSignal() 
         self.failure = ViewModelSignal()
+        self.thread = None
     
     def setListener(self, success_listner , progress_listner, failure_listner):
         self.success.connect(success_listner)
@@ -56,10 +57,13 @@ class Operation(object):
         self.failure.connect(failure_listner)
     
     def loadThread(self, thread:BaseThread):
-        self._thread = thread
+        if self.thread!=None and self.thread.isRunning():
+            self.thread.exit(0)
+            self.thread = None
+        self.thread = thread
     
     def start(self):
-        self._thread._success_signal.connect(self.success.to_method())
-        self._thread._progress_signal.connect(self.progress.to_method())
-        self._thread._failure_signal.connect(self.failure.to_method())
-        self._thread.start()
+        self.thread._success_signal.connect(self.success.to_method())
+        self.thread._progress_signal.connect(self.progress.to_method())
+        self.thread._failure_signal.connect(self.failure.to_method())
+        self.thread.start()

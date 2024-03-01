@@ -49,20 +49,17 @@ class AdbWidget(FunctionWidget):
         self._ui.pb_restart_adb.setDisabled(False)
     
     def __onGetDevicesSuccess(self, device_dict):
-        print("__onGetDevicesSuccess:"+str(device_dict))
         self._ui.cb_adb_devices.clear()
         for key in device_dict:
             self._ui.cb_adb_devices.addItem(device_dict[key], key)
 
     def __onGetDevicesProgress(self, progress, message, other_info, is_success):
-        print("__onGetDevicesProgress:")
+        pass
 
     def __onGetDevicesFailure(self, code, message, other_info):
-        print("__onGetDevicesFailure:")
         self._ui.cb_adb_devices.clear()
     
     def __onDeviceChanged(self, text):
-        print(text)
         self.__adb_viewmodel.selectDevice(text)
 
 

@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+import traceback
 from PySide6.QtCore import Signal
 from logic.adb_manager import AdbManager
 from viewmodel.base_viewmodel import BaseThread, Operation
@@ -30,6 +31,8 @@ class AdbViewModel():
         self.adb_devices_opreation.start()
 
     def selectDevice(self, device_info):
+        if device_info==None or device_info =="":
+            return
         select_device_thread = SelectDevice(device_info)
         self.select_adb_device_opreation.loadThread(select_device_thread)
         self.select_adb_device_opreation.start()
