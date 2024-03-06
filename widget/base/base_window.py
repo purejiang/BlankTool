@@ -21,16 +21,6 @@ class BaseWindow(QMainWindow, BaseUi):
         self.__offset = None
         self._icon = icon
         self._initView(ui_file, qss_file)
-    
-    def __moveCenter(self):    
-        # 获得窗口
-        qr = self.frameGeometry()
-        # 获得屏幕中心点
-        cp = QGuiApplication.primaryScreen().availableGeometry().center()
-        # 显示到屏幕中心
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
     def _jump(self, to_window_clazz, data):
         self._application.jump(self, to_window_clazz, data)
 
@@ -47,6 +37,14 @@ class BaseWindow(QMainWindow, BaseUi):
             self.setStyleSheet(qss_str)
         if self._icon is not None:
             self.setWindowIcon(QIcon(self._icon))
+
+        # 获得窗口
+        qr = self.frameGeometry()
+        # 获得屏幕中心点
+        cp = QGuiApplication.primaryScreen().availableGeometry().center()
+        # 显示到屏幕中心
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -74,9 +72,10 @@ class BaseWindow(QMainWindow, BaseUi):
         窗口最小化
         """
         self.setWindowState(Qt.WindowMinimized)
-    
+        
+    @abstractmethod
     def _onPreShow(self, data):
-        self.__moveCenter()
+        pass
 
     @abstractmethod
     def _onAfterShow(self, data):

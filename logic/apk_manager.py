@@ -110,17 +110,17 @@ class ApkManager():
         progress_callback(0, "清理工作空间", "", True)
         if FileHelper.fileExist(tmp_apk):
             FileHelper.delFile(tmp_apk)
-            cls.loger.info("del file:"+tmp_apk)
+            loger.info("del file:"+tmp_apk)
         if FileHelper.fileExist(output_apk):
             FileHelper.delFile(output_apk)
-            cls.loger.info("del file:"+output_apk)
+            loger.info("del file:"+output_apk)
 
        # 第二步，重编译,生成未签名的 APK     
         repack_tmp_apk_result = ApkCMD.repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk, is_support_aapt2)
         loger.info("cmd:"+repack_tmp_apk_result[2]+", result:"+repack_tmp_apk_result[1])
         progress_callback(40, "重编译，生成未签名 APK：" + output_apk, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
         if not repack_tmp_apk_result[0]:
-            cls.loger.info(repack_tmp_apk_result[1])
+            loger.info(repack_tmp_apk_result[1])
             return False
         
         # 第三步，重签名 APK

@@ -51,8 +51,9 @@ class ApkInfoWidget(FunctionWidget):
         table.setColumnCount(columb_count)
         table.setHorizontalHeaderLabels(["属性", "值"])
         # 宽度
-        table.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch) # 将第二列的 ResizeMode 设置为 Stretch
-        table.setColumnWidth(0, table.columnWidth(1)/2) # 将第一列宽度设置为第二列宽度的一半
+        header = table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeToContents) # 第一列自适应大小
+        header.setSectionResizeMode(1, QHeaderView.Stretch) # 第二列铺满表格
 
         # 隐藏行号
         table.verticalHeader().setHidden(True)
@@ -60,12 +61,13 @@ class ApkInfoWidget(FunctionWidget):
         for row in range(table.rowCount()):
             for col in range(table.columnCount()):
                 if row == 0 and col == 1:
-                    image = QPixmap(apk_info.icon)
-                    label = QLabel()
-                    label.setPixmap(image)
-                    label.setScaledContents(True)
-                    label.setMaximumSize(48, 48)  # 设置最大尺寸为50*50
-                    table.setCellWidget(row, col, label)
+                    if apk_info.icon!=None:
+                        image = QPixmap(apk_info.icon)
+                        label = QLabel()
+                        label.setPixmap(image)
+                        label.setScaledContents(True)
+                        label.setMaximumSize(48, 48)  # 设置最大尺寸为50*50
+                        table.setCellWidget(row, col, label)
                 else:
                     tableItem = QTableWidgetItem(data_set[row][col])
                     table.setItem(row, col, tableItem)
