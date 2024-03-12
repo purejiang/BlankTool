@@ -49,7 +49,7 @@ class ApkItemWidget(BaseWidget):
     def __pullProgres(self, progress, message, other_info, is_success):
         self._ui.lb_pull_state.setText("导出中：{0}%".format(progress))
 
-    def __pullFailure(self, message, other_info):
+    def __pullFailure(self, code, message, other_info):
         self._ui.lb_pull_state.setText("导出失败")
 
     def __pullApk(self):

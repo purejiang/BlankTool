@@ -203,7 +203,7 @@ class ApkManager():
         target_file = os.path.join(Constant.Path.PULL_APK_CACHE_PATH, "{0}.apk".format(package_name))
         loger.info("pull apk ...")
         progress_callback(10, "开始执行", "", True)
-        cmd_result = AdbCMD.pullApkByAdb(in_phone_path, target_file)
+        cmd_result = AdbCMD.pullApkByAdb(in_phone_path, target_file, Context.DEFAULT_ADB_DEVICE)
         progress_callback(80, "导出完成", "", True)
         
         return cmd_result[0], target_file

@@ -26,7 +26,7 @@ class ApkViewModel():
         
         self.install_apk_operation = Operation()            # 安装 apk
         self.depack_apk_operation = Operation()             # 反编译 apk
-        self.get_apps_operation= Operation()           # 获取手机内 apk 列表
+        self.get_apps_operation= Operation()                # 获取手机内 apk 列表
         self.pull_apk_operation = Operation()               # 导出手机内 apk
         self.repack_dir_operation = Operation()             # 重编译目录
         self.resign_apk_operation = Operation()             # 重签 apk
@@ -130,7 +130,7 @@ class PullApk(BaseThread):
         if result[0]:
             self._success_signal.emit(result[1])
         else:
-            self._failure_signal.emit(0, "导出 apk 失败", "")
+            self._failure_signal.emit(0, "导出 apk 失败", result[1])
 
 class Repackage(BaseThread):
     """
