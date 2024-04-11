@@ -37,8 +37,11 @@ class BaseCMD(object):
             else:
                 return False, "Cmd not support this System.", cmd
             process = subprocess.check_output(cmd, shell=True)
-            # 不指定utf-8，在windows上会有gbk转utf-8的问题
-            cmd_result = process.decode(encoding=locale.getpreferredencoding())
+            try:
+                # 不指定utf-8，在windows上会有gbk转utf-8的问题
+                cmd_result = process.decode(encoding=locale.getpreferredencoding())
+            except UnicodeDecodeError:
+                cmd_result = process.decode("gbk")
             return True, cmd_result, cmd
         except Exception as e:
             e_msg = traceback.format_exc()
