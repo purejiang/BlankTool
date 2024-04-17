@@ -91,7 +91,7 @@ class InitWindow(BaseWindow):
         self.__progress_bar.setValue(100)
         self._jump(MainWindow, None)
 
-    def __initAppFailure(self, code, msg):
+    def __initAppFailure(self, code, msg, other_info):
         self.__label.setText("error, code:{0} msg:{1}".format(code, msg))
 
     def __initAppProgress(self, progress: int, message: str, other_info: str, is_success: bool):

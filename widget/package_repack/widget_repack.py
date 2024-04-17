@@ -123,6 +123,7 @@ class RepackApkWidget(FunctionWidget):
 
     def __jumpToRepackPath(self):
         if self.__ouput_apk_path!=None:
+            # os.startfile(self.__ouput_apk_path)
             FileHelper.showInExplorer(self.__ouput_apk_path)
 
     def __repackSuccess(self, apk_info):

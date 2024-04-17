@@ -4,7 +4,7 @@ import re
 import traceback
 from cmd_util.adb_cmd import AdbCMD
 from common.context import Context
-from utils.jloger import JLogger
+from utils.jlogger import JLogger
 from utils.other_util import currentTimeNumber
 
 
@@ -22,8 +22,8 @@ class AdbManager():
         """
         adb重连
         """
-        loger = JLogger(log_name="restart_adb_{0}.log".format(currentTimeNumber()), save_file=True)
-        loger.info("开始adb重连")
+        logger = JLogger(log_name="restart_adb_{0}.log".format(currentTimeNumber()), save_file=True)
+        logger.info("开始adb重连")
         progress_callback(50, "重连中...", "", True)
         result = AdbCMD.adbKillServer()
         if not result[0]:
@@ -36,14 +36,14 @@ class AdbManager():
         获取连接adb的设备
         """
         try:
-            loger = JLogger(log_name="devices_adb_{0}.log".format(currentTimeNumber()), save_file=True)
-            loger.info("开始获取连接adb的设备")
+            logger = JLogger(log_name="devices_adb_{0}.log".format(currentTimeNumber()), save_file=True)
+            logger.info("开始获取连接adb的设备")
             progress_callback(50, "获取中...", "", True)
             result = AdbCMD.adbDevices()
             if result[0]:
-                return True, cls.parseDevices(result[1], loger)
+                return True, cls.parseDevices(result[1], logger)
         except Exception as e:
-            loger.warning("获取连接adb的设备失败："+traceback.format_exc())   
+            logger.warning("获取连接adb的设备失败："+traceback.format_exc())   
             return False, None
         return result[0], None
     
@@ -63,9 +63,9 @@ class AdbManager():
 
     
     @classmethod
-    def parseDevices(cls, devices_info, loger)->dict:
+    def parseDevices(cls, devices_info, logger)->dict:
         device_dict ={}
-        loger.info("解析："+devices_info)
+        logger.info("解析："+devices_info)
         devices = re.findall("(.*?)\s+device product:(.*?) model:(.*?) device:(.*?) transport_id:(.*)", devices_info, re.M|re.I)
         if devices:
             for device in devices:

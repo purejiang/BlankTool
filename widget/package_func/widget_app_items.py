@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import os
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QListWidget, QListWidgetItem
 from utils.file_helper import FileHelper
@@ -56,6 +57,7 @@ class ApkItemWidget(BaseWidget):
         if not self._is_pulled:
             self.__apk_viewmodel.pullApk(self._package_name, self._in_phone_path)
         else:
+            # os.startfile(self._target_file)
             FileHelper.showInExplorer(self._target_file)
 
 class AppListWidget(QListWidget):

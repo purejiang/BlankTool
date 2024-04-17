@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
-from common.constant import Constant
+from common.constant import ErrorCode
 from logic.apk_manager import ApkManager
 from utils.other_util import currentTimeMillis
 from viewmodel.base_viewmodel import BaseThread, Operation
@@ -95,7 +95,7 @@ class ParseApk(BaseThread):
         if result:
             self._success_signal.emit(apk_info)
         else:
-            self._failure_signal.emit(Constant.ErrorCode.PARSE_APK_FAILEURE, "分析失败", "")
+            self._failure_signal.emit(ErrorCode.PARSE_APK_FAILEURE, "分析失败", "")
 
 class GetApps(BaseThread):
     """

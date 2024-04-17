@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+import os
 from common.context import Context
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime
@@ -67,6 +68,7 @@ class Apk2AabWidget(FunctionWidget):
     
     def __jumpToAabPath(self):
         if self.__aab_path!=None:
+            # os.startfile(self.__aab_path)
             FileHelper.showInExplorer(self.__aab_path)
             
     def __chooseFile(self):
