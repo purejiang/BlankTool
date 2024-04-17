@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dist="http://schemas.android.com/apk/distribution"
+    package="${applicationId}"
+    platformBuildVersionCode="30"
+    platformBuildVersionName="11"
+    split="AssetsPackGameRes"
+    android:compileSdkVersion="30"
+    android:compileSdkVersionCodename="11" >
+ 
+    <dist:module dist:type="asset-pack" >
+        <dist:fusing dist:include="true" />
+ 
+        <dist:delivery>
+            <dist:install-time />
+        </dist:delivery>
+    </dist:module>
+ 
+</manifest>

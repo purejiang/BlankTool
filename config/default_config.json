@@ -1,32 +1,44 @@
 {
+    "setting":{
+        "app":{
+            "is_output_log": true,
+            "theme": "dark"
+        },
+        "adb":{
+            "choose_first": true
+        }
+
+    },
     "path": {
         "re": {
-            "bundletool_path": "./re/bundletool/bundletool-all-1.11.0.jar",
-            "apktool_path": "./re/apktool/apktool_2.9.2.jar",
-            "jarsigner_path": "./re/jre/bin/jarsigner.exe",
-            "apksigner_path":"./re/android/apksigner.jar",
-            "keytool_path": "./re/jre/bin/keytool.exe",
-            "android_jar_path":"./re/android/android.jar",
-            "smali_jar_path":"./re/android/smali-2.5.2.jar",
-            "adb_path": "./re/adb",
-            "aapt2_path": "./re/aapt",
-            "java_path": "./re/jre/bin"
+            "bundletool": "${root}\\re\\bundletool\\bundletool-all-1.11.0.jar",
+            "apktool": "${root}\\re\\apktool\\apktool_2.9.2.jar",
+            "jarsigner": "${root}\\re\\jre\\bin\\jarsigner.exe",
+            "apksigner":"${root}\\re\\android\\apksigner.jar",
+            "keytool": "${root}\\re\\jre\\bin\\keytool.exe",
+            "zipalign": "${root}\\re\\android\\zipalign.exe",
+            "android_jar":"${root}\\re\\android\\android.jar",
+            "smali_jar":"${root}\\re\\android\\smali-2.5.2.jar",
+            "adb_path": "${root}\\re\\adb",
+            "aapt2_path": "${root}\\re\\aapt",
+            "java_path": "${root}\\re\\jre\\bin"
         },
         "cache": {
-            "base_cache": "./cache",
-            "setting_cache": "./cache/setting",
-            "install_cache": "./cache/install",
-            "parse_apk_cache": "./cache/parse_apk",
-            "adb_cache": "./cache/adb",
-            "pull_apk_cache": "./cache/pull_apk",
-            "aapt_cache": "./cache/aapt",
-            "aab_cache": "./cache/aab"
+            "setting_cache": "${root}\\cache\\setting",
+            "install_cache": "${root}\\cache\\install",
+            "parse_apk_cache": "${root}\\cache\\parse_apk",
+            "adb_cache": "${root}\\cache\\adb",
+            "pull_apk_cache": "${root}\\cache\\pull_apk",
+            "aapt_cache": "${root}\\cache\\aapt",
+            "aab_cache": "${root}\\cache\\aab"
         },
         "data": {
-            "base_data": "./data",
-            "log_data": "./data/log",
-            "signer_data": "./data/signer.json"
+            "log_data": "${root}\\data\\log",
+            "signer_file": "${root}\\data\\signer.json"
         },
-        "res": "./resource"
+        "res": "${root}\\resource",
+        "other": {
+            "assets_res_manifest_file":"${root}\\other\\assets_res_default_AndroidManifest.xml"
+        }
     }
 }

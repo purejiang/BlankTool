@@ -3,11 +3,13 @@
         "app_name": "BlankTool",
         "version_name": "0.6.0.dev",
         "version_code": "240218",
-        "create_time": "202402180923",
-        "web_url": "https://purejiang.github.io/"
+        "build_time": "202402180923",
+        "mode": "RELEASE"
     },
-    "setting": {
-        "is_output_log": false,
-        "mode": "DEBUG"
+    "host": {
+        "init": "",
+        "check_update": "",
+        "login": "",
+        "office_website_url": "https://purejiang.github.io/"
     }
 }

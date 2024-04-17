@@ -6,10 +6,10 @@ import traceback
 from typing import Union
 from cmd_util.adb_cmd import AdbCMD
 from cmd_util.apk_cmd import ApkCMD
-from common.constant import Constant
+from common.config import UserConfig
 from common.context import Context
 from utils.file_helper import FileHelper
-from utils.jloger import JLogger
+from utils.jlogger import JLogger
 from utils.other_util import currentTimeMillis, currentTimeNumber
 from vo.apk_info import ApkInfo
 from vo.signer import SignerConfig
@@ -33,10 +33,10 @@ class ApkManager():
         :param progress_callback: 执行进度
 
         """
-        loger = JLogger(log_name="install_apk_{0}.log".format(currentTimeNumber()), save_file=True)
+        logger = JLogger(log_name="install_apk_{0}.log".format(currentTimeNumber()), save_file=True)
         progress_callback(30, "开始安装 apk：" + apk_path, "", True)
         cmd_result = AdbCMD.adbInstallApk(apk_path, Context.DEFAULT_ADB_DEVICE)
-        loger.info(cmd_result[1])
+        logger.info(cmd_result[1])
         progress_callback(90, "执行完成" , cmd_result[1], cmd_result[0])
         return cmd_result[0]
 
@@ -51,44 +51,44 @@ class ApkManager():
         :param is_only_res: 是否只反编译资源文件, 默认编译所有
 
         """
-        loger = JLogger(log_name="parse_apk_{0}.log".format(currentTimeNumber()), save_file=True)
+        user_path_config = UserConfig.getPath()
+
+        logger = JLogger(log_name="parse_apk_{0}.log".format(currentTimeNumber()), save_file=True)
         # 第一步，初始化解析工具
         progress_callback(5, "开始执行" , "", True)    
         md5 = FileHelper.md5(apk_path)
         md5_name = "{0}_{1}".format(FileHelper.filename(apk_path, False), md5)
-        info_file = os.path.join(
-            Constant.Path.AAPT_INFO_CACHE_PATH, "{0}.info".format(md5_name))
-        depack_output_dir = os.path.join(
-            Constant.Path.PARSE_CACHE_PATH, md5_name)
+        info_file = os.path.join(user_path_config.aapt_cache, "{0}.info".format(md5_name))
+        depack_output_dir = os.path.join(user_path_config.parse_apk_cache, md5_name)
         progress_callback(15, "初始化解析工具完成" , "", True)    
 
         # 第二步，通过 aapt 生成解析文件
         aapt_info_result = ApkCMD.aaptApkInfo(apk_path, info_file)
-        loger.info("cmd:"+aapt_info_result[2]+", result:"+aapt_info_result[1])
+        logger.info("cmd:"+aapt_info_result[2]+", result:"+aapt_info_result[1])
         progress_callback(25, "AAPT 生成解析文件：" + info_file, aapt_info_result[1], aapt_info_result[0])
         if not aapt_info_result[0]:
             return False, None   
 
         # 第三步，解析文件中 APK 信息
-        parse_apk_info_result = cls.parseApkInfo(info_file, apk_path, depack_output_dir, loger)
+        parse_apk_info_result = cls.parseApkInfo(info_file, apk_path, depack_output_dir, logger)
         progress_callback(35, "读取解析文件：" + info_file, "", parse_apk_info_result!=None)
         if parse_apk_info_result==None:
             return False, None
         
         # 第四步，反编译 APK
-        depack_result = ApkCMD.depackage(Constant.Re.APKTOOL_PATH, apk_path, depack_output_dir, is_pass_dex, is_only_res,)
-        loger.info("cmd:"+depack_result[2]+", result:"+depack_result[1])
+        depack_result = ApkCMD.depackage(user_path_config.apktool, apk_path, depack_output_dir, is_pass_dex, is_only_res,)
+        logger.info("cmd:"+depack_result[2]+", result:"+depack_result[1])
         progress_callback(55, "反编译 APK 到：" + depack_output_dir, depack_result[1], depack_result[0])
         if not depack_result[0]:
             return False, None
         
         # 第五步，keytool 分析 APK
-        signer_info_result = cls.parseSignerInfo(Constant.Re.KEYTOOL_PATH, depack_output_dir, loger)
+        signer_info_result = cls.parseSignerInfo(user_path_config.keytool, depack_output_dir, logger)
         if signer_info_result[0]:
             parse_apk_info_result.signer_sha1 = signer_info_result[1]
             parse_apk_info_result.signer_sha256 = signer_info_result[2]
 
-        signer_md5_result = cls.parseSignermd5(Constant.Re.KEYTOOL_PATH, depack_output_dir, loger)
+        signer_md5_result = cls.parseSignermd5(user_path_config.keytool, depack_output_dir, logger)
         if signer_md5_result[0]:
             parse_apk_info_result.signer_md5 = signer_md5_result[1]
         
@@ -98,71 +98,75 @@ class ApkManager():
 
         # 第六步，生成 APK 分析结果
         progress_callback(95, "生成 APK 分析结果", "", True)
-        parse_apk_info_result.icon = cls.getIcon(depack_output_dir, loger)
+        parse_apk_info_result.icon = cls.getIcon(depack_output_dir, logger)
         parse_apk_info_result.md5 = md5
         return True, parse_apk_info_result
     
     @classmethod
     def repack(cls, repack_dir_path, output_apk, is_support_aapt2, signer_version, signer_config:SignerConfig, progress_callback):
-        loger = JLogger(log_name="repack_{0}.log".format(currentTimeNumber()), save_file=True)
+        user_path_config = UserConfig.getPath()
+        logger = JLogger(log_name="repack_{0}.log".format(currentTimeNumber()), save_file=True)
         tmp_apk = os.path.join(FileHelper.parentDir(output_apk), "tmp_"+FileHelper.filename(output_apk))
         # 第一步，清理工作空间
         progress_callback(0, "清理工作空间", "", True)
         if FileHelper.fileExist(tmp_apk):
             FileHelper.delFile(tmp_apk)
-            loger.info("del file:"+tmp_apk)
+            logger.info("del file:"+tmp_apk)
         if FileHelper.fileExist(output_apk):
             FileHelper.delFile(output_apk)
-            loger.info("del file:"+output_apk)
+            logger.info("del file:"+output_apk)
 
        # 第二步，重编译,生成未签名的 APK     
-        repack_tmp_apk_result = ApkCMD.repack(Constant.Re.APKTOOL_PATH, repack_dir_path, tmp_apk, is_support_aapt2)
-        loger.info("cmd:"+repack_tmp_apk_result[2]+", result:"+repack_tmp_apk_result[1])
+        repack_tmp_apk_result = ApkCMD.repack(user_path_config.apktool, repack_dir_path, tmp_apk, is_support_aapt2)
+        logger.info("cmd:"+repack_tmp_apk_result[2]+", result:"+repack_tmp_apk_result[1])
         progress_callback(40, "重编译，生成未签名 APK：" + output_apk, repack_tmp_apk_result[1], repack_tmp_apk_result[0])
         if not repack_tmp_apk_result[0]:
-            loger.info(repack_tmp_apk_result[1])
+            logger.info(repack_tmp_apk_result[1])
             return False
         
         # 第三步，重签名 APK
         sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version)
         progress_callback(70, "重签名 APK：" + output_apk, sign_result[1], sign_result[0])
-        loger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1])
+        logger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1])
         return sign_result[0]
 
     
     @classmethod
     def signApk(cls, origin_apk, output_apk, signer_version, signer_config:SignerConfig, progress_callback):
-        loger = JLogger(log_name="repack_{0}.log".format(currentTimeNumber()), save_file=True)
+        logger = JLogger(log_name="repack_{0}.log".format(currentTimeNumber()), save_file=True)
         tmp_apk = os.path.join(FileHelper.parentDir(output_apk), "tmp_"+FileHelper.filename(output_apk))
         
         # 第一步，清理工作空间
         progress_callback(0, "清理工作空间", "", True)
         if FileHelper.fileExist(tmp_apk):
             FileHelper.delFile(tmp_apk)
-            cls.loger.info("del file:"+tmp_apk)
+            cls.logger.info("del file:"+tmp_apk)
         if FileHelper.fileExist(output_apk):
             FileHelper.delFile(output_apk)
-            cls.loger.info("del file:"+output_apk)
+            cls.logger.info("del file:"+output_apk)
         
         FileHelper.copyFile(origin_apk, tmp_apk, True)
         
         # 第二步，重签名 APK
         sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version)
         progress_callback(70, "重签名 APK：" + output_apk, sign_result[1], sign_result[0])
-        loger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1]+", bool:"+str(sign_result[0]))
+        logger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1]+", bool:"+str(sign_result[0]))
         return sign_result[0]
 
     @classmethod
     def __signApk(cls, origin_apk, output_apk, signer_config, signer_version):
+        user_path_config = UserConfig.getPath()
+
         signer_config_dict={}
         signer_config_dict["signer_file_path"]=signer_config.signer_file_path
         signer_config_dict["signer_pwd"]=signer_config.signer_pwd
         signer_config_dict["signer_key_pwd"]=signer_config.signer_key_pwd
         signer_config_dict["signer_alias"]=signer_config.signer_alias
+        
         if signer_version=="v2":
-            sign_result = ApkCMD.signV2(Constant.Re.APKSIGNER_PATH, origin_apk, output_apk, signer_config_dict)
+            sign_result = ApkCMD.signV2(user_path_config.apksigner, origin_apk, output_apk, signer_config_dict)
         elif signer_version=="v1":
-            sign_result = ApkCMD.signV1(Constant.Re.JARSIGNER_PATH, origin_apk, output_apk, signer_config_dict)
+            sign_result = ApkCMD.signV1(user_path_config.jarsigner, origin_apk, output_apk, signer_config_dict)
         return sign_result
 
     @classmethod
@@ -175,12 +179,13 @@ class ApkManager():
 
         """
 
-        loger = JLogger(log_name="get_apps_info_{0}.log".format(currentTimeNumber()), save_file=True)
+        logger = JLogger(log_name="get_apps_info_{0}.log".format(currentTimeNumber()), save_file=True)
         # 输出信息的文件
-        target_info_file  = os.path.join(Constant.Path.ADB_INFO_CACHE_PATH, "{0}_apks_info.txt").format(currentTimeMillis())
+        user_path_config = UserConfig.getPath()
+        target_info_file  = os.path.join(user_path_config.adb_cache, "{0}_apks_info.txt").format(currentTimeMillis())
         # 第一步，导出所有应用信息
         progress_callback(10, "开始执行", "", True)
-        loger.info("get all apps in phone...")
+        logger.info("get all apps in phone...")
         cmd_result = AdbCMD.getAppsByAdb(target_info_file, False, True, is_sys, Context.DEFAULT_ADB_DEVICE)
         progress_callback(50, "获取手机应用信息", cmd_result[1], cmd_result[0])
         if not cmd_result[0]:
@@ -199,11 +204,13 @@ class ApkManager():
         :param in_phone_path: 指定路径
 
         """
-        loger = JLogger(log_name="pull_apk_{0}.log".format(currentTimeNumber()), save_file=True)
-        target_file = os.path.join(Constant.Path.PULL_APK_CACHE_PATH, "{0}.apk".format(package_name))
-        loger.info("pull apk ...")
+        logger = JLogger(log_name="pull_apk_{0}.log".format(currentTimeNumber()), save_file=True)
+        user_path_config = UserConfig.getPath()
+        target_file = os.path.join(user_path_config.pull_apk_cache, "{0}.apk".format(package_name))
+        logger.info("pull apk ...")
         progress_callback(10, "开始执行", "", True)
         cmd_result = AdbCMD.pullApkByAdb(in_phone_path, target_file, Context.DEFAULT_ADB_DEVICE)
+        print(cmd_result)
         progress_callback(80, "导出完成", "", True)
         
         return cmd_result[0], target_file
@@ -219,14 +226,14 @@ class ApkManager():
         return apk_list
     
     @classmethod
-    def parseSignermd5(cls, keytool_path, depack_path, loger):
+    def parseSignermd5(cls, keytool_path, depack_path, logger):
         msg=""
         signer_dir = os.path.join(depack_path, "original"+os.path.sep+"META-INF")
         md5_str = ""
         for file in FileHelper.getChild(signer_dir):
             if file.endswith(".RSA"):
                 result = ApkCMD.getSignerMd5(keytool_path, os.path.join(signer_dir, file))
-                loger.info("cmd:"+result[2]+", result:"+result[1])
+                logger.info("cmd:"+result[2]+", result:"+result[1])
                 msg+="{}/n".format(result[1])
                 if result[0]:
                     md5_str = result[1].split("(stdin)= ")[1]
@@ -234,7 +241,7 @@ class ApkManager():
         return False, msg
     
     @classmethod
-    def parseSignerInfo(cls, keytool_path, depack_path, loger):
+    def parseSignerInfo(cls, keytool_path, depack_path, logger):
         msg=""
         signer_dir = os.path.join(depack_path, "original"+os.path.sep+"META-INF")
         sha1_str = ""
@@ -242,7 +249,7 @@ class ApkManager():
         for file in FileHelper.getChild(signer_dir):
             if file.endswith(".RSA"):
                 result = ApkCMD.getSignerInfo(keytool_path, os.path.join(signer_dir, file))
-                loger.info("cmd:"+result[2]+", result:"+result[1])
+                logger.info("cmd:"+result[2]+", result:"+result[1])
                 msg+="{}/n".format(result[1])
                 if result[0]:
                     sha1_list = re.findall("SHA1: (.*?)\n", result[1])
@@ -257,12 +264,12 @@ class ApkManager():
         return (False, msg, "")
     
     @classmethod
-    def parseApkInfo(cls, info_file, apk_path, depackage_path, loger)->None or ApkInfo:
+    def parseApkInfo(cls, info_file, apk_path, depackage_path, logger)->None or ApkInfo:
         def get_value(info_content, target_property):
             try:
                 return info_content.split(target_property)[1:][0].split("'")[1:2][0]
             except Exception as e:
-                loger.warning("exce:\n{0}".format(traceback.format_exc()))
+                logger.warning("exce:\n{0}".format(traceback.format_exc()))
                 return ""
 
         def get_list(info_content, target_property, last_tag):
@@ -272,7 +279,7 @@ class ApkManager():
                     content = content.split(last_tag)[:1][0]
                 return content.replace("'", "").strip().replace(" ", ", ")
             except Exception as e:
-                loger.warning("exce:\n{0}".format(traceback.format_exc()))
+                logger.warning("exce:\n{0}".format(traceback.format_exc()))
                 return ""
             
         content = FileHelper.fileContent(info_file)
@@ -289,7 +296,7 @@ class ApkManager():
 
         
     @classmethod
-    def getIcon(cls, depack_path, loger):
+    def getIcon(cls, depack_path, logger):
         content = FileHelper.fileContent(
             os.path.join(depack_path, "AndroidManifest.xml"))
         # 非贪婪模式，取第一个

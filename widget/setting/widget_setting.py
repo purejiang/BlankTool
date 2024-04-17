@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from common.constant import Constant
+from common.config import AppConfig, UserConfig
 from viewmodel.app_viewmodel import AppViewModel
 from widget.custom.dialog_custom_small import SmallCustomDialog
 from widget.custom.widget_small_dialog_msg_set import WidgetSmallDialogMsgSet
@@ -26,14 +26,17 @@ class SettingWidget(FunctionWidget):
     def _onPreShow(self):
         self.__app_viewmodel = AppViewModel(self)
         self.__clean_cache_dialog = SmallCustomDialog(self)
-        
-        self._ui.lb_app_vesion_name.setText(Constant.AppInfo.VERSION_NAME)
-        self._ui.lb_app_vesion_code.setText(Constant.AppInfo.VERSION_CODE)
-        self._ui.lb_app_create_time.setText(Constant.AppInfo.CREATE_TIME)
-        self._ui.lb_app_mode.setText(Constant.Setting.MODE)
-        if Constant.Setting.iS_OUTPUT_LOG:
+        app_info = AppConfig.getAppInfo()
+        host = AppConfig.getHost()
+        setting = UserConfig.getSetting()
+        self._ui.lb_app_vesion_name.setText(app_info.version_name)
+        self._ui.lb_app_vesion_code.setText(app_info.version_code)
+        self._ui.lb_app_build_time.setText(app_info.build_time)
+        self._ui.lb_app_mode.setText(app_info.mode)
+        if setting.is_output_log:
             self._ui.ckb_is_output_log.setChecked(True)
-        self._ui.lb_app_web_url.setText(Constant.AppInfo.WEB_URL)
+
+        self._ui.lb_app_web_url.setText(host.office_website_url)
 
     def _setupListener(self):
         self.__app_viewmodel.get_chache_size_opreation.setListener(self.__onCacheSizeSuccess, self.__onCacheSizeProgress, self.__onCacheSizeFailure)

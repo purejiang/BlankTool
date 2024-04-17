@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 
 import os
-from common.constant import Constant
+from common.config import UserConfig
 
 from utils.file_helper import FileHelper
 from utils.other_util import currentTime
@@ -107,6 +107,8 @@ class ParseApkWidget(FunctionWidget):
     
     def __openDepackDirPath(self):
         if self.apk_info!=None:
+            # os.startfile(self.apk_info.output_path)
             FileHelper.showInExplorer(self.apk_info.output_path)
         else:
-            FileHelper.showInExplorer(Constant.Path.PARSE_CACHE_PATH)
+            # os.startfile(UserConfig.getPath().parse_apk_cache)
+            FileHelper.showInExplorer(UserConfig.getPath().parse_apk_cache)

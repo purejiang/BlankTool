@@ -2,9 +2,9 @@
 
 import json
 import traceback
-from common.constant import Constant
+from common.config import UserConfig
 from utils.file_helper import FileHelper
-from utils.jloger import JLogger
+from utils.jlogger import JLogger
 from utils.other_util import currentTimeNumber
 from vo.signer import SignerConfig
 
@@ -28,17 +28,17 @@ class SignerManager():
     签名相关的功能管理
 
     """
-    loger = JLogger()
+    logger = JLogger()
 
     @classmethod
     def addKeystore(cls, curr_signer_config, progress_callback):
         """
         添加 keystore
 
-        :param keystore_info: keystore 信息
+        :param curr_signer_config: 当前签名配置
 
         """
-        cls.loger.info("add keystore {0} ...".format(curr_signer_config.signer_file_path))
+        cls.logger.info("add keystore {0} ...".format(curr_signer_config.signer_file_path))
         file_md5 = FileHelper.md5(curr_signer_config.signer_file_path)
         curr_signer_config.file_md5 = file_md5
         curr_signer_config.create_time = currentTimeNumber()
@@ -52,7 +52,7 @@ class SignerManager():
                 max_id = signer_config.signer_id
 
             if curr_signer_config.signer_name == signer_config.signer_name or curr_signer_config.file_md5 == signer_config.file_md5:
-                cls.loger.info("{} is exist.".format(signer_config.signer_name))
+                cls.logger.info("{} is exist.".format(signer_config.signer_name))
                 is_exist = True
             signer_config_list.append(signer_config.__dict__)
 
@@ -62,33 +62,33 @@ class SignerManager():
         else:
             return False
 
-        return FileHelper.writeContent(Constant.Signer.SIGNER_FILE_PATH, json.dumps(signer_config_list))
+        return FileHelper.writeContent(UserConfig.getPath().signer_file, json.dumps(signer_config_list))
 
     @classmethod
     def delSigner(cls, signer_id, progress_callback):
         """
-        删除 signer
+        删除签名
 
-        :param signer_config: signer 信息
+        :param signer_id: 签名配置 id
 
         """
-        cls.loger.info("del signer by id:{0} ...".format(signer_id))
-        signer_data_list = json.loads(FileHelper.fileContent(Constant.Signer.SIGNER_FILE_PATH))
+        cls.logger.info("del signer by id:{0} ...".format(signer_id))
+        signer_data_list = json.loads(FileHelper.fileContent(UserConfig.getPath().signer_file))
         for signer_str in signer_data_list:
             signer = json2obj(signer_str, SignerConfig)
             if signer.signer_id == signer_id:
                 signer_data_list.remove(signer_str)
-        return FileHelper.writeContent(Constant.Signer.SIGNER_FILE_PATH, json.dumps(signer_data_list))
+        return FileHelper.writeContent(UserConfig.getPath().signer_file, json.dumps(signer_data_list))
 
     @classmethod
     def modifySigner(cls, curr_signer_config: SignerConfig, progress_callback):
         """
-        修改 signer
+        修改签名
 
-        :param signer_config: signer 信息
+        :param curr_signer_config: 当前签名配置
 
         """
-        cls.loger.info("modify keystore {0} ...".format(curr_signer_config.signer_name))
+        cls.logger.info("modify keystore {0} ...".format(curr_signer_config.signer_name))
         all_signer_list = []
         for signer_config in cls.allSigners(None):
             if curr_signer_config.signer_id == signer_config.signer_id:
@@ -96,32 +96,37 @@ class SignerManager():
                 all_signer_list.append(curr_signer_config.__dict__)
             else:
                 all_signer_list.append(signer_config.__dict__)
-        cls.loger.info("writeContent: {0}".format(all_signer_list))        
-        return FileHelper.writeContent(Constant.Signer.SIGNER_FILE_PATH, json.dumps(all_signer_list))
+        cls.logger.info("writeContent: {0}".format(all_signer_list))        
+        return FileHelper.writeContent(UserConfig.getPath().signer_file, json.dumps(all_signer_list))
 
     @classmethod
     def allSigners(cls, progress_callback) -> list or None:
         """
-        获取所有的 keystore config
-
+        获取所有的签名
         """
-        cls.loger.info("get all signer ...")
+        cls.logger.info("get all signer ...")
         try:
             signer_list =[]
-            signer_data_list = json.loads(FileHelper.fileContent(Constant.Signer.SIGNER_FILE_PATH))
+            signer_data_list = json.loads(FileHelper.fileContent(UserConfig.getPath().signer_file))
             for signer_str in signer_data_list:
                 signer_list.append(json2obj(signer_str, SignerConfig))
             signer_list = sorted(signer_list, key=lambda x: x.update_time, reverse=True)
             signer_list = sorted(signer_list, key=lambda x: x.sort)
             return signer_list
         except Exception as e:
-            cls.loger.warning(""+traceback.format_exc())
+            cls.logger.warning(""+traceback.format_exc())
             return None
 
     @classmethod
     def getSigner(cls, signer_id, progress_callback) -> SignerConfig:
-        cls.loger.info("get signer by id: {}...".format(signer_id))
-        signer_data_list = json.loads(FileHelper.fileContent(Constant.Signer.SIGNER_FILE_PATH))
+        """
+        获取签名
+
+        :param signer_id: 签名配置 id
+
+        """
+        cls.logger.info("get signer by id: {}...".format(signer_id))
+        signer_data_list = json.loads(FileHelper.fileContent(UserConfig.getPath().signer_file))
         for signer_str in signer_data_list:
             signer_config = json2obj(signer_str, SignerConfig)
             if signer_config.signer_id == signer_id:

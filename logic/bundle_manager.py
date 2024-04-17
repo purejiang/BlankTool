@@ -6,10 +6,10 @@ import traceback
 import zipfile
 from cmd_util.apk_cmd import ApkCMD
 from cmd_util.bundle_cmd import BundleCMD
-from common.constant import Constant
+from common.config import UserConfig
 from common.context import Context
 from utils.file_helper import FileHelper
-from utils.jloger import JLogger
+from utils.jlogger import JLogger
 from utils.other_util import currentTime, currentTimeNumber
 
 class BundleManager():
@@ -21,58 +21,59 @@ class BundleManager():
 
     """
 
+
     @classmethod
     def install_aab(cls, aab_path, signer_config, progress_callback):
-        loger = JLogger(log_name="install_aab_{0}.log".format(currentTimeNumber()), save_file=True)
-        apks_path = os.path.join(Constant.Path.INSTALL_CACHE_PATH, "{0}.apks".format(FileHelper.filename(aab_path, False)))
-        loger.info("开始安装 aab，时间："+ currentTime())
+        logger = JLogger(log_name="install_aab_{0}.log".format(currentTimeNumber()), save_file=True)
+        apks_path = os.path.join(UserConfig.getPath().install_cache, "{0}.apks".format(FileHelper.filename(aab_path, False)))
+        logger.info("开始安装 aab，时间："+ currentTime())
         try:
             if FileHelper.fileExist(apks_path):
                 FileHelper.delFile(apks_path)
             progress_callback(10, "清理输出目录...", "", True)
 
             
-            aab2apks_result = BundleCMD.aab2Apks(Constant.Re.BUNDLETOOL_PATH, aab_path, apks_path, signer_config)
+            aab2apks_result = BundleCMD.aab2Apks(UserConfig.getPath().bundletool, aab_path, apks_path, signer_config)
             progress_callback(30, "aab 转 apks...", aab2apks_result[1], aab2apks_result[0])
             if not aab2apks_result[0]:
                 return False
             
             
-            install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_path, Context.DEFAULT_ADB_DEVICE)
+            install_apks_result = BundleCMD.installApks(UserConfig.getPath().bundletool, apks_path, Context.DEFAULT_ADB_DEVICE)
             progress_callback(70, "安装 apks...", install_apks_result[1], install_apks_result[0])
             if not install_apks_result[0]:
                 return False
             return True
         except Exception as e:
-            loger.warning(""+traceback.format_exc())
+            logger.warning(""+traceback.format_exc())
             return False
         
     @classmethod
-    def install_apks(cls, apks_file, progress_callback, loger):
-        loger.info("开始安装 apks，时间："+ currentTime())
+    def install_apks(cls, apks_file, progress_callback, logger):
+        logger.info("开始安装 apks，时间："+ currentTime())
         try:
             progress_callback(30, "安装 apks...", "", True)
-            install_apks_result = BundleCMD.installApks(Constant.Re.BUNDLETOOL_PATH, apks_file, Context.DEFAULT_ADB_DEVICE)
+            install_apks_result = BundleCMD.installApks(UserConfig.getPath().bundletool, apks_file, Context.DEFAULT_ADB_DEVICE)
             progress_callback(70, "安装 apks完成", install_apks_result[1], install_apks_result[0])
             if not install_apks_result[0]:
                 return False
             return True
         except Exception as e:
-            loger.warning(""+traceback.format_exc())
+            logger.warning(""+traceback.format_exc())
             return False
         
     
     @classmethod
     def apk2aab(cls, apk_file, ver_config, signer_config, progress_callback):
-        loger = JLogger(log_name="apk2aab_{0}.log".format(currentTimeNumber()), save_file=True)
+        logger = JLogger(log_name="apk2aab_{0}.log".format(currentTimeNumber()), save_file=True)
         
         progress_callback(5, "开始初始化转换工具" , "", True)
         if not FileHelper.fileExist(apk_file):
             progress_callback(5, "初始化失败，apk不存在" , "", False)
             return False, None
         md5_name = "{0}_{1}".format(FileHelper.filename(apk_file, False), FileHelper.md5(apk_file))
-        output_aab_file = os.path.join(Constant.Path.AAB_CACHE_PATH, "{0}_{1}.aab".format(md5_name, ver_config["ver_name"]))
-        work_space_dir = os.path.join(Constant.Path.AAB_CACHE_PATH, md5_name)
+        output_aab_file = os.path.join(UserConfig.getPath().aab_cache, "{0}_{1}.aab".format(md5_name, ver_config["ver_name"]))
+        work_space_dir = os.path.join(UserConfig.getPath().aab_cache, md5_name)
         depack_dir = os.path.join(work_space_dir, "depackage")
         other_dir = os.path.join(work_space_dir, "other")
         compile_zip = os.path.join(other_dir, "compile.zip")
@@ -85,79 +86,79 @@ class BundleManager():
         aab_assets_res_zip = os.path.join(aab_project_dir, "AssetsPackGameRes.zip")
 
         if FileHelper.fileExist(output_aab_file):
-            loger.info("清理已存在的aab文件:"+output_aab_file)
+            logger.info("清理已存在的aab文件:"+output_aab_file)
             FileHelper.delFile(output_aab_file)
 
         if FileHelper.fileExist(work_space_dir):
-            loger.info("清理工作空间:"+work_space_dir)
+            logger.info("清理工作空间:"+work_space_dir)
             FileHelper.delFile(work_space_dir)
         
-        loger.info("新建工作空间")
+        logger.info("新建工作空间")
         FileHelper.createDir(work_space_dir)
         FileHelper.createDir(aab_project_dir)
         FileHelper.createDir(other_dir)
         progress_callback(15, "初始化转换工具完成" , "", True) 
 
         # 反编 apk
-        depack_result = cls.__depackageApk(apk_file, depack_dir, loger)
+        depack_result = cls.__depackageApk(apk_file, depack_dir, logger)
         progress_callback(25, "反编 apk完成", depack_result[1], depack_result[0])
         if not depack_result[0]:
             return False, None
         # 获取包名
-        package_name = cls.__parsePackage(depack_dir, loger)
+        package_name = cls.__parsePackage(depack_dir, logger)
         if package_name is None:
             progress_callback(30, "解析包名失败", package_name, False)
             return False, None
         progress_callback(30, "解析包名完成", package_name, True)
 
         # 编译资源
-        compile_result = cls.__compileZip(depack_dir, compile_zip, loger)
+        compile_result = cls.__compileZip(depack_dir, compile_zip, logger)
         progress_callback(40, "编译资源完成", compile_result[1], compile_result[0])
         if not compile_result[0]:
             return False, None
         
         # 链接资源
-        link_result = cls.__linkRes(Constant.Re.ANDROID_JAR_PATH, compile_zip, depack_dir, ver_config, base_apk, loger)
+        link_result = cls.__linkRes(UserConfig.getPath().android_jar, compile_zip, depack_dir, ver_config, base_apk, logger)
         progress_callback(50, "链接资源完成", link_result[1], link_result[0])
         if not link_result[0]:
             return False, None
         
         # 整理 base 模块
-        arrange_apk_result = cls.__arrangeBaseApk(Constant.Re.SMALI_JAR_PATH, base_apk, aab_base_dir, depack_dir, loger)
+        arrange_apk_result = cls.__arrangeBaseApk(UserConfig.getPath().smali_jar, base_apk, aab_base_dir, depack_dir, logger)
         progress_callback(60, "整理 base 模块完成", arrange_apk_result[1], arrange_apk_result[0])
         if not arrange_apk_result[0]:
             return False, None
         
         # 整理 assets 模块
-        arrange_assets_result = cls.__arrangeAssets(Constant.Re.ANDROID_JAR_PATH, package_name, apk_file, other_dir, aab_base_dir, aab_assets_res_dir, Constant.Aab.ASSETS_RES_MANIFEST, loger)
+        arrange_assets_result = cls.__arrangeAssets(UserConfig.getPath().android_jar, package_name, apk_file, other_dir, aab_base_dir, aab_assets_res_dir, UserConfig.getPath().assets_res_manifest_file, logger)
         progress_callback(60, "整理 assets 模块完成", arrange_assets_result[1], arrange_assets_result[0])
         if not arrange_assets_result[0]:
             return False, None
         
         # aab 构建
-        build_bundle_result = cls.__bundleBuild(Constant.Re.BUNDLETOOL_PATH, aab_base_dir, aab_base_zip, aab_assets_res_dir, aab_assets_res_zip, output_aab_file, loger)
+        build_bundle_result = cls.__bundleBuild(UserConfig.getPath().bundletool, aab_base_dir, aab_base_zip, aab_assets_res_dir, aab_assets_res_zip, output_aab_file, logger)
         progress_callback(70, "aab 构建完成", build_bundle_result[1], build_bundle_result[0])
         if not build_bundle_result[0]:
             return False, None
         
         # aab 签名
-        sign_bundle_result = cls.__signerAab(Constant.Re.JARSIGNER_PATH, output_aab_file, signer_config, loger)
+        sign_bundle_result = cls.__signerAab(UserConfig.getPath().jarsigner, output_aab_file, signer_config, logger)
         progress_callback(80, "aab 签名完成", sign_bundle_result[1], sign_bundle_result[0])
         if not sign_bundle_result[0]:
             return False, None
         return True, output_aab_file
         
     @classmethod      
-    def __depackageApk(cls, apk_file, depack_dir, loger):
+    def __depackageApk(cls, apk_file, depack_dir, logger):
         if FileHelper.fileExist(depack_dir):
             FileHelper.delFile(depack_dir)
-            loger.info("del file:"+depack_dir)
-        result =  ApkCMD.depackage(Constant.Re.APKTOOL_PATH, apk_file, depack_dir, True, False)
-        loger.info("cmd:"+result[2])
+            logger.info("del file:"+depack_dir)
+        result =  ApkCMD.depackage(UserConfig.getPath().apktool, apk_file, depack_dir, True, False)
+        logger.info("cmd:"+result[2])
         return result
 
     @classmethod
-    def __parsePackage(cls, depack_dir, loger):
+    def __parsePackage(cls, depack_dir, logger):
         try:
             manifest = os.path.join(depack_dir, "AndroidManifest.xml")
             with open(manifest, "r", encoding="utf-8") as file:
@@ -165,25 +166,25 @@ class BundleManager():
             # 非贪婪模式，取第一个
             return re.findall("package=\"(.*?)\"", content)[0]
         except Exception as e:
-            loger.warning(str(traceback.format_exc()))
+            logger.warning(str(traceback.format_exc()))
             return None
         
     @classmethod
-    def __compileZip(cls, depack_dir, zip_path, loger):
+    def __compileZip(cls, depack_dir, zip_path, logger):
         res_path = os.path.join(depack_dir, "res")
         result = BundleCMD.compileZip( res_path, zip_path)
-        loger.info("cmd:"+result[2])
+        logger.info("cmd:"+result[2])
         return result
     
     @classmethod
-    def __linkRes(cls, android_jar, compile_zip, depack_dir, ver_config, ouput_base_apk, loger):
+    def __linkRes(cls, android_jar, compile_zip, depack_dir, ver_config, ouput_base_apk, logger):
         manifest = os.path.join(depack_dir, "AndroidManifest.xml")
         result = BundleCMD.linkRes(compile_zip, android_jar, manifest, ver_config["min_ver"], ver_config["tar_ver"], ver_config["compile_ver"], ver_config["ver_code"], ver_config["ver_name"], ouput_base_apk)
-        loger.info("cmd:"+result[2])
+        logger.info("cmd:"+result[2])
         return result
     
     @classmethod
-    def __arrangeBaseApk(cls, smali_jar, base_apk, aab_base_dir, depack_dir, loger):
+    def __arrangeBaseApk(cls, smali_jar, base_apk, aab_base_dir, depack_dir, logger):
         try:
             move_dict = {}
             with zipfile.ZipFile(base_apk, 'a') as zf:
@@ -226,16 +227,16 @@ class BundleManager():
                         FileHelper.moveFile(old, new)
                     else:
                         FileHelper.copyFile(old, new)
-                    loger.info("base apk 整理移动：{0} -> {1}".format(old, new))
+                    logger.info("base apk 整理移动：{0} -> {1}".format(old, new))
             # smali 转 dex
-            is_success = cls.__smali2dex(smali_jar, depack_dir, aab_base_dir, loger)
+            is_success = cls.__smali2dex(smali_jar, depack_dir, aab_base_dir, logger)
             return is_success, "success"
         except Exception as e:
-            loger.warning(""+traceback.format_exc())
+            logger.warning(""+traceback.format_exc())
             return False, None
         
     @classmethod
-    def __smali2dex(cls, smali_jar, depacka_dir, aab_base_dir, loger):
+    def __smali2dex(cls, smali_jar, depacka_dir, aab_base_dir, logger):
         final_result = True
         new_dex = os.path.join(aab_base_dir, "dex")
         os.makedirs(new_dex)
@@ -248,13 +249,13 @@ class BundleManager():
                 else:
                     dex_file = os.path.join(new_dex, "classes.dex")
                 smali2dex_result = BundleCMD.smali2dex(smali_jar, os.path.join(depacka_dir, file), dex_file)
-                loger.info("cmd:"+smali2dex_result[2])
-                loger.info("result:"+smali2dex_result[1])
+                logger.info("cmd:"+smali2dex_result[2])
+                logger.info("result:"+smali2dex_result[1])
                 final_result = final_result and smali2dex_result[0]
         return final_result
     
     @classmethod
-    def __bundleBuild(cls, bundle_tool, aab_base_dir, aab_base_zip, aab_assets_dir, aab_assets_zip, output_aab, loger):
+    def __bundleBuild(cls, bundle_tool, aab_base_dir, aab_base_zip, aab_assets_dir, aab_assets_zip, output_aab, logger):
         zip_txt = ""
         with zipfile.ZipFile(aab_base_zip, 'w', zipfile.ZIP_DEFLATED) as zf:
             for dirpath, dirnames, filenames in os.walk(aab_base_dir):
@@ -274,17 +275,17 @@ class BundleManager():
                                 dirpath, filename), fpath+filename)
             zip_txt += (","+aab_assets_zip)
         result = BundleCMD.buildBundle(bundle_tool, zip_txt, output_aab)
-        loger.info("cmd:"+result[2])
+        logger.info("cmd:"+result[2])
         return result
     
     @classmethod
-    def __signerAab(cls, signer_tool, output_aab, signer_config, loger):
+    def __signerAab(cls, signer_tool, output_aab, signer_config, logger):
         result = BundleCMD.signBundle(signer_tool, output_aab, signer_config.signer_file_path,signer_config.signer_pwd, signer_config.signer_key_pwd, signer_config.signer_alias)
-        loger.info("cmd:"+result[2])
+        logger.info("cmd:"+result[2])
         return result
     
     @classmethod
-    def __arrangeAssets(cls, android_jar, package_name, apk_file, other_dir, aab_base_dir, aab_assets_res_dir, assets_manifest, loger):
+    def __arrangeAssets(cls, android_jar, package_name, apk_file, other_dir, aab_base_dir, aab_assets_res_dir, assets_manifest, logger):
         output_assets_apk = os.path.join(other_dir, "game_res.apk")
         base_assets = os.path.join(aab_base_dir, "assets")
         # base 的 assets 大于150 mb() 则分割资源
@@ -320,7 +321,7 @@ class BundleManager():
                     if ".bundle" in os.path.basename(file):
                         FileHelper.moveFile(old_file, new_file)
             result = BundleCMD.linkResByDir(android_jar, manifest, output_assets_apk)
-            loger.info("cmd:"+result[2])
+            logger.info("cmd:"+result[2])
             if result[0]:
                 with zipfile.ZipFile(output_assets_apk, 'a') as zf:
                     zf.extractall(aab_assets_res_dir)

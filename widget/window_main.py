@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from common.constant import Constant
+from common.config import AppConfig
 from widget.base.base_window import BaseWindow
 from widget.custom.dialog_custom_small import SmallCustomDialog
 from widget.custom.widget_small_dialog_msg_set import WidgetSmallDialogMsgSet
@@ -19,7 +19,7 @@ class MainWindow(BaseWindow):
     __UI_FILE = "./res/ui/window_main.ui"
     __QSS_FILE = "./res/qss/window_main.qss"
     __ICON = "./res/img/app_icon_small"
-    __TITLE = Constant.AppInfo.APP_NAME
+    __TITLE = AppConfig.getAppInfo().app_name
 
     def __init__(self, application) -> None:
         super(MainWindow, self).__init__(application, self.__UI_FILE, self.__QSS_FILE, self.__ICON)
@@ -27,7 +27,7 @@ class MainWindow(BaseWindow):
         self.__close_window = False
 
     def _onPreShow(self, data):
-        self.setWindowTitle(Constant.AppInfo.APP_NAME)
+        self.setWindowTitle(self.__TITLE)
         self.__title_bar = MainTitleBar(self)
         self.__title_bar.setTitle(self.__TITLE)
         self.__function_tab_bar = FunctionTabBarWidget()
