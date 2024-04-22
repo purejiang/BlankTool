@@ -125,7 +125,7 @@ class ApkManager():
             return False
         
         # 第三步，重签名 APK
-        sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version)
+        sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version, logger)
         progress_callback(70, "重签名 APK：" + output_apk, sign_result[1], sign_result[0])
         logger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1])
         return sign_result[0]
@@ -140,21 +140,21 @@ class ApkManager():
         progress_callback(0, "清理工作空间", "", True)
         if FileHelper.fileExist(tmp_apk):
             FileHelper.delFile(tmp_apk)
-            cls.logger.info("del file:"+tmp_apk)
+            logger.info("del file:"+tmp_apk)
         if FileHelper.fileExist(output_apk):
             FileHelper.delFile(output_apk)
-            cls.logger.info("del file:"+output_apk)
+            logger.info("del file:"+output_apk)
         
         FileHelper.copyFile(origin_apk, tmp_apk, True)
         
         # 第二步，重签名 APK
-        sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version)
+        sign_result = cls.__signApk(tmp_apk, output_apk, signer_config, signer_version, logger)
         progress_callback(70, "重签名 APK：" + output_apk, sign_result[1], sign_result[0])
         logger.info("signer_version:"+signer_version+",cmd:"+sign_result[2]+", result:"+sign_result[1]+", bool:"+str(sign_result[0]))
         return sign_result[0]
 
     @classmethod
-    def __signApk(cls, origin_apk, output_apk, signer_config, signer_version):
+    def __signApk(cls, origin_apk, output_apk, signer_config, signer_version, logger):
         user_path_config = UserConfig.getPath()
 
         signer_config_dict={}
@@ -164,10 +164,16 @@ class ApkManager():
         signer_config_dict["signer_alias"]=signer_config.signer_alias
         
         if signer_version=="v2":
-            sign_result = ApkCMD.signV2(user_path_config.apksigner, origin_apk, output_apk, signer_config_dict)
+            tmp_apk = os.path.join(FileHelper.parentDir(origin_apk), "unsign_"+FileHelper.filename(origin_apk))
+            zip_result = ApkCMD.zipalign(user_path_config.zipalign, origin_apk, tmp_apk)
+            if zip_result:
+                result = ApkCMD.signV2(user_path_config.apksigner, tmp_apk, output_apk, signer_config_dict)
         elif signer_version=="v1":
-            sign_result = ApkCMD.signV1(user_path_config.jarsigner, origin_apk, output_apk, signer_config_dict)
-        return sign_result
+            tmp_apk = os.path.join(FileHelper.parentDir(origin_apk), "unzipalign_"+FileHelper.filename(origin_apk))
+            sign_result = ApkCMD.signV1(user_path_config.jarsigner, origin_apk, tmp_apk, signer_config_dict)
+            if sign_result:
+                result = ApkCMD.zipalign(user_path_config.zipalign, tmp_apk, output_apk)
+        return result
 
     @classmethod
     def getApps(cls, is_sys, progress_callback):

@@ -124,6 +124,21 @@ class ApkCMD(BaseCMD):
         return cls.run(win_cmd, linux_cmd, mac_cmd)
     
     @classmethod
+    def zipalign(cls, zipalign, origin_apk, output_apk):
+        """
+        对齐
+
+        :param kwargs: 签名配置 ['ks_path'], ['ksw'], ['kw'], ['final_apk'], ['new_apk'], ['kalias']
+
+        zipalign -v 4 [in.apk] [out.apk]
+
+        """
+        win_cmd = "{0} -v 4 {1} {2}".format(zipalign, origin_apk, output_apk)
+        linux_cmd = ""
+        mac_cmd = ""
+        return cls.run(win_cmd, linux_cmd, mac_cmd)
+    
+    @classmethod
     def gradleAssemble(cls, gradle_bin_path):
         """
         Gradle 打包
