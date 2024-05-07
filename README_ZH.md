@@ -1,7 +1,7 @@
-# BlankTool-v4
+# BlankTool-V5
 
 ## 简介：
-基于 PySide6 开发的桌面应用，集合了各种 Android 开发的功能，通过应用化的 UI 简化了各种工具的使用。
+基于 PySide6 开发的桌面应用，集合了各种 Android 开发中用到的功能，通过应用化的 UI 简化了各种工具的使用。
 
 
 ## 说明：
@@ -12,6 +12,7 @@
 - smali-2.5.2.jar
 - apktool-2.5.0~2.9.2.jar
 - bundletool-1.11.0
+- zipalign
 - aapt2
 - adb
 

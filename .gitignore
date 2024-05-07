@@ -3,4 +3,4 @@ output/
 *.pyc
 cache/
 data/
-data/signer.json
+test/

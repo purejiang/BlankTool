@@ -14,9 +14,10 @@ import math
 import shutil
 import struct
 import hashlib
-import subprocess
 import zipfile
 from pathlib import Path
+
+from utils.str_util import bytes2hex
 
 
 class FileType():
@@ -497,7 +498,7 @@ class FileHelper():
     @classmethod
     def showInExplorer(cls, file_or_dir_path):
         # 在资源管理器中选中指定文件
-        subprocess.run(['explorer', '/select,', file_or_dir_path], shell=True)
+        os.system(f'explorer /select,"{file_or_dir_path}"')
 
     @classmethod
     def md5(cls, file_path):
@@ -505,18 +506,6 @@ class FileHelper():
         获取文件 MD5
         """
         return hashlib.md5(open(file_path, 'rb').read()).hexdigest()
-
-    @classmethod
-    def bytes2hex(cls, bytes) -> str:
-        """ 字节码转16进制 """
-        num = len(bytes)
-        hexstr = u""
-        for i in range(num):
-            t = u"%x" % bytes[i]
-            if len(t) % 2:
-                hexstr += u"0"
-            hexstr += t
-        return hexstr.upper()
 
     # 获取文件类型
     @classmethod
@@ -537,7 +526,7 @@ class FileHelper():
                 byte_file.seek(0)  # 每次读取都要回到文件头，不然会一直往后读取
                 bytes = struct.unpack_from("B" * math.ceil(numOfBytes),
                                            byte_file.read(math.ceil(numOfBytes)))  # 一个 "B" 表示一个字节
-                if cls.bytes2hex(bytes) == it['signature']:
+                if bytes2hex(bytes) == it['signature']:
                     sign = it['signature']
                     if cls.getSuffix(file_path).lstrip(".") == it['extension'].lower():
                         info = [

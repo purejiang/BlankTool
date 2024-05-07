@@ -298,7 +298,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QLabel" name="lb_app_create_time">
+           <widget class="QLabel" name="lb_app_build_time">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
               <horstretch>0</horstretch>
