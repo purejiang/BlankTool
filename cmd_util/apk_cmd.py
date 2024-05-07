@@ -133,7 +133,7 @@ class ApkCMD(BaseCMD):
         zipalign -v 4 [in.apk] [out.apk]
 
         """
-        win_cmd = "{0} -v 4 {1} {2}".format(zipalign, origin_apk, output_apk)
+        win_cmd = "\"{0}\" -v 4 \"{1}\" \"{2}\"".format(zipalign, origin_apk, output_apk)
         linux_cmd = ""
         mac_cmd = ""
         return cls.run(win_cmd, linux_cmd, mac_cmd)
