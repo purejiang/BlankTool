@@ -1,0 +1,38 @@
+[
+    {
+        "verion_code": 1,
+        "version_name": "0.0.1",
+        "build_time": "20190202",
+        "download_url": ""
+    },
+    {
+        "verion_code": 2,
+        "version_name": "0.0.2",
+        "build_time": "20200202",
+        "download_url": ""
+    },
+    {
+        "verion_code": 3,
+        "version_name": "0.0.3",
+        "build_time": "20210202",
+        "download_url": ""
+    },
+    {
+        "verion_code": 5,
+        "version_name": "0.0.5",
+        "build_time": "20230202",
+        "download_url": ""
+    },
+    {
+        "verion_code": 6,
+        "version_name": "0.0.6.dev",
+        "build_time": "202402180923",
+        "download_url": ""
+    },
+    {
+        "verion_code": 7,
+        "version_name": "0.0.6.1.beta",
+        "build_time": "202405162030",
+        "download_url": ""
+    }
+]
