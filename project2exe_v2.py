@@ -13,7 +13,7 @@ import re
 from cmd_util.app_cmd import AppCMD
 
 from utils.file_helper import FileHelper
-from utils.jloger import JLogger
+from utils.jlogger import JLogger
 from utils.other_util import currentTimeMillis, currentTimeNumber
 
 
@@ -107,7 +107,7 @@ class ExeHelper(object):
     """
 
     """
-    __EXCLUDE_FILES = [".git", "cache", "project2exe.py", "README_ZH.md", "README.md", "requirements.txt"]
+    __EXCLUDE_FILES = [".git", "cache", "test", "data", "project2exe.py", "project2exe_v2.py", "plan.md", "app_version_list.json", "README_ZH.md", "README.md","README.md", "requirements.txt"]
     __RES_TAGS = ["img", "qss", "ui"]
 
     def __init__(self, origin_project, pyinstaller_exe, rcc_exe, app_config, default_setting, output_install_exe=None) -> None:
@@ -135,11 +135,11 @@ class ExeHelper(object):
         else:
             origin_parent_dir = os.path.dirname(self.__output_install_exe)
 
-        release_project = os.path.abspath(os.path.join(origin_parent_dir, "blank_tool_release_v5_project_{}".format(currentTimeNumber())))
+        release_project = os.path.abspath(os.path.join(origin_parent_dir, "blank_tool_release_project_{}".format(currentTimeNumber())))
 
-        release_dist = os.path.abspath(os.path.join(origin_parent_dir, "blank_tool_release_v5_{}.zip".format(currentTimeNumber())))
+        release_dist = os.path.abspath(os.path.join(origin_parent_dir, "blank_tool_release_{}.zip".format(currentTimeNumber())))
 
-        installer_exe = os.path.abspath(os.path.join(origin_parent_dir, "blank_tool_release_v5_{}.exe".format(currentTimeNumber())))
+        installer_exe = os.path.abspath(os.path.join(origin_parent_dir, "blank_tool_release_{}.exe".format(currentTimeNumber())))
 
         self.__copyProject(self.__origin_project, release_project)
 
@@ -158,15 +158,33 @@ class ExeHelper(object):
         
         ####### step 4：写入程序信息文件 #######
         app_config_file = os.path.join(release_project, "config/app_config.json")
-        self._writeAppConfig(self.__app_config, self.__default_setting, app_config_file)
+        default_config_file = os.path.join(release_project, "config/default_config.json")
+        self._writeAppConfig(self.__app_config, self.__default_setting, app_config_file, default_config_file)
 
-        ####### step 5：命令行使用 pyinstaller 打包，使用配置文件 main.spec #######
+        ####### step 5：清理测试数据 #######
+        # self._cleanTestData(release_project)
+
+        ####### step 6：命令行使用 pyinstaller 打包，使用配置文件 main.spec #######
         self._createRelease(release_project, release_dist)
 
+    
+    def _cleanTestData(self, release_project):
+        """
+        删除测试的数据
+        """
+        user_config_data_file = os.path.join(release_project, "data/user_config.json")
+        signer_data_file = os.path.join(release_project, "data/signer.json")
+        test_files = [user_config_data_file, signer_data_file]
+        for file in test_files:
+            if FileHelper.fileExist(file):
+                FileHelper.delFile(file)
 
     def _createRelease(self, project_path, release_dist):
         """
         生成 .exe
+
+        :param project_path: 项目目录
+        :param release_dist: 应用压缩包
         """
         os.chdir(project_path)
         # 命令行使用 pyinstaller 打包，使用配置文件 main.spec
@@ -184,7 +202,13 @@ class ExeHelper(object):
             return False
 
     def __copyProject(self, origin_project, release_project):
+        """
+        移动发行项目到正式项目目录
 
+        :param origin_project: 发行版版项目目录
+        :param release_project: 正式版项目目录
+
+        """
         if FileHelper.fileExist(release_project):
             FileHelper.delFile(release_project)
 
@@ -200,6 +224,7 @@ class ExeHelper(object):
         """
         替换并修改文件中所使用的静态资源的相对路径为二进制资源包中的路径，例：.res/qss/xxxx.qss 改为 :qss/xxxx
 
+        :param release_project: 正式版项目目录
         """
         check_paths = ["widget", "res/qss"]
         for check_dir in [os.path.join(release_project, check_name) for check_name in check_paths]:
@@ -214,9 +239,10 @@ class ExeHelper(object):
                     FileHelper.writeContent(file, content.replace(res, new_str))
         self.__logger.info("替换并修改静态资源路径")
     
-    def _writeAppConfig(self, new_app_config, default_setting, app_config_file):
+    def _writeAppConfig(self, new_app_config, default_setting, app_config_file, default_config_file):
         """
         写入app信息到文件
+
         :param version_name: 版本名
         :param version_code: 版本号
         :param is_out_log: 是否输出日志
@@ -224,17 +250,21 @@ class ExeHelper(object):
         :param web_url: 官网地址
         """
         app_config = json.loads(FileHelper.fileContent(app_config_file))
+        app_config["app_info"]["app_name"] = new_app_config["app_name"]
         app_config["app_info"]["version_code"] = new_app_config["version_code"]
         app_config["app_info"]["version_name"] = new_app_config["version_name"]
         app_config["app_info"]["web_url"] = new_app_config["web_url"]
-        app_config["app_info"]["create_time"] = currentTimeNumber()
+        app_config["app_info"]["build_time"] = currentTimeNumber()
+        app_config["app_info"]["mode"] = new_app_config["mode"]
+        
+        app_config_result = FileHelper.writeContent(app_config_file, json.dumps(app_config))
 
-        app_config["setting"]["mode"] = default_setting["mode"]
-        app_config["setting"]["is_out_log"] = default_setting["is_out_log"]
-        return FileHelper.writeContent(app_config_file, json.dumps(app_config))
-
-
-
+        default_config = json.loads(FileHelper.fileContent(default_config_file))
+        default_config["setting"]["app"]["is_out_log"] = default_setting["is_out_log"]
+        default_config["setting"]["app"]["theme"] = default_setting["theme"]
+        default_config["setting"]["adb"]["choose_first"] = default_setting["choose_first"]
+        default_config_result = FileHelper.writeContent(default_config_file, json.dumps(default_config))
+        return app_config_result and default_config_result
 
 if __name__ == "__main__":
     # 用到的工具
@@ -243,12 +273,15 @@ if __name__ == "__main__":
     project_path  = r"F:\python_project\blank_tool_v5"
     # app 配置信息
     app_config = {}
-    app_config["version_code"] = "060202402191106"
-    app_config["version_name"] = "0.6.0.dev"
+    app_config["app_name"] = "BlankTool 5"
+    app_config["version_code"] = "06020240313"
+    app_config["version_name"] = "0.6.0"
     app_config["web_url"] = "https://purejiang.github.io/"
+    app_config["mode"] = "DEBUG"
 
     default_setting={}
     default_setting["is_out_log"] = True
-    default_setting["mode"] = "DEBUG" # DEBUG/RELEASE
+    default_setting["theme"] = "dark"
+    default_setting["choose_first"] = True
     
     ExeHelper(project_path, pyinstaller_exe, rcc_exe, app_config, default_setting).run()

@@ -12,7 +12,7 @@ import re
 from cmd_util.app_cmd import AppCMD
 
 from utils.file_helper import FileHelper
-from utils.jloger import JLogger
+from utils.jlogger import JLogger
 from utils.other_util import currentTimeMillis, currentTimeNumber
 
 
@@ -80,7 +80,7 @@ class ResHelper():
         else:
             print("creata qrc file failed")
             return False
-
+# 废弃代码
 class ExeHelper(object):
 
     def __init__(self, project_path, pyinstaller_exe, rcc_exe) -> None:
