@@ -47,14 +47,14 @@ class SignerManager():
         is_exist = False
         max_id = 0
         signer_config_list =[]
-        for signer_config in cls.allSigners(None):
-            if signer_config.signer_id > max_id:
-                max_id = signer_config.signer_id
+        for exist_signer_config in cls.allSigners(progress_callback):
+            if exist_signer_config.signer_id > max_id:
+                max_id = exist_signer_config.signer_id
 
-            if curr_signer_config.signer_name == signer_config.signer_name or curr_signer_config.file_md5 == signer_config.file_md5:
-                cls.logger.info("{} is exist.".format(signer_config.signer_name))
+            if curr_signer_config.signer_name == exist_signer_config.signer_name or curr_signer_config.file_md5 == exist_signer_config.file_md5:
+                cls.logger.info("{} is exist.".format(exist_signer_config.signer_name))
                 is_exist = True
-            signer_config_list.append(signer_config.__dict__)
+            signer_config_list.append(exist_signer_config.__dict__)
 
         if not is_exist:
             curr_signer_config.signer_id = max_id+1
@@ -100,22 +100,25 @@ class SignerManager():
         return FileHelper.writeContent(UserConfig.getPath().signer_file, json.dumps(all_signer_list))
 
     @classmethod
-    def allSigners(cls, progress_callback) -> list or None:
+    def allSigners(cls, progress_callback) -> list:
         """
         获取所有的签名
         """
         cls.logger.info("get all signer ...")
+        signer_list =[]
         try:
-            signer_list =[]
+            if not FileHelper.fileExist(UserConfig.getPath().signer_file):
+                with open(UserConfig.getPath().signer_file, 'w') as file:
+                    pass
             signer_data_list = json.loads(FileHelper.fileContent(UserConfig.getPath().signer_file))
             for signer_str in signer_data_list:
                 signer_list.append(json2obj(signer_str, SignerConfig))
-            signer_list = sorted(signer_list, key=lambda x: x.update_time, reverse=True)
-            signer_list = sorted(signer_list, key=lambda x: x.sort)
-            return signer_list
+            signer_list1 = sorted(signer_list, key=lambda x: x.update_time, reverse=True)
+            signer_list2 = sorted(signer_list1, key=lambda x: x.sort)
+            return signer_list2
         except Exception as e:
             cls.logger.warning(""+traceback.format_exc())
-            return None
+            return signer_list
 
     @classmethod
     def getSigner(cls, signer_id, progress_callback) -> SignerConfig:

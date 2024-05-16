@@ -39,8 +39,9 @@ class SignerConfigSetWidget(BaseWidget):
         self._ui.edt_signer_pwd.setText(self.__signer.signer_pwd)
         self._ui.edt_signer_key_pwd.setText(self.__signer.signer_key_pwd)
         self._ui.edt_signer_key_alias.setText(self.__signer.signer_alias)
+        self._ui.edt_signer_ext.setText(self.__signer.signer_ext)
         self._ui.ckb_is_used_signer.setChecked(self.__signer.is_used)
-    
+        
     def setTitle(self, str):
         self._ui.lb_signer_config_dilaog_title.setText(str)
 
@@ -53,6 +54,7 @@ class SignerConfigSetWidget(BaseWidget):
         signer_pwd = self._ui.edt_signer_pwd.text()
         signer_key_pwd = self._ui.edt_signer_key_pwd.text()
         signer_alias = self._ui.edt_signer_key_alias.text()
+        signer_ext = self._ui.edt_signer_ext.text()
         is_used = self._ui.ckb_is_used_signer.isChecked()
  
         info_list = [signer_name, signer_file_path, signer_pwd, signer_key_pwd, signer_alias]
@@ -75,6 +77,7 @@ class SignerConfigSetWidget(BaseWidget):
         signer.signer_key_pwd = signer_key_pwd
         signer.signer_alias = signer_alias
         signer.is_used = is_used
+        signer.ext = signer_ext
         return signer
 
     def __onChooseFile(self):    

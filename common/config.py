@@ -130,6 +130,10 @@ class AppConfig:
     __APP_CONFIG_PATH = os.path.join(CONFIG_DIR, "app_config.json")
 
     @classmethod
+    def getConfigFile(cls):
+        return cls.__APP_CONFIG_PATH
+
+    @classmethod
     def getAppInfo(cls)->AppInfo:
         return AppInfo(cls.__APP_CONFIG_PATH)
 
@@ -390,11 +394,17 @@ class UserConfig:
     __USER_CONFIG_PATH = os.path.join(DATA_DIR, "user_config.json")
 
     @classmethod
+    def getConfigFile(cls):
+        return cls.__USER_CONFIG_PATH
+    
+    @classmethod
     def getSetting(cls)->Setting:
         return Setting(cls.__USER_CONFIG_PATH)
     
     @classmethod
     def getPath(cls)->Path:
+        if not FileHelper.fileExist(cls.__USER_CONFIG_PATH):
+            FileHelper.copyFile(DEFAULT_CONFIG_PATH, cls.__USER_CONFIG_PATH)
         return Path(cls.__USER_CONFIG_PATH)
     
     @classmethod
@@ -405,7 +415,6 @@ class UserConfig:
         app_re_paths.append(path.adb_path)
         app_re_paths.append(path.aapt2_path)
         app_re_paths.append(path.android_jar)
-        app_re_paths.append(path.signer_file)
         app_re_paths.append(path.smali_jar)
         app_re_paths.append(path.zipalign)
         app_re_paths.append(path.jarsigner)
