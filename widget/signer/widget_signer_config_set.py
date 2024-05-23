@@ -39,7 +39,7 @@ class SignerConfigSetWidget(BaseWidget):
         self._ui.edt_signer_pwd.setText(self.__signer.signer_pwd)
         self._ui.edt_signer_key_pwd.setText(self.__signer.signer_key_pwd)
         self._ui.edt_signer_key_alias.setText(self.__signer.signer_alias)
-        self._ui.edt_signer_ext.setText(self.__signer.signer_ext)
+        self._ui.edt_signer_ext.setText(self.__signer.ext)
         self._ui.ckb_is_used_signer.setChecked(self.__signer.is_used)
         
     def setTitle(self, str):
